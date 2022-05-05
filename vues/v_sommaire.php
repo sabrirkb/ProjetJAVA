@@ -24,7 +24,7 @@
            </li>
 		 
            <li class="smenu">
-              <a href="index.php?uc=" title="Les médicaments">Médicaments</a>
+              <a href="index.php?uc=medicaments" title="Les médicaments">Médicaments</a>
            </li>             
            </li><li class="smenu">
               <a href="index.php?uc=" title="Les praticiens">Praticiens</a>

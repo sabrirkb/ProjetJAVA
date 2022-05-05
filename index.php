@@ -12,6 +12,12 @@ switch($uc){
 	case 'connexion':{
 		include("controleurs/c_connexion.php");break;
 	}
+	case 'gererCR':{
+		include("controleurs/c_CompteRendu.php");break;
+	}
+	case 'medicaments':{
+		include("controleurs/c_Medicaments.php");break;
+	}
 	//... 
 }
 include("vues/v_pied.php") ;
