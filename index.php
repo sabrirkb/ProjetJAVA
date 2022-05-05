@@ -16,4 +16,3 @@ switch($uc){
 }
 include("vues/v_pied.php") ;
 ?>
-test
