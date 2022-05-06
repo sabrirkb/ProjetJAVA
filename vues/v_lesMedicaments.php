@@ -1,4 +1,4 @@
-<form action="index.php?do=lesMedicaments&action=consulterMedicaments" method="post">
+<form action="index.php?uc=medicaments" method="post">
     <div id="contenu" align="center" style="background-color: lightsteelblue; color: white">
         <h1>Pharmacopee</h1>
         <br>
@@ -65,8 +65,8 @@
         </table>
         <br>
         <div align="center">
-            <input type="submit" id="prec" name="Precedent" value="<">
-            <input type="submit" id="suiv" name="Suivant" value=">"> 
+            <input type="submit" id="prec" formaction="index.php?uc=medicaments&do=lesMedicaments&action=precedent" method="post" name="Precedent" value="&laquo; Précédent">
+            <input type="submit" id="suiv" formaction="index.php?uc=medicaments&do=lesMedicaments&action=suivant" method="post" name="Suivant" value="Suivant &raquo;"> 
         </div>
     </div>
 </form>
