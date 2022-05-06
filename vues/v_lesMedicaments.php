@@ -56,9 +56,6 @@
                     </td>
                 </tr>
             </tbody>
-            <?php		 /*
-                }   */
-            ?>	  
         </table>
         <br>
         <div align="center">
