@@ -11,8 +11,12 @@ switch($action){
     case 'suivant':
         {
             $index = $index + 1;
-            echo $index;
-            break;
+            $lesMedicaments = $pdo->getLesMedicaments($index);
+            foreach($lesMedicaments as $unMedicament)
+            {
+                echo $unMedicament['MED_DEPOTLEGAL'];
+			    $depot = $unMedicament['MED_DEPOTLEGAL'];
+            }
         }
     case 'precedent':
         {
@@ -23,12 +27,11 @@ switch($action){
     default: 
         {
             $lesMedicaments = $pdo->getLesMedicaments(0);
-            foreach ($lesMedicaments as $unMedicament)
+            foreach($lesMedicaments as $unMedicament)
             {
-				echo $lesMedicaments[0]['med_depotlegal'];
+                echo $unMedicament['MED_DEPOTLEGAL'];
+			    $depot = $unMedicament['MED_DEPOTLEGAL'];
             }
-            
-            echo "Pas d'action sélectionnée.";
         }
     }
         

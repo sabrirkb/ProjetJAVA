@@ -30,7 +30,7 @@ class PdoGsb{
     	PdoGsb::$monPdo = new PDO(PdoGsb::$serveur.';'.PdoGsb::$bdd, PdoGsb::$user, PdoGsb::$mdp); 
 		PdoGsb::$monPdo->query("SET CHARACTER SET utf8");
 	    } catch (Exception $e) {
-            throw new Exception("Erreur Ã  la connexion \n" . $e->getMessage());
+            throw new Exception("Erreur &agrave; la connexion \n" . $e->getMessage());
         }
     }
 
@@ -133,13 +133,13 @@ class PdoGsb{
 
 	public function getLesMedicaments($value) {
 		// retroune le médicament choisi avec les boutons de navigation [<] [>]
-		$req = "SELECT * FROM `medicament` LIMIT :value , 1";
+		$req = "select * FROM `medicament` LIMIT :value, 1";
 		try 
 			{
 				$prep = PdoGsb::$monPdo->prepare($req);
-				$prep->bindValue(':value', $value,PDO::PARAM_STR);
+				$prep->bindValue(':value', $value,PDO::PARAM_INT);
 				$prep->execute();
-				$result=$prep->fetchAll();
+				$result=$prep->fetchAll(PDO::FETCH_ASSOC);
 				return $result;
 			}
 		catch (Exception $e)

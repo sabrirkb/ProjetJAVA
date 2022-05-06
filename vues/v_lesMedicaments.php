@@ -4,19 +4,16 @@
         <br>
     <table style="width: 100%; background-color: transparent; color: white; font-weight: bold">
             <tbody style="consultation">
-                  
-    <?php /*
-// Récupère les informations de chaque médicament
-   foreach ($lesMedicaments as $unMedicament) { */
-               $depot = "unDépot"; /*= $unMedicament['med_depotlegal']; */
-               $nom = "unNom"; /* $unMedicament['med_nomcommercial']; */
-               $famille = "uneFamille"; /* $unMedicament['fam_code']; */
-               $compo = "uneCompo"; /* $unMedicament['med_composition']; */
-               $effets = "desEffets"; /* $unMedicament['med_effets']; */
-               $contre = "uneContre"; /* $unMedicament['med_contreindic']; */
-               $prix = "unPrix"; /* $unMedicament['med_prixechantillon']; */
-    ?>
-                <tr>
+            <?php
+                $depot = ""; 
+                $nom = "";
+                $famille = "";
+                $compo = "";
+                $effets = "";
+                $contre = "";
+                $prix = "";
+            ?>
+            <tr>
                     <td>D&Eacute;POT LEGAL</td>
                     <td>
                         <input size="20" list="medicament" type="text" name="depot-medicament" autocomplete="off" disabled value="<?php echo $depot;?>">
