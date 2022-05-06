@@ -74,5 +74,62 @@ class PdoGsb{
         // ou return $this->_pdo->query($query)->fetchAll(PDO::FETCH_ASSOC);
     }
 
+	// Permet d'obtenir tous les praticiens triés par nom
+    public function getLesPraticiens() {
+        $req="select PRA_NUM, PRA_NOM, PRA_PRENOM from praticien order by PRA_NOM";
+        try {
+			$prep = PdoGsb::$monPdo->prepare($req);
+			$rs = PdoGsb::$monPdo->query($req);
+		    $ligne = $rs->fetchAll(PDO::FETCH_ASSOC);
+		    return $ligne;
+        }
+
+        catch (Exception $e) 
+        {
+            echo 'Exception reçue : ',  $e->getMessage(), "\n";
+        }
+    }
+
+   // Permet d'obtenir tous les médicaments
+	public function getLesProduits() {
+        $req="select MED_DEPOTLEGAL, MED_NOMCOMMERCIAL from medicament ";
+        try {
+			$prep = PdoGsb::$monPdo->prepare($req);
+			$rs = PdoGsb::$monPdo->query($req);
+		    $ligne = $rs->fetchAll(PDO::FETCH_ASSOC);
+		    return $ligne;
+        }
+
+        catch (Exception $e) 
+        {
+            echo 'Exception reçue : ',  $e->getMessage(), "\n";
+        }
+    }
+
+
+
+
+	public function AjouterCR($Matricule, $dateVisite, $praticien, $coef, $remplacant , $Echantillon, $Produit, $bilan, $documentation)
+	{
+		$req="insert into rapport_visite  VALUES (:pVIS_MATRICULE, :padresseent, :pcpent, :pvilleent, :ptelent, :pfaxent, :pcontactmailent, :pidstatut)";
+        try {
+        $prep = PdoExemple::$monPdo->prepare($req);
+        $prep->bindValue(':praisonsocialeent', $raisonsociale,PDO::PARAM_STR);
+        $prep->bindValue(':padresseent', $adresse,PDO::PARAM_STR);
+        $prep->bindValue(':pcpent', $codepostal,PDO::PARAM_STR);
+        $prep->bindValue(':pvilleent', $ville,PDO::PARAM_STR);
+        $prep->bindValue(':ptelent', $tel,PDO::PARAM_STR);
+        $prep->bindValue(':pfaxent', $fax,PDO::PARAM_STR);
+        $prep->bindValue(':pcontactmailent', $mail,PDO::PARAM_STR);
+        $prep->bindValue(':pidstatut', $idstatut,PDO::PARAM_INT);
+        $prep->execute();
+        }
+
+        catch (Exception $e) 
+        {
+            echo 'Exception reçue : ',  $e->getMessage(), "\n";
+        }
+	}
+
 }   
   ?>
