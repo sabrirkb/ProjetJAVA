@@ -74,5 +74,21 @@ class PdoGsb{
         // ou return $this->_pdo->query($query)->fetchAll(PDO::FETCH_ASSOC);
     }
 
+	public function getLesMedicaments($value) {
+		// retroune le médicament choisi avec les boutons de navigation [<] [>]
+		$req = "SELECT * FROM `medicament` LIMIT :value , 1";
+		try 
+			{
+				$prep = PdoGsb::$monPdo->prepare($req);
+				$prep->bindValue(':value', $value,PDO::PARAM_STR);
+				$prep->execute();
+				$result=$prep->fetchAll();
+				return $result;
+			}
+		catch (Exception $e)
+		{
+			echo 'Exception reçue : ', $e->getMessage(), "\n";
+		}
+	}
 }   
   ?>
