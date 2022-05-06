@@ -109,20 +109,18 @@ class PdoGsb{
 
 
 
-	public function AjouterCR($Matricule, $dateVisite, $praticien, $coef, $remplacant , $Echantillon, $Produit, $bilan, $documentation)
+	public function AjouterCR($Matricule, $Numero, $praticien,  $dateVisite, $bilan, $Motif)
 	{
-		$req="insert into rapport_visite  VALUES (:pVIS_MATRICULE, :padresseent, :pcpent, :pvilleent, :ptelent, :pfaxent, :pcontactmailent, :pidstatut)";
+		$req="insert into rapport_visite  VALUES (:pVIS_MATRICULE, :pRAP_NUM, :pPRA_NUM, :pRAP_DATE, :pRAP_BILAN, :pRAP_MOTIF)";
         try {
-        $prep = PdoExemple::$monPdo->prepare($req);
-        $prep->bindValue(':praisonsocialeent', $raisonsociale,PDO::PARAM_STR);
-        $prep->bindValue(':padresseent', $adresse,PDO::PARAM_STR);
-        $prep->bindValue(':pcpent', $codepostal,PDO::PARAM_STR);
-        $prep->bindValue(':pvilleent', $ville,PDO::PARAM_STR);
-        $prep->bindValue(':ptelent', $tel,PDO::PARAM_STR);
-        $prep->bindValue(':pfaxent', $fax,PDO::PARAM_STR);
-        $prep->bindValue(':pcontactmailent', $mail,PDO::PARAM_STR);
-        $prep->bindValue(':pidstatut', $idstatut,PDO::PARAM_INT);
-        $prep->execute();
+			$prep = PdoGsb::$monPdo->prepare($req);
+			$prep->bindValue(':login', $login,PDO::PARAM_STR);
+			$prep->bindValue(':mdp', $mdp,PDO::PARAM_STR);
+			$prep->execute();
+			$result=$prep->fetch(PDO::FETCH_ASSOC);
+			return $result;
+
+        
         }
 
         catch (Exception $e) 
