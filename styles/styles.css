@@ -50,18 +50,18 @@ body{
 	margin-left: 18%;
 /* permet de fixer une hauteur mini sur les navigateurs modernes */
   min-height:27em;
-/* pour obtenir le même effet sur IE, sachant que si le contenu dépasse, il
+/* pour obtenir le mï¿½me effet sur IE, sachant que si le contenu dï¿½passe, il
 "poussera" la hauteur en ne respectant pas la norme. On se joue de ses lacunes
 */
   height:27em;
 }
 
-/* pour rétablir le mauvais effet sur les nav. modernes */
+/* pour rï¿½tablir le mauvais effet sur les nav. modernes */
 html>body #contenu{
   height:auto;
 }
 
-/* style à appliquer à la balise ul d'identifiant menulist */
+/* style ï¿½ appliquer ï¿½ la balise ul d'identifiant menulist */
 ul#menuList{
     list-style:none;
     margin:0px;
@@ -70,14 +70,14 @@ ul#menuList{
     font-size: 1em;
 }
 
-/* style à appliquer aux éléments de la balise ul d'identifiant menulist */
+/* style ï¿½ appliquer aux ï¿½lï¿½ments de la balise ul d'identifiant menulist */
 ul#menuList li {
     position:relative;
     margin:0px;
     padding:0px;
 }
 
-/* apparences des liens dans listes et sous-listes non numérotées */
+/* apparences des liens dans listes et sous-listes non numï¿½rotï¿½es */
 ul#menuList a {
     color:rgb(0,85,227);
     display:block;
@@ -128,6 +128,7 @@ ul#menuList a:hover {
   margin-bottom : 0em;
   width : 95%;
 }
+
 .piedForm {
   border-bottom-width : 0.1em;
   border-left-width : 0.1em;
@@ -170,7 +171,7 @@ input:hover, textarea:hover, select:hover{
 }
 
 /*  Le texte des messages d'erreur est de couleur rose sur fond ocre et de 
-taille de caractères légèrement supérieure à la normale */
+taille de caractï¿½res lï¿½gï¿½rement supï¿½rieure ï¿½ la normale */
 .erreur{ 
    background-color:rgb(237,210,229);
    color:rgb(203,28,128);
@@ -218,14 +219,18 @@ taille de caractères légèrement supérieure à la normale */
 /* Styles pour les tableaux de la page principale */
 #contenu table {
    background-color:#FFF;
-   border : 0.1em solid #777777;
+   border : none;
    color:black;
    margin-right : auto ;
    margin-left:0.3em;
    border-collapse : collapse;
 }
+/* Style pour les cases des tableaux */
+#contenu table tr, #contenu table td {
+  border: none;
+}
 
-/* Style pour les lignes d'en-tête des tableaux */
+/* Style pour les lignes d'en-tï¿½te des tableaux */
 #contenu th {  
    background-color:#77AADD;
    height:21px;
@@ -248,7 +253,7 @@ table.listeLegere {
     margin-bottom : 0.5em;
 }
 
-/* Tableaux quadrillés utilisés pour l'affichage de listes avec contenu léger*/ 
+/* Tableaux quadrillï¿½s utilisï¿½s pour l'affichage de listes avec contenu lï¿½ger*/ 
 table.listeLegere th, table.listeLegere td {
   border : dotted rgb(178,207,81) 0.1em;
   padding:0.5em;

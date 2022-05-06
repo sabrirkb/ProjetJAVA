@@ -2,7 +2,7 @@
     <div id="contenu">
         <h1>Pharmacopee</h1>
         <br>
-        <table>
+        <table style="width: 100%">
             <tbody>
                 <tr>
                     <td>DEPOT LEGAL</td>
@@ -40,7 +40,7 @@
                 <tr>
                     <td>EFFETS</td>
                     <td>
-                        <input size="30" list="medicaments" type="text" name="depot-medicament" autocomplete="off">
+                        <input size="30" list="medicaments" type="textarea" name="depot-medicament" autocomplete="off">
                     </td>
                 </tr>
                 <tr>
@@ -57,7 +57,10 @@
                 </tr>
             </tbody>
         </table>
-        <input type="submit" id="prec" name="Precedent" value="<">
-        <input type="submit" id="suiv" name="Suivant" value=">"> 
+        <br>
+        <div align="center">
+            <input type="submit" id="prec" name="Precedent" value="<">
+            <input type="submit" id="suiv" name="Suivant" value=">"> 
+        </div>
     </div>
 </form>
