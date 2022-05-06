@@ -223,7 +223,8 @@ taille de caract�res l�g�rement sup�rieure � la normale */
    color:black;
    margin-right : auto ;
    margin-left:0.3em;
-   border-collapse : collapse;
+   border-collapse : separate;
+   border-spacing: 5px;
 }
 /* Style pour les cases des tableaux */
 #contenu table tr, #contenu table td {
@@ -298,4 +299,9 @@ table.listeLegere th.libelle{
   height : 28px;
   float : left;
 
+}
+
+.consultation input, .consultation textarea
+{
+  background-color: white;
 }
