@@ -1,9 +1,11 @@
 ﻿<?php 
-if(!isset($_REQUEST['action'])){
+if(!isset($_REQUEST['action']))
+{
 	$_REQUEST['action'] = 'demandeConnexion';
 }
 $action = $_REQUEST['action'];
-switch($action){
+switch($action)
+{
 	case 'demandeConnexion':{
 		include("vues/v_connexion.php");
 		break;
@@ -26,9 +28,14 @@ switch($action){
             $_SESSION['nom']= $nom;
             $_SESSION['prenom']= $prenom;
             include("vues/v_sommaire.php");
+			include("vues/v_accueil.php");
 			}
 		break;
 	} 
+	case 'deconnexion':
+		{
+			session_destroy();
+		}
 	default :{
 		include("vues/v_connexion.php");
 		break;

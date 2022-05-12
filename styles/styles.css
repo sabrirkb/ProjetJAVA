@@ -305,3 +305,22 @@ table.listeLegere th.libelle{
 {
   background-color: white;
 }
+
+.btn-cons-med, .btn-cons-med text
+{
+  background-color: white;
+  color: black !important;
+  font-weight: bolder;
+  text-align: center;
+  width: auto;
+  height: auto;
+}
+
+.nav-cons-med
+{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding-left: 25%;
+  padding-right: 25%;
+}

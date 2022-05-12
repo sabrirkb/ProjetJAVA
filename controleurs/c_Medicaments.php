@@ -8,9 +8,9 @@ if(!isset($_REQUEST['action'])){
 
 $action = $_REQUEST['action'];
 
-if(isset($_SESSION['index']))
+if(isset($_SESSION['Med_index']))
 {
-    $index = $_SESSION['index'];
+    $index = $_SESSION['Med_index'];
 }
 else
 {
@@ -49,7 +49,7 @@ switch($action){
                     $_SESSION['Med_prix'] = $unMedicament['MED_PRIXECHANTILLON'];
                 }
             }
-            $_SESSION['index'] = $index;
+            $_SESSION['Med_index'] = $index;
             break;
         }
     case 'precedent':
@@ -84,12 +84,29 @@ switch($action){
                     $_SESSION['Med_prix'] = $unMedicament['MED_PRIXECHANTILLON'];
                 }
             }
-            $_SESSION['index'] = $index;
+            $_SESSION['Med_index'] = $index;
+            break;
+        }
+    case 'custom': 
+        {
+            $index = $_POST['updateIndex'];
+            $lesMedicaments = $pdo->getLesMedicaments($index);
+            foreach($lesMedicaments as $unMedicament)
+            {
+                $depot = $unMedicament['MED_DEPOTLEGAL'];
+                $nom = $unMedicament['MED_NOMCOMMERCIAL'];
+                $famille = $unMedicament['FAM_CODE'];
+                $compo = $unMedicament['MED_COMPOSITION'];
+                $effets = $unMedicament['MED_EFFETS'];
+                $contre = $unMedicament['MED_CONTREINDIC'];
+                $prix = $unMedicament['MED_PRIXECHANTILLON'];
+            }
+            $_SESSION['Med_index'] = $index;
             break;
         }
     default: 
         {
-            $_SESSION['index'] = 0;
+            $_SESSION['Med_index'] = 0;
             $index = 0;
             $lesMedicaments = $pdo->getLesMedicaments($index);
             foreach($lesMedicaments as $unMedicament)

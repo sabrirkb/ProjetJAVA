@@ -130,7 +130,7 @@ class PdoGsb{
 	}
 
 	public function getLesMedicaments($value) {
-		// retroune le médicament choisi avec les boutons de navigation [<] [>]
+		// retroune le médicament choisi avec les boutons de navigation [« Prec][$value][Suiv »]
 		$req = "select * FROM `medicament` LIMIT :value, 1";
 		try 
 			{
@@ -148,13 +148,12 @@ class PdoGsb{
 
 	public function getMaxMedicaments() {
 		// retroune le nombre max de médicaments dans la database
-		$req = "SELECT COUNT(*) FROM medicament;";
+		$req = "SELECT COUNT(*) AS MaxMed FROM medicament;";
 		try 
 			{
-				$prep = PdoGsb::$monPdo->prepare($req);
-				$prep->execute();
-				$result=$prep->fetchAll(PDO::FETCH_ASSOC);
-				return $result;
+				$query = PdoGsb::$monPdo->query($req);
+				$result = $query->fetch(PDO::FETCH_ASSOC);
+				return $result['MaxMed']-1;
 			}
 		catch (Exception $e)
 		{

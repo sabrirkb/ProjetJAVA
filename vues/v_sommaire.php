@@ -6,10 +6,6 @@
     </h2>
           </div>  
         <ul id="menuList">
-			<li >
-				 Bienvenue :<br>
-				<?php echo $_SESSION['prenom']."  ".$_SESSION['nom']  ?>
-			</li>
             <li class="smenu">
                    Comptes rendus 
            </li> 

@@ -49,10 +49,16 @@
             </tbody>
         </table>
         <br>
-        <div align="center">
-            <input type="submit" id="prec" formaction="index.php?uc=medicaments&do=lesMedicaments&action=precedent" method="POST" name="Precedent" value="&laquo; Précédent">
-            <input type="button" id="ind" name="ind" value="&nbsp;<?php echo $_SESSION['index']; ?>&nbsp;" disabled style="background-color: white; color: black; font-weight: bold">
-            <input type="submit" id="suiv" formaction="index.php?uc=medicaments&do=lesMedicaments&action=suivant" method="POST" name="Suivant" value="Suivant &raquo;"> 
+        <div class="nav-cons-med" align="center">
+            <button class="btn-cons-med" type="button" onclick="window.location.href='index.php?uc=medicaments&do=lesMedicaments&action=precedent'">&laquo; Précédent</button>
+            <span>
+                <input class="btn-cons-med" size="2" type="text" name="updateIndex" value="<?php echo $_SESSION['Med_index']; ?>" style="text-align: center;">
+                <strong>
+                    /&nbsp;<?php echo $pdo->getMaxMedicaments();?>&nbsp;
+                </strong>
+                <input class="btn-cons-med" type="submit" formaction="index.php?uc=medicaments&do=lesMedicaments&action=custom" method="POST" hidden>
+            </span>
+            <button class="btn-cons-med" type="button" onclick="window.location.href='index.php?uc=medicaments&do=lesMedicaments&action=suivant'">Suivant &raquo;</button>
         </div>
     </div>
 </form>
