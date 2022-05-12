@@ -145,5 +145,21 @@ class PdoGsb{
 			echo 'Exception reçue : ', $e->getMessage(), "\n";
 		}
 	}
+
+	public function getMaxMedicaments() {
+		// retroune le nombre max de médicaments dans la database
+		$req = "SELECT COUNT(*) FROM medicament;";
+		try 
+			{
+				$prep = PdoGsb::$monPdo->prepare($req);
+				$prep->execute();
+				$result=$prep->fetchAll(PDO::FETCH_ASSOC);
+				return $result;
+			}
+		catch (Exception $e)
+		{
+			echo 'Exception reçue : ', $e->getMessage(), "\n";
+		}
+	}
 }   
   ?>
