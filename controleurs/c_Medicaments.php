@@ -26,7 +26,7 @@ switch($action){
                 foreach($lesMedicaments as $unMedicament)
                 {
                     $_SESSION['Med_depot'] = $unMedicament['MED_DEPOTLEGAL'];
-                    $_SESSION['Med_nomMed'] = $unMedicament['MED_NOMCOMMERCIAL'];
+                    $_SESSION['Med_nom'] = $unMedicament['MED_NOMCOMMERCIAL'];
                     $_SESSION['Med_famille'] = $unMedicament['FAM_CODE'];
                     $_SESSION['Med_compo'] = $unMedicament['MED_COMPOSITION'];
                     $_SESSION['Med_effets'] = $unMedicament['MED_EFFETS'];
@@ -41,7 +41,7 @@ switch($action){
                 foreach($lesMedicaments as $unMedicament)
                 {
                     $_SESSION['Med_depot'] = $unMedicament['MED_DEPOTLEGAL'];
-                    $_SESSION['Med_nomMed'] = $unMedicament['MED_NOMCOMMERCIAL'];
+                    $_SESSION['Med_nom'] = $unMedicament['MED_NOMCOMMERCIAL'];
                     $_SESSION['Med_famille'] = $unMedicament['FAM_CODE'];
                     $_SESSION['Med_compo'] = $unMedicament['MED_COMPOSITION'];
                     $_SESSION['Med_effets'] = $unMedicament['MED_EFFETS'];

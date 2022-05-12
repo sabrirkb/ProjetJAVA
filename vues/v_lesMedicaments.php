@@ -1,4 +1,4 @@
-<form action="index.php?uc=medicaments" method="POST">
+<form action="" method="POST">
     <div id="contenu" align="center" style="background-color: lightsteelblue; color: white">
         <h1>Pharmacopee</h1>
         <br>
