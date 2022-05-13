@@ -93,13 +93,13 @@ switch($action){
             $lesMedicaments = $pdo->getLesMedicaments($index);
             foreach($lesMedicaments as $unMedicament)
             {
-                $depot = $unMedicament['MED_DEPOTLEGAL'];
-                $nom = $unMedicament['MED_NOMCOMMERCIAL'];
-                $famille = $unMedicament['FAM_CODE'];
-                $compo = $unMedicament['MED_COMPOSITION'];
-                $effets = $unMedicament['MED_EFFETS'];
-                $contre = $unMedicament['MED_CONTREINDIC'];
-                $prix = $unMedicament['MED_PRIXECHANTILLON'];
+                $_SESSION['Med_depot'] = $unMedicament['MED_DEPOTLEGAL'];
+                $_SESSION['Med_nom'] = $unMedicament['MED_NOMCOMMERCIAL'];
+                $_SESSION['Med_famille'] = $unMedicament['FAM_CODE'];
+                $_SESSION['Med_compo'] = $unMedicament['MED_COMPOSITION'];
+                $_SESSION['Med_effets'] = $unMedicament['MED_EFFETS'];
+                $_SESSION['Med_contre'] = $unMedicament['MED_CONTREINDIC'];
+                $_SESSION['Med_prix'] = $unMedicament['MED_PRIXECHANTILLON'];
             }
             $_SESSION['Med_index'] = $index;
             break;
@@ -111,13 +111,13 @@ switch($action){
             $lesMedicaments = $pdo->getLesMedicaments($index);
             foreach($lesMedicaments as $unMedicament)
             {
-                $depot = $unMedicament['MED_DEPOTLEGAL'];
-                $nom = $unMedicament['MED_NOMCOMMERCIAL'];
-                $famille = $unMedicament['FAM_CODE'];
-                $compo = $unMedicament['MED_COMPOSITION'];
-                $effets = $unMedicament['MED_EFFETS'];
-                $contre = $unMedicament['MED_CONTREINDIC'];
-                $prix = $unMedicament['MED_PRIXECHANTILLON'];
+                $_SESSION['Med_depot'] = $unMedicament['MED_DEPOTLEGAL'];
+                $_SESSION['Med_nom'] = $unMedicament['MED_NOMCOMMERCIAL'];
+                $_SESSION['Med_famille'] = $unMedicament['FAM_CODE'];
+                $_SESSION['Med_compo'] = $unMedicament['MED_COMPOSITION'];
+                $_SESSION['Med_effets'] = $unMedicament['MED_EFFETS'];
+                $_SESSION['Med_contre'] = $unMedicament['MED_CONTREINDIC'];
+                $_SESSION['Med_prix'] = $unMedicament['MED_PRIXECHANTILLON'];
             }
             break;
         }
