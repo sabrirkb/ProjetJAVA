@@ -1,11 +1,11 @@
-﻿<div id="accueil" align="center">
+﻿<div id="contenu">
     <h1>Application Gestion des visites</h1>
-    <h2 style="font-weight: normal">
+    <h1 style="font-weight: normal">
         <br>
         Bienvenue dans votre espace,
 	    <strong><?php echo $_SESSION['prenom']."  ".$_SESSION['nom']  ?></strong> !
         <br>
-    </h2>
+    </h1>
     <h3 style="font-weight: normal">
         &laquo; Sélectionnez une action dans le menu ci-contre
         <br>

@@ -1,12 +1,12 @@
 ﻿<?php
-include("vues/v_sommaire.php");
+include("controleurs/c_Sommaire.php");
 
 
 $action = $_REQUEST['action'];
 switch($action){ 
     // Envoie sur la vue saisirCR permettant la saisie d'un CR
     case 'saisirCR':{
-	    // include("vues/v_sommaire.php");
+	    // include("controleurs/c_Sommaire.php.php");
         $lesPraticiens=$pdo->getLesPraticiens();
         $lesProduits=$pdo->getLesProduits();
         include("vues/v_saisieCR.php");
@@ -14,7 +14,7 @@ switch($action){
 	}
         
 	case 'validerSaisieCR':{
-		// include("vues/v_sommaire.php");   
+		// include("controleurs/c_Sommaire.php.php");   
         $Matricule = $_POST['matricule'];
         $Numero= $_POST['numVisite'];
         $dateVisite = $_POST['dateVisite'];
@@ -32,6 +32,12 @@ switch($action){
        // include("vues/v_Message.php"); 
         break;
 	}
+
+    case 'consulterCR':{
+        include("vues/v_consulterCR.php");
+        break;
+    }
+    
   
 	}
 

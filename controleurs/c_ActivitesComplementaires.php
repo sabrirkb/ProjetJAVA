@@ -7,6 +7,6 @@
 
 
 include("controleurs/c_Sommaire.php");
-include("vues/v_lesPraticiens.php");
+include("vues/v_activitesComplementaires.php");
 
 ?>

@@ -1,52 +1,72 @@
 /* Styles des divisions principales de la page */
 body{
-  background-color: #77AADD;
+  background-color: rgb(101, 149, 198);
 	background-image: url(imgs/FONDGLOBAL.jpg);
 	background-repeat: repeat-x;
-  margin:0% 0%;
-  padding : 0.6em;
+  margin: auto;
+  margin-top: -19px;
+  padding : 0.0em;
   font-family:"Trebuchet MS",Verdana,Geneva,Arial,Helvetica,sans-serif;
-  font-size:0.8em;
+  font-size: 1.0em;
 } 
 #page {
   background-color:white;
-  width : 65%;
-  margin : auto ;
-  border : 0.2em solid black;
-  padding : 0.1em;
+  width : 100%;
+  margin : auto;
+  border : none;
+  padding : 0em;
 }
+
 #entete{
-  background-color:rgb(72,198,236);
-	color : #980101;
-	border: solid 0.1em #980101;
-	height: 154px;
+  background-image: url('https://thumbs.dreamstime.com/b/%C3%A9quipements-de-laboratoire-m%C3%A9dical-la-science-avec-le-microscope-pour-fond-153434971.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: white;
+  text-align: center;
+  vertical-align: middle;
+	color : dodgerblue;
+  font-size: 1.5em;
+	border-bottom: outset 0.5em dodgerblue;
+	height: 25%;
 	padding: 0em;
 	border-collapse: separate;
+  width: 100%;
 }
 #pied{
-  clear : both;
-	border : solid 0.2em #980101;
-	margin-left : 18%;
-	margin-top : 1em;
-	padding:0.4em;
-	padding: 0.2em;
+  background-color: transparent;
+  color: white;
+	border-top : inset 0.7em dodgerblue;
+	margin-left : none;
+	margin-top : 0px;
+	padding: 1.5em;
+  padding-left: 20%;
 	border-collapse: separate;
+  position: absolute;
+  width: 78.2%;
 }
+
+#pied a
+{
+  text-decoration: underline;
+  color: white;
+}
+
 #menuGauche {
-	margin-top : 0.8em;
+	margin-top : 0em;
 	padding: 1em;
 	background-color: white;
-	color: rgb(0,85,227);
+	color: dodgerblue;
 	float: left;
-	width: 14%;
+	width: 15%;
 }
 
 #contenu{
+  background-color: lightsteelblue;
 	border: none;
 	padding: 1.3em;
 	background-color: white;
-	border-left :  groove 0.8em #980101;
-  margin-top : 1.2em;
+	border-left :  groove 0.8em dodgerblue;
+  margin-top : -20px;
 	margin-left: 18%;
 /* permet de fixer une hauteur mini sur les navigateurs modernes */
   min-height:27em;
@@ -59,14 +79,18 @@ body{
 /* pour r�tablir le mauvais effet sur les nav. modernes */
 html>body #contenu{
   height:auto;
+  background-color: lightsteelblue;
+  color: white;
+  justify-content: center;
+  text-align: center;
 }
 
 /* style � appliquer � la balise ul d'identifiant menulist */
 ul#menuList{
     list-style:none;
     margin:0px;
-    padding:0px;
-    width:98%;
+    padding:3px;
+    width:100%;
     font-size: 1em;
 }
 
@@ -74,32 +98,62 @@ ul#menuList{
 ul#menuList li {
     position:relative;
     margin:0px;
-    padding:0px;
+    padding:3px;
+}
+
+ul#menuList li:first-child {
+  position:relative;
+  color: rgb(86, 111, 144);
+  margin:0px;
+  padding:3px;
+}
+
+ul.submenu a
+{
+  margin-left: -35px !important;
+  padding-left: 13px !important;
+  border-left: 2px solid rgb(86, 111, 144);
+}
+
+ul.active a
+{
+  background: dodgerblue !important;
+  color: white !important;
+}
+
+li.active a
+{
+  background: dodgerblue !important;
+  color: white !important;
 }
 
 /* apparences des liens dans listes et sous-listes non num�rot�es */
 ul#menuList a {
-    color:rgb(0,85,227);
+    color:dodgerblue;
+    padding: 3px;
     display:block;
     text-decoration:none;
     width:100%;
 }
 ul#menuList a:hover {
-    background: rgb(0,85,227);
+    background: dodgerblue;
     color: white;
 }
 
 #entete #logoGSB {
   float : left;
-  width : 238px;
-  height : 152px;
+  width : 37%;
+  height : 100%;
 }
 
 #entete h1 {
-  margin : 1em;
-  margin-left:6em;
-  font-size : x-large;
-  text-align:center;
+  margin : auto;
+  padding-top: 5%;
+  text-align: center;
+  vertical-align: middle;
+  font-variant: small-caps;
+  width: 63%;
+  text-shadow: 0px 0px 3px white;
 }
 
 #contenu pre {
@@ -218,9 +272,11 @@ taille de caract�res l�g�rement sup�rieure � la normale */
 
 /* Styles pour les tableaux de la page principale */
 #contenu table {
-   background-color:#FFF;
+  width: 100%;
+  background-color: transparent;
+  color: white;
+  font-weight: bold;
    border : none;
-   color:black;
    margin-right : auto ;
    margin-left:0.3em;
    border-collapse : separate;
@@ -304,6 +360,14 @@ table.listeLegere th.libelle{
 .consultation input, .consultation textarea
 {
   background-color: white;
+}
+
+td:nth-child(0n+1)
+{
+  margin: auto;
+  width: 25%;
+  border-radius: 5px;
+  border: 8px solid white;
 }
 
 .btn-cons-med, .btn-cons-med text

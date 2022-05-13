@@ -27,7 +27,7 @@ switch($action)
 			$_SESSION['vis_matricule']= $id;
             $_SESSION['nom']= $nom;
             $_SESSION['prenom']= $prenom;
-            include("vues/v_sommaire.php");
+            include("controleurs/c_Sommaire.php");
 			include("vues/v_accueil.php");
 			}
 		break;

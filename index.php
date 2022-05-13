@@ -18,7 +18,16 @@ switch($uc){
 	case 'medicaments':{
 		include("controleurs/c_Medicaments.php");break;
 	}
-	//... 
+	case 'praticiens':{
+		include("controleurs/c_Praticiens.php");break;
+	}
+	case 'activites':{
+		include("controleurs/c_ActivitesComplementaires.php");break;
+	}
+	default:
+	{
+		include("controleurs/c_Sommaire.php");
+	}
 }
 include("vues/v_pied.php") ;
 ?>
