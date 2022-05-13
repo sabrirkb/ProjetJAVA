@@ -18,13 +18,12 @@ body{
 }
 
 #entete{
-  background-image: url('https://thumbs.dreamstime.com/b/%C3%A9quipements-de-laboratoire-m%C3%A9dical-la-science-avec-le-microscope-pour-fond-153434971.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
+  background-image: url('https://static.vecteezy.com/ti/vecteur-libre/p2/1386023-fond-medical-bleu-avec-icones-et-symboles-plats-vectoriel.jpg');
+  background-repeat: repeat;
+  background-size: 90%;
   background-color: white;
   text-align: center;
   vertical-align: middle;
-	color : dodgerblue;
   font-size: 1.5em;
 	border-bottom: outset 0.5em dodgerblue;
 	height: 25%;
@@ -103,7 +102,7 @@ ul#menuList li {
 
 ul#menuList li:first-child {
   position:relative;
-  color: rgb(86, 111, 144);
+  color: rgb(33, 80, 145);
   margin:0px;
   padding:3px;
 }
@@ -112,7 +111,7 @@ ul.submenu a
 {
   margin-left: -35px !important;
   padding-left: 13px !important;
-  border-left: 2px solid rgb(86, 111, 144);
+  border-left: 2px solid rgb(33, 80, 145);
 }
 
 ul.active a
@@ -123,8 +122,8 @@ ul.active a
 
 li.active a
 {
-  background: dodgerblue !important;
-  color: white !important;
+  background: lightsteelblue !important;
+  color: rgb(33, 80, 145) !important;
 }
 
 /* apparences des liens dans listes et sous-listes non num�rot�es */
@@ -153,7 +152,8 @@ ul#menuList a:hover {
   vertical-align: middle;
   font-variant: small-caps;
   width: 63%;
-  text-shadow: 0px 0px 3px white;
+  text-shadow: 0px 0px 5px white;
+	color : rgb(33, 80, 145);;
 }
 
 #contenu pre {
@@ -219,7 +219,7 @@ button{
   text-align:center;
   vertical-align:middle;
 }
-input:hover, textarea:hover, select:hover{
+input:hover, textarea:hover, select:hover, button:hover{
   background-color : #FAFAE6;
   cursor : pointer;
 }

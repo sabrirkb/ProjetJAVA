@@ -1,5 +1,5 @@
 ﻿<div id="contenu">
-    <h1>Application Gestion des visites</h1>
+    <h1>Application de gestion des visites GSB</h1>
     <h1 style="font-weight: normal">
         <br>
         Bienvenue dans votre espace,
@@ -7,8 +7,9 @@
         <br>
     </h1>
     <h3 style="font-weight: normal">
-        &laquo; Sélectionnez une action dans le menu ci-contre
+        &laquo; Les actions que vous êtes autorisé(e) à effectuer sont représentées par les onglets du menu ci-contre.
         <br>
         <br>
     </h3>
+    En cas d'erreur, merci de consulter le service administratif.
 </div>

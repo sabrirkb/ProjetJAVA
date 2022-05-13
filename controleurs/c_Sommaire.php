@@ -154,6 +154,7 @@ switch($page)
                          </ul>
                         </div>'
                         ;
+                        break;
                     }
     default:
     {
