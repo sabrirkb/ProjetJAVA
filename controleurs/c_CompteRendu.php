@@ -7,7 +7,7 @@ switch($action){
     // Envoie sur la vue saisirCR permettant la saisie d'un CR
     case 'saisirCR':{
 	    // include("controleurs/c_Sommaire.php.php");
-        $lesPraticiens=$pdo->getLesPraticiens();
+        $lesPraticiens=$pdo->getPraticiens();
         $lesProduits=$pdo->getLesProduits();
         include("vues/v_saisieCR.php");
 	    break;

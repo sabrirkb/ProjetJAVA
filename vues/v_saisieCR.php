@@ -29,7 +29,7 @@ du praticien donnent des détails sur le praticien-->
 <td ><input list="praticiens" type="text" style="margin: auto; width: 50%" name="choix_praticien" required autocomplete = 'off'>
       <datalist id="praticiens">
       <?php 
-      $lesPraticiens = $pdo->getLesPraticiens();
+      $lesPraticiens = $pdo->getPraticiens();
       foreach ($lesPraticiens as $unPraticien) {
                          $idPraticien = $unPraticien['PRA_NUM'];
                          $nomPraticien = $unPraticien['PRA_NOM'];
