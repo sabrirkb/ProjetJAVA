@@ -92,7 +92,7 @@ class PdoGsb{
 
    // Permet d'obtenir tous les médicaments
 	public function getLesProduits() {
-        $req="select MED_DEPOTLEGAL, MED_NOMCOMMERCIAL from medicament ";
+        $req="select MED_DEPOTLEGAL, MED_NOMCOMMERCIAL from medicament order by MED_NOMCOMMERCIAL";
         try {
 			$prep = PdoGsb::$monPdo->prepare($req);
 			$rs = PdoGsb::$monPdo->query($req);
