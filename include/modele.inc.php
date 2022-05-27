@@ -107,18 +107,20 @@ class PdoGsb{
     }
 
 
-	public function AjouterCR($Matricule, $Numero, $praticien,  $dateVisite, $bilan, $Motif)
+	public function AjouterCR($Matricule, $Numero, $praticien, $dateVisite, $bilan, $Motif)
 	{
-		$req="insert into rapport_visite  VALUES (:pVIS_MATRICULE, :pRAP_NUM, :pPRA_NUM, :pRAP_DATE, :pRAP_BILAN, :pRAP_MOTIF)";
+		$req="insert into rapport_visite(VIS_MATRICULE, RAP_NUM, PRA_NUM, RAP_DATE, RAP_BILAN, RAP_MOTIF) VALUES (:pVIS_MATRICULE, :pPRA_NUM, :pRAP_DATE, :pRAP_BILAN, :pRAP_MOTIF)";
         try {
 			$prep = PdoGsb::$monPdo->prepare($req);
-			$prep->bindValue(':login', $login,PDO::PARAM_STR);
-			$prep->bindValue(':mdp', $mdp,PDO::PARAM_STR);
+			$prep->bindValue(':pVIS_MATRICULE', $Matricule,PDO::PARAM_STR);
+			$prep->bindValue(':pRAP_NUM', $Numero,PDO::PARAM_STR);
+			$prep->bindValue(':pPRA_NUM', $praticien,PDO::PARAM_STR);
+			$prep->bindValue(':pRAP_DATE', $dateVisite,PDO::PARAM_STR);
+			$prep->bindValue(':pRAP_BILAN', $dateVisite,PDO::PARAM_STR);
+			$prep->bindValue(':pRAP_MOTIF', $dateVisite,PDO::PARAM_STR);
 			$prep->execute();
 			$result=$prep->fetch(PDO::FETCH_ASSOC);
 			return $result;
-
-        
         }
 
         catch (Exception $e) 
@@ -191,5 +193,25 @@ class PdoGsb{
 			echo 'Exception reçue : ', $e->getMessage(), "\n";
 		}
 	}
-}   
+
+    public function retournerLeDernierNumRap()
+{
+    // renvoie un result avec la liste des raports
+    $req = "SELECT RAP_NUM
+            FROM rapport_visite
+            ORDER BY RAP_NUM DESC
+            LIMIT 1";
+			try
+			{
+				$query =PdoGsb::$monPdo -> query($req);
+		        $result = $query -> fetch(PDO::FETCH_ASSOC);
+		        return $result['RAP_NUM'];
+			}
+			catch (Exception $e)
+		{
+			echo 'Exception reçue : ', $e->getMessage(), "\n";
+		}
+    
+}
+}
   ?>
