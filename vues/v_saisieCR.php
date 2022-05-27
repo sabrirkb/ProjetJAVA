@@ -13,14 +13,9 @@
       <tr> <td> MATRICULE* </td>
       <td> <input style="margin: auto; width: 30%" type="text" name="matricule" required> </td> </tr>
 
-      <!-- Création d'une zone de texte "numero de visite" -->
-      <tr> <td> NUM&Eacute;RO* </td>
-      <td> <input style="margin: auto; width: 30%" type="text" name="numVisite" required> </td> </tr>
-
-
       <!-- Création d'une zone de texte "Date visite" -->
       <tr> <td > DATE DE VISITE* </td>
-      <td ><input style="margin: auto; width: 30%" type="date" name="dateVisite" required>  </td> </tr>
+      <td ><input style="margin: auto; width: 30%" type="date" name="dateVisite"  max="<?= date('Y-m-d'); ?>" required>  </td> </tr>
 
 
       <!-- Création d'une liste déroulante avec une zone de texte possédant l'id du praticien en "value", le nom et le prénom
@@ -53,7 +48,7 @@ du praticien donnent des détails sur le praticien-->
 
 
       <!-- Création d'une liste déroulante "motif" -->
-      <tr> <td > MOTIF* </td>
+      <tr> <td > MOTIF DE VISITE* </td>
       <td ><input style="margin: auto; width: 30%" type="text" name="motif" required>  </td> </tr>
 
 
