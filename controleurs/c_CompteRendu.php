@@ -19,11 +19,15 @@ switch($action){
         $Numero=$_POST ['num'];
         $praticien = $_POST['choix_praticien'];
         $dateVisite = $_POST['dateVisite'];
-        $bilan= $_POST['choix_produit'];
+        $bilan= $_POST['bilan'];
         $Motif=$_POST['motif'];
-        $leCR=$pdo->AjouterCR($Matricule, $Numero, $praticien, $dateVisite, $bilan, $Motif);
+
+        // enlève les espaces
+        $Matriculer = str_replace(' ', '', $Matricule);
+
+        $leCR=$pdo->AjouterCR($Matriculer, $Numero, $praticien, $dateVisite, $bilan, $Motif);
         $message = "Compte rendu ajouté avec succès";
-       include("vues/v_Message.php"); 
+        include("vues/v_Message.php"); 
         break;
 	}
 

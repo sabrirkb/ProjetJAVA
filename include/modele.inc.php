@@ -107,26 +107,49 @@ class PdoGsb{
     }
 
 
-	public function AjouterCR($Matricule, $Numero, $praticien, $dateVisite, $bilan, $Motif)
-	{
-		$req="insert into rapport_visite(VIS_MATRICULE, RAP_NUM, PRA_NUM, RAP_DATE, RAP_BILAN, RAP_MOTIF) VALUES (:pVIS_MATRICULE, :pPRA_NUM, :pRAP_DATE, :pRAP_BILAN, :pRAP_MOTIF)";
-        try {
-			$prep = PdoGsb::$monPdo->prepare($req);
-			$prep->bindValue(':pVIS_MATRICULE', $Matricule,PDO::PARAM_STR);
-			$prep->bindValue(':pRAP_NUM', $Numero,PDO::PARAM_STR);
-			$prep->bindValue(':pPRA_NUM', $praticien,PDO::PARAM_STR);
-			$prep->bindValue(':pRAP_DATE', $dateVisite,PDO::PARAM_STR);
-			$prep->bindValue(':pRAP_BILAN', $dateVisite,PDO::PARAM_STR);
-			$prep->bindValue(':pRAP_MOTIF', $dateVisite,PDO::PARAM_STR);
-			$prep->execute();
-			$result=$prep->fetch(PDO::FETCH_ASSOC);
-			return $result;
-        }
+	// public function AjouterCR($Matricule, $Numero, $praticien, $dateVisite, $bilan, $Motif)
+	// {
+	// 	$req="insert into rapport_visite(VIS_MATRICULE, RAP_NUM, PRA_NUM, RAP_DATE, RAP_BILAN, RAP_MOTIF) 
+	// 	VALUES (:pVIS_MATRICULE, :pRAP_NUM, :pPRA_NUM, :pRAP_DATE, :pRAP_BILAN, :pRAP_MOTIF)";
+    //     try {
+	// 		$prep = PdoGsb::$monPdo->prepare($req);
+	// 		$prep->bindValue(':pVIS_MATRICULE', $Matricule,PDO::PARAM_STR);
+	// 		$prep->bindValue(':pRAP_NUM', $Numero,PDO::PARAM_INT);
+	// 		$prep->bindValue(':pPRA_NUM', $praticien,PDO::PARAM_INT);
+	// 		$prep->bindValue(':pRAP_DATE', $dateVisite,PDO::PARAM_STR);
+	// 		$prep->bindValue(':pRAP_BILAN', $bilan,PDO::PARAM_STR);
+	// 		$prep->bindValue(':pRAP_MOTIF', $Motif,PDO::PARAM_STR);
+	// 		$prep->execute();
+	// 		$result=$prep->fetch(PDO::FETCH_ASSOC);
+	// 		return $result;
+    //     }
 
-        catch (Exception $e) 
-        {
-            echo 'Exception reçue : ',  $e->getMessage(), "\n";
-        }
+    //     catch (Exception $e) 
+    //     {
+    //         echo 'Exception reçue : ',  $e->getMessage(), "\n";
+    //     }
+	// }
+
+	public function AjouterCR($Matricule,$Numero,$praticien,$dateVisite,$bilan,$Motif){ 
+		$prep = PdoGsb::$monPdo->prepare("INSERT INTO rapport_visite VALUES (:pVIS_MATRICULE, :pRAP_NUM, :pPRA_NUM, :pRAP_DATE, :pRAP_BILAN, :pRAP_MOTIF)");
+		try{
+			$prep->bindValue(':pVIS_MATRICULE', $Matricule, PDO::PARAM_STR);
+			$prep->bindValue(':pRAP_NUM', $Numero, PDO::PARAM_INT);
+			$prep->bindValue(':pPRA_NUM', $praticien, PDO::PARAM_INT);
+			$prep->bindValue(':pRAP_DATE', $dateVisite, PDO::PARAM_STR);
+			$prep->bindValue(':pRAP_BILAN', $bilan, PDO::PARAM_STR);
+			$prep->bindValue(':pRAP_MOTIF', $Motif, PDO::PARAM_STR);
+			$success = $prep->execute();
+		
+			if($success){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		catch(Exception $e){
+			echo 'Exception reçue : ',  $e->getMessage(), "\n";
+		}
 	}
 
 	public function getLesMedicaments($value) {
