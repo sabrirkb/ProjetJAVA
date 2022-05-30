@@ -12,7 +12,5 @@
         <ul id="menuList">
             <li class="smenu">
                    Comptes rendus 
-           </li> 
-           <li class="smenu">
 		   
     

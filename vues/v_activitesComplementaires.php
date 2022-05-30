@@ -8,31 +8,31 @@
             <tr>
                     <td>ACTIVIT&Eacute; N°</td>
                     <td>
-                        <input type="text" name="num-activite" autocomplete="off" readonly style="margin: auto; width: 5%" value="<?php echo strtoupper($_SESSION['AC_num']);?>">
+                        <input type="text" name="num-activite" autocomplete="off" disabled style="margin: auto; width: 5%" value="<?php echo strtoupper($_SESSION['AC_num']);?>">
                     </td>
                 </tr>
                 <tr>
                     <td>R&Eacute;ALIS&Eacute;E LE</td>
                     <td>
-                        <input type="datetime" name="date-activite" autocomplete="off" readonly style="margin: auto; width: 20%" value="<?php echo $_SESSION['AC_date'];?>">
+                        <input type="datetime" name="date-activite" autocomplete="off" disabled style="margin: auto; width: 20%" value="<?php echo $_SESSION['AC_date'];?>">
                     </td>
                 </tr>
                 <tr>
                     <td>LIEU CONCERN&Eacute;</td>
                     <td>
-                        <input type="text" name="lieu-activite" autocomplete="off" readonly style="margin: auto; width: 30%" value="<?php echo $_SESSION['AC_lieu'];?>">
+                        <input type="text" name="lieu-activite" autocomplete="off" disabled style="margin: auto; width: 30%" value="<?php echo $_SESSION['AC_lieu'];?>">
                     </td>
                 </tr>
                 <tr>
                     <td>TH&Egrave;ME</td>
                     <td>
-                        <input type="text" name="theme-activite" autocomplete="off" readonly style="margin: auto; width: 15%" value="<?php echo $_SESSION['AC_theme'];?>">
+                        <input type="text" name="theme-activite" autocomplete="off" disabled style="margin: auto; width: 15%" value="<?php echo $_SESSION['AC_theme'];?>">
                     </td>
                 </tr>
                 <tr>
                     <td>MOTIF</td>
                     <td>
-                        <textarea type="text" name="motif-activite" autocomplete="off" readonly style="margin: auto; width: 70%"><?php echo $_SESSION['AC_motif'];?></textarea>
+                        <textarea type="text" name="motif-activite" autocomplete="off" disabled style="margin: auto; width: 70%"><?php echo $_SESSION['AC_motif'];?></textarea>
                     </td>
                 </tr>
             </tbody>

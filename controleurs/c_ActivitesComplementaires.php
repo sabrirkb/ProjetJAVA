@@ -1,5 +1,8 @@
 <?php
 
+
+include("controleurs/c_Sommaire.php");
+
 if(!isset($_REQUEST['action'])){
 	$_REQUEST['action'] = 'default';
 }
@@ -44,6 +47,8 @@ switch($action){
                 }
             }
             $_SESSION['AC_index'] = $index;
+            
+            include("vues/v_activitesComplementaires.php");
             break;
         }
     case 'precedent':
@@ -75,6 +80,8 @@ switch($action){
                 }
             }
             $_SESSION['AC_index'] = $index;
+            
+            include("vues/v_activitesComplementaires.php");
             break;
         }
     case 'custom': 
@@ -119,8 +126,19 @@ switch($action){
                 }
             }
             $_SESSION['AC_index'] = $index;
+            
+            include("vues/v_activitesComplementaires.php");
             break;
         }
+
+        case 'saisie': 
+            {
+                
+                
+                include("vues/v_saisieActivite.php");
+                break;
+            }
+
     default: 
         {
             $_SESSION['AC_index'] = 1;
@@ -134,11 +152,12 @@ switch($action){
                     $_SESSION['AC_theme'] = $uneActivite['AC_THEME'];
                     $_SESSION['AC_motif'] = $uneActivite['AC_MOTIF'];
                 }
+
+                
+            include("vues/v_activitesComplementaires.php");
             break;
         }
     }
 
-include("controleurs/c_Sommaire.php");
-include("vues/v_activitesComplementaires.php");
 
 ?>
