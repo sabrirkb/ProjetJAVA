@@ -54,7 +54,7 @@ body{
 	margin-top : 0em;
 	padding: 1em;
 	background-color: white;
-	color: dodgerblue;
+	color: rgb(45, 137, 190);
 	float: left;
 	width: 15%;
 }
@@ -94,13 +94,9 @@ ul#menuList{
 }
 
 /* style � appliquer aux �l�ments de la balise ul d'identifiant menulist */
-ul#menuList li {
-    position:relative;
-    margin:0px;
-    padding:3px;
-}
 
-ul#menuList li:first-child {
+ul#menuList li {
+  font-weight: bolder;
   position:relative;
   color: rgb(33, 80, 145);
   margin:0px;
@@ -109,6 +105,7 @@ ul#menuList li:first-child {
 
 ul.submenu a
 {
+  font-weight: normal;
   margin-left: -35px !important;
   padding-left: 13px !important;
   border-left: 2px solid rgb(33, 80, 145);
@@ -116,26 +113,22 @@ ul.submenu a
 
 ul.active a
 {
-  background: dodgerblue !important;
-  color: white !important;
-}
-
-li.active a
-{
+  font-weight: normal;
   background: lightsteelblue !important;
   color: rgb(33, 80, 145) !important;
 }
 
 /* apparences des liens dans listes et sous-listes non num�rot�es */
 ul#menuList a {
-    color:dodgerblue;
+    color:rgb(45, 137, 190);
     padding: 3px;
     display:block;
     text-decoration:none;
     width:100%;
 }
 ul#menuList a:hover {
-    background: dodgerblue;
+    font-weight: bolder;
+    background: rgb(45, 137, 190);
     color: white;
 }
 
