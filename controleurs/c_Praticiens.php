@@ -142,6 +142,20 @@ switch($action){
             $_SESSION['Prat_index'] = $index;
             break;
         }
+
+        case 'saisie':
+        {
+            include("vues/v_saisiePraticien.php");
+            break;
+        }
+
+        case 'validerSaisiePraticien':
+            {
+                // Code sokhna
+                $message = "Compte rendu ajouté avec succès";
+                include("vues/v_Message.php"); 
+                break;
+            }
     default: 
         {
             $_SESSION['Prat_index'] = 1;
@@ -158,11 +172,11 @@ switch($action){
                     $_SESSION['Prat_coef'] = $unPraticien['PRA_COEFNOTORIETE'];
                     $_SESSION['Prat_codetype'] = $unPraticien['TYP_CODE'];
                 }
+                include("vues/v_lesPraticiens.php");
             break;
         }
     }
 
 include("controleurs/c_Sommaire.php");
-include("vues/v_lesPraticiens.php");
 
 ?>

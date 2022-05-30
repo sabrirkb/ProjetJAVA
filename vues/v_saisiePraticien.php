@@ -1,6 +1,6 @@
 <main id="contenu">
-     <h1>Saisir un nouveau rapport</h1>
-<form action="index.php?uc=gererCR&action=validerSaisieCR" method="post">
+     <h1>Saisir un nouveau praticien</h1>
+<form action="index.php?uc=praticiens&action=validerSaisiePraticien" method="post">
 
 <!-- Création d'un formulaire permettant l'ajout d'un CR dans la base de données -->
   
