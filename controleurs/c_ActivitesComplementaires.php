@@ -133,8 +133,6 @@ switch($action){
 
         case 'saisie': 
             {
-                
-                
                 include("vues/v_saisieActivite.php");
                 break;
             }

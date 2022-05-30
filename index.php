@@ -26,7 +26,7 @@ switch($uc){
 	}
 	default:
 	{
-		include("controleurs/c_Sommaire.php");
+		include("controleurs/c_Sommaire.php");break;
 	}
 }
 include("vues/v_pied.php") ;
