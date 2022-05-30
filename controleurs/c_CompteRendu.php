@@ -47,8 +47,24 @@ switch($action){
 	}
 
     case 'consulterCR':{
-        include("vues/v_consulterCR.php");
-        break;
+        $_SESSION['rap_index'] = 1;
+                $index = 1;
+                $lesComptesRendus = $pdo->getLesCompteRendus($index);
+                    foreach($lesComptesRendus as $unCompteRendu)
+                    {
+                        $_SESSION['rap_mat'] = $unCompteRendu['VIS_MATRICULE'];
+                    $_SESSION['rap_num'] = $unCompteRendu['RAP_NUM'];
+                    $_SESSION['rap_nump'] = $unCompteRendu['PRA_NUM'];
+                    $_SESSION['rap_nomp'] = $pdo->getNomPraticien($_SESSION['rap_nump']);
+                    $_SESSION['rap_prenomp'] = $pdo->getPrenomPraticien($_SESSION['rap_nump']);
+                    $_SESSION['rap_date'] = $unCompteRendu['RAP_DATE'];
+                    $_SESSION['rap_bilan'] = $unCompteRendu['RAP_BILAN'];
+                    $_SESSION['rap_motif'] = $unCompteRendu['RAP_MOTIF'];
+                    }
+    
+                    
+                include("vues/v_consulterCR.php");
+                break;
     }
 
     
