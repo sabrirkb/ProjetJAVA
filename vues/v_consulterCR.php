@@ -8,7 +8,7 @@
             <tr>
                     <td>NUM&Eacute;RO RAPPORT</td>
                     <td>
-                        <input type="text" name="num-rapport" autocomplete="off" readonly style="margin: auto; width: 5%" value="<?php $_SESSION['rap_num'];?>">
+                        <input type="text" name="num-rapport" autocomplete="off" readonly style="margin: auto; width: 5%" value="<?php echo $_SESSION['rap_num'];?>">
                     </td>
                 </tr>
             <tr>
