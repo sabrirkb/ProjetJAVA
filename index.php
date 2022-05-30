@@ -18,7 +18,7 @@ switch($uc){
 	case 'medicaments':{
 		include("controleurs/c_Medicaments.php");break;
 	}
-	case 'praticiens':{
+	case 'praticien':{
 		include("controleurs/c_Praticiens.php");break;
 	}
 	case 'ac':{

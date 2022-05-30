@@ -1,5 +1,8 @@
 <?php
 
+
+include("controleurs/c_Sommaire.php");
+
 if(!isset($_REQUEST['action'])){
 	$_REQUEST['action'] = 'default';
 }
@@ -50,6 +53,8 @@ switch($action){
                 }
             }
             $_SESSION['Prat_index'] = $index;
+            
+            include("vues/v_lesPraticiens.php");
             break;
         }
     case 'precedent':
@@ -87,6 +92,8 @@ switch($action){
                 }
             }
             $_SESSION['Prat_index'] = $index;
+            
+            include("vues/v_lesPraticiens.php");
             break;
         }
     case 'custom': 
@@ -140,6 +147,8 @@ switch($action){
                 }
             }
             $_SESSION['Prat_index'] = $index;
+            
+            include("vues/v_lesPraticiens.php");
             break;
         }
 
@@ -177,6 +186,5 @@ switch($action){
         }
     }
 
-include("controleurs/c_Sommaire.php");
 
 ?>
