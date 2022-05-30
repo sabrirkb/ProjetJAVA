@@ -27,7 +27,7 @@ switch($action){
         $Matriculer = str_replace(' ', '', $Matricule);
 
         $leCR=$pdo->AjouterCR($Matriculer, $Numero, $praticien, $dateVisite, $bilan, $Motif);
-        $message = "Compte rendu ajouté avec succès";
+        $message = "Compte rendu ajouté avec succès.";
         include("vues/v_Message.php"); 
         break;
 	}

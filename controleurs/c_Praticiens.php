@@ -152,7 +152,7 @@ switch($action){
         case 'validerSaisiePraticien':
             {
                 // Code sokhna
-                $message = "Compte rendu ajouté avec succès";
+                $message = "Praticien ajouté avec succès.";
                 include("vues/v_Message.php"); 
                 break;
             }

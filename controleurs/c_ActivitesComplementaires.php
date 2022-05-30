@@ -138,8 +138,9 @@ switch($action){
             }
             case 'validerSaisieActivite':
                 {
-                    
-                   break; 
+                    $message = "Activité complémentaire ajoutée avec succès.";
+                    include("vues/v_Message.php"); 
+                    break; 
                 }
         
 
