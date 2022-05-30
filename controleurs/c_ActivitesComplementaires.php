@@ -138,6 +138,12 @@ switch($action){
                 include("vues/v_saisieActivite.php");
                 break;
             }
+            case 'validerSaisieActivite':
+                {
+                    
+                   break; 
+                }
+        
 
     default: 
         {

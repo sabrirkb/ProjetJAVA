@@ -8,25 +8,23 @@
       <table style="background-color: transparent">
       <tbody class="consultation">
 
-      <!-- Création d'une zone de texte "matricule" -->
+      !-- Création d'une zone de texte "matricule" -->
       <tr> <td> MATRICULE* </td>
       <td> <input style="margin: auto; width: 10%" type="text" name="matricule" value="<?php echo strtoupper($_SESSION['CR_matricule']);?>" required readonly> </td> </tr>
 
-      <!-- Création d'une zone de texte "numéro rapport" -->
+      <!-- Création d'une zone de texte "numéro AC" -->
+      <tr> <td> NUM&Eacute;RO de l'AC* </td>
+      <td> <input style="margin: auto; width: 10%" type="text" name="numAC" required readonly> </td> </tr>
 
-      <tr> <td><p>NUM&Eacute;RO DE RAPPORT</p></td>
-              <td><input type="number" name="num" value="<?=  $pdo->retournerLeDernierNumRap()+1; ?>" readonly required>*</td>
-      </tr>
-
-      <!-- Création d'une zone de texte "Date visite" -->
-      <tr> <td > DATE DE VISITE* </td>
-      <td ><input style="margin: auto; width: 30%" type="date" name="dateVisite"  max="<?= date('Y-m-d'); ?>" required>  </td> </tr>
+      <!-- Création d'une zone de texte "Date AC" -->
+      <tr> <td > DATE* </td>
+      <td ><input style="margin: auto; width: 30%" type="date" name="dateAC"  max="<?= date('Y-m-d'); ?>" required>  </td> </tr>
 
 
       <!-- Création d'une liste déroulante avec une zone de texte possédant l'id du praticien en "value", le nom et le prénom
 du praticien donnent des détails sur le praticien-->
-<tr> <td> <label for ="choix_praticien"> PRATICIEN*</td></label>
-<td ><input list="praticiens" type="text" style="margin: auto; width: 50%" name="choix_praticien" required autocomplete = 'off'>
+<tr> <td> <label for ="choix_praticien"> PRATICIENS INVIT&Eacute;S*</td></label>
+<td ><input list="praticiens" type="text" multiple="multiple" style="margin: auto; width: 50%" name="choix_praticien" required autocomplete = 'off'>
       <datalist id="praticiens">
       <?php 
       $lesPraticiens = $pdo->getPraticiens();
@@ -40,74 +38,35 @@ du praticien donnent des détails sur le praticien-->
 ?>
 </datalist> </td> </tr>
 
-      <!-- Création d'une case à cocher "remplacant" -->
-      <tr> <td > REMPLAÇANT* </td>
-      <td><input style="margin: auto; width: 30%" type="checkbox" name="remplacant" required>  </td> 
-      </tr>
-
-
-      <!-- Création d'une zone de texte "motif" -->
-      <tr> <td > MOTIF DE VISITE* </td>
-      <td ><input style="margin: auto; width: 30%" type="text" name="motif" required>  </td> </tr>
-
-       <!-- liste pour sélectionner un premier produit -->
-      <!-- Création d'une liste déroulante avec une zone de texte possédant l'id du  médicament en "value", le nom du médicament -->
-<tr> <td> <label for ="choix_produit"> PRODUIT 1*</td></label>
-<td><input style="margin: auto; width: 50%" list="produits" multiple="oui" type="text" name="choix_produit" autocomplete = 'off' required>
-      <datalist id="produits">
+<!-- liste pour sélectionner le lieu -->
+      <!-- Création d'une liste déroulante avec une zone de texte possédant l'id du lieu en "value", le nom du lieu -->
+      <tr> <td> <label for ="choix_lieu"> Lieu de l'AC*</td></label>
+<td><input style="margin: auto; width: 50%" list="lieux"  type="text" name="choix_lieu" autocomplete = 'off' required>
+      <datalist id="lieux">
       <?php 
-      $lesProduits = $pdo->getLesProduits();
-      foreach ($lesProduits as $unProduit) {
-                         $idMedicament = $unProduit['MED_DEPOTLEGAL'];
-                         $nomMedicament = $unProduit['MED_NOMCOMMERCIAL'];
+      $lesLieux= $pdo->getLesLieux();
+      foreach ($lesLieux as $unLieu) {
+                         $codeRegion = $unLieu['REG_CODE'];
+                         $nomRegion = $unLieu['REG_NOM'];
         
-      echo'<option value='.$idMedicament.'&nbsp;–&nbsp;'.$nomMedicament.'> </option>';
+      echo'<option value='.$codeRegion.'&nbsp;–&nbsp;'.$nomRegion.'> </option>';
 }
 ?>
 </datalist> </td> </tr>
 
-    <!-- Création d'un champ "nombre d'échantillons" -->
-    <tr> <td> NOMBRE D'&Eacute;CHANTILLONS DU PRODUIT 1* </td>
-    <td><input style="margin: auto; width: 10%" type="number" name="nbreEchantillon" title="Nombre" value="5" min="0" max="20" step="1" required> </td>
-    </tr>
+      <!-- Création d'une zone de texte "thème" -->
+      <tr> <td > TH&Eacute;ME DE l'AC* </td>
+      <td ><input style="margin: auto; width: 30%" type="text" name="theme" required>  </td> </tr>
     
 
-    <!-- liste pour sélectionner un deuxième produit -->
-    <!-- Création d'une liste déroulante avec une zone de texte possédant l'id du médicament en "value", le nom du médicament -->
-<tr> <td> <label for ="choix_produit"> PRODUITS 2*</td></label>
-<td><input style="margin: auto; width: 50%" list="produits" multiple="oui" type="text" name="choix_produit" autocomplete = 'off' required>
-      <datalist id="produits">
-      <?php 
-      $lesProduits = $pdo->getLesProduits();
-      foreach ($lesProduits as $unProduit) {
-                         $idMedicament = $unProduit['MED_DEPOTLEGAL'];
-                         $nomMedicament = $unProduit['MED_NOMCOMMERCIAL'];
-        
-      echo'<option value='.$idMedicament.'&nbsp;–&nbsp;'.$nomMedicament.'> </option>';
-}
-?>
-</datalist> </td> </tr>
-
-    <!-- Création d'un champ "nombre d'échantillons" -->
-    <tr> <td> NOMBRE D'&Eacute;CHANTILLONS DU PRODUIT 2*</td>
-    <td><input style="margin: auto; width: 10%" type="number" name="nbreEchantillon" title="Nombre" value="5" min="0" max="20" step="1" required> </td>
-    </tr>
-
-
-      <!-- Création d'une zone de texte "bilan" -->
+      <!-- Création d'une zone de texte "motif" -->
       
-      <tr> <td> <label for="bilan">BILAN*</label> </td>
+      <tr> <td> <label for="bilan">MOTIF*</label> </td>
 
-        <td> <textarea  name="bilan" rows="4" style="margin: auto; width: 100%" required></textarea> </td>
+        <td> <textarea  name="motif" rows="4" style="margin: auto; width: 100%" required></textarea> </td>
       </tr>
 
-      <!-- Création d'une case à cocher "documentation" -->
-      <tr> <td> DOCUMENTATION OFFERTE* </td>
-      <td><input style="margin: auto; width: 30%" type="checkbox" name="documentation" required>  </td> 
-      </tr>
-</tbody>
-      </table>
-
+      
 <!-- Aide pour l'utilisateur signifiant que les champs précédés d'une astérisque sont obligatoires -->
       
       <p>
