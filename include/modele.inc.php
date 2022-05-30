@@ -187,6 +187,24 @@ class PdoGsb{
 		}
 	}
 
+	public function getLesActivites($value) {
+		// retroune le médicament choisi avec les boutons de navigation [« Prec][$value][Suiv »]
+		$req = "select * FROM `activite_compl` LIMIT :value, 1";
+		try 
+			{
+				$value -= 1;
+				$prep = PdoGsb::$monPdo->prepare($req);
+				$prep->bindValue(':value', $value,PDO::PARAM_INT);
+				$prep->execute();
+				$result=$prep->fetchAll(PDO::FETCH_ASSOC);
+				return $result;
+			}
+		catch (Exception $e)
+		{
+			echo 'Exception reçue : ', $e->getMessage(), "\n";
+		}
+	}
+
 	public function getMaxMedicaments() {
 		// retroune le nombre max de médicaments dans la database
 		$req = "SELECT COUNT(*) AS MaxMed FROM medicament;";
@@ -210,6 +228,21 @@ class PdoGsb{
 				$query = PdoGsb::$monPdo->query($req);
 				$result = $query->fetch(PDO::FETCH_ASSOC);
 				return $result['MaxPrat'];
+			}
+		catch (Exception $e)
+		{
+			echo 'Exception reçue : ', $e->getMessage(), "\n";
+		}
+	}
+
+	public function getMaxActivites() {
+		// retroune le nombre max de praticiens dans la database
+		$req = "SELECT COUNT(*) AS MaxActiv FROM activite_compl;";
+		try 
+			{
+				$query = PdoGsb::$monPdo->query($req);
+				$result = $query->fetch(PDO::FETCH_ASSOC);
+				return $result['MaxActiv'];
 			}
 		catch (Exception $e)
 		{

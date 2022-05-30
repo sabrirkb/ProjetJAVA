@@ -1,6 +1,6 @@
 <div id="contenu">
     <br>
-    <h1>Rapports de visite – Consultation</h1>
+    <h1>Rapports de visite</h1>
     <br>
     <h3>Sous-titre</h3>
     <br>

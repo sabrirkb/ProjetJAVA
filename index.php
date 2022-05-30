@@ -21,7 +21,7 @@ switch($uc){
 	case 'praticiens':{
 		include("controleurs/c_Praticiens.php");break;
 	}
-	case 'activites':{
+	case 'ac':{
 		include("controleurs/c_ActivitesComplementaires.php");break;
 	}
 	default:

@@ -1,5 +1,5 @@
 <div id="contenu">
-        <h1>Pharmacopee</h1>
+        <h1>Pharmacop&eacute;e</h1>
         <br>
         <form action="" method="POST">
     

@@ -30,7 +30,7 @@ switch($page)
                   <a href="index.php?page=4&uc=praticiens&action=default" title="Les praticiens">Praticiens</a>
                </li>
               <li class="smenu">
-                  <a href="index.php?page=5&uc=activites" title="Les activités complémentaires">Activités complémentaires</a>
+                  <a href="index.php?page=5&uc=ac" title="Les activités complémentaires">Activités complémentaires</a>
                </li>
                <li class="smenu">
                   <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
@@ -59,7 +59,7 @@ switch($page)
                   <a href="index.php?page=4&uc=praticiens&action=default" title="Les praticiens">Praticiens</a>
                </li>
               <li class="smenu">
-                  <a href="index.php?page=5&uc=activites" title="Les activités complémentaires">Activités complémentaires</a>
+                  <a href="index.php?page=5&uc=ac" title="Les activités complémentaires">Activités complémentaires</a>
                </li>
                <li class="smenu">
                   <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
@@ -88,7 +88,7 @@ switch($page)
                       <a href="index.php?page=4&uc=praticiens&action=default" title="Les praticiens">Praticiens</a>
                    </li>
                   <li class="smenu">
-                      <a href="index.php?page=5&uc=activites" title="Les activités complémentaires">Activités complémentaires</a>
+                      <a href="index.php?page=5&uc=ac" title="Les activités complémentaires">Activités complémentaires</a>
                    </li>
                    <li class="smenu">
                       <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
@@ -117,7 +117,7 @@ switch($page)
                           <a href="index.php?page=4&uc=praticiens&action=default" title="Les praticiens">Praticiens</a>
                        </li>
                       <li class="smenu">
-                          <a href="index.php?page=5&uc=activites" title="Les activités complémentaires">Activités complémentaires</a>
+                          <a href="index.php?page=5&uc=ac" title="Les activités complémentaires">Activités complémentaires</a>
                        </li>
                        <li class="smenu">
                           <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
@@ -146,7 +146,7 @@ switch($page)
                               <a href="index.php?page=4&uc=praticiens&action=default" title="Les praticiens">Praticiens</a>
                            </li>
                           <li class="smenu active">
-                              <a href="index.php?page=5&uc=activites" title="Les activités complémentaires">Activités complémentaires</a>
+                              <a href="index.php?page=5&uc=ac" title="Les activités complémentaires">Activités complémentaires</a>
                            </li>
                            <li class="smenu">
                               <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
@@ -175,7 +175,7 @@ switch($page)
               <a href="index.php?page=4&uc=praticiens&action=default" title="Les praticiens">Praticiens</a>
            </li>
 		  <li class="smenu">
-              <a href="index.php?page=5&uc=activites" title="Les activités complémentaires">Activités complémentaires</a>
+              <a href="index.php?page=5&uc=ac" title="Les activités complémentaires">Activités complémentaires</a>
            </li>
            <li class="smenu">
               <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
