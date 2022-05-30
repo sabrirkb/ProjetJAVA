@@ -89,6 +89,38 @@ class PdoGsb{
             echo 'Exception reçue : ',  $e->getMessage(), "\n";
         }
     }
+	
+	// Retourne le nom du praticien dont le numéro est passé en paramètre
+	public function getNomPraticien($numeroPraticien) {
+		try
+		{
+			$prep = PdoGsb::$monPdo->prepare("SELECT * FROM praticien WHERE PRA_NUM = :numeroPraticien");
+			$prep->bindValue(':numeroPraticien', $numeroPraticien ,PDO::PARAM_STR);
+			$prep->execute();
+			$result=$prep->fetch(PDO::FETCH_ASSOC);
+			return $result['PRA_NOM'];
+		}
+		catch(Exception $e)
+		{
+			echo 'Exception reçue : ', $e->getMessage(), "\n";
+		}
+	}
+	
+	// Retourne le prénom du praticien dont le numéro est passé en paramètre
+	public function getPrenomPraticien($numeroPraticien) {
+		try
+		{
+			$prep = PdoGsb::$monPdo->prepare("SELECT * FROM praticien WHERE PRA_NUM = :numeroPraticien");
+			$prep->bindValue(':numeroPraticien', $numeroPraticien ,PDO::PARAM_STR);
+			$prep->execute();
+			$result=$prep->fetch(PDO::FETCH_ASSOC);
+			return $result['PRA_PRENOM'];
+		}
+		catch(Exception $e)
+		{
+			echo 'Exception reçue : ', $e->getMessage(), "\n";
+		}
+	}
 
    // Permet d'obtenir tous les médicaments
 	public function getLesProduits() {
@@ -223,6 +255,24 @@ class PdoGsb{
 		}
 	}
 
+	public function getLesCompteRendus($value) {
+		// retroune le médicament choisi avec les boutons de navigation [« Prec][$value][Suiv »]
+		$req = "select * FROM `rapport_visite` LIMIT :value, 1";
+		try 
+			{
+				$value -= 1;
+				$prep = PdoGsb::$monPdo->prepare($req);
+				$prep->bindValue(':value', $value,PDO::PARAM_INT);
+				$prep->execute();
+				$result=$prep->fetchAll(PDO::FETCH_ASSOC);
+				return $result;
+			}
+		catch (Exception $e)
+		{
+			echo 'Exception reçue : ', $e->getMessage(), "\n";
+		}
+	}
+
 	public function getMaxMedicaments() {
 		// retroune le nombre max de médicaments dans la database
 		$req = "SELECT COUNT(*) AS MaxMed FROM medicament;";
@@ -261,6 +311,21 @@ class PdoGsb{
 				$query = PdoGsb::$monPdo->query($req);
 				$result = $query->fetch(PDO::FETCH_ASSOC);
 				return $result['MaxActiv'];
+			}
+		catch (Exception $e)
+		{
+			echo 'Exception reçue : ', $e->getMessage(), "\n";
+		}
+	}
+
+	public function getMaxCompteRendus() {
+		// retroune le nombre max de médicaments dans la database
+		$req = "SELECT COUNT(*) AS MaxCR FROM rapport_visite;";
+		try 
+			{
+				$query = PdoGsb::$monPdo->query($req);
+				$result = $query->fetch(PDO::FETCH_ASSOC);
+				return $result['MaxCR'];
 			}
 		catch (Exception $e)
 		{

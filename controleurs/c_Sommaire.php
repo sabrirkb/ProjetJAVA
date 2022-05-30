@@ -44,9 +44,11 @@ switch($page)
                      <a href="index.php?page=6&uc=ac&action=default" title="Les activités complémentaires">Consulter</a>
                      </ul>
                   </li>
-               <li class="smenu">
-                  <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
-               </li>
+                  <li class="smenu">Mon espace
+                  <ul class="subMenu">
+                     <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
+                     </ul>
+                  </li>
              </ul>
             </div>'
             ;
@@ -85,9 +87,11 @@ switch($page)
                      <a href="index.php?page=6&uc=ac&action=default" title="Les activités complémentaires">Consulter</a>
                      </ul>
                   </li>
-               <li class="smenu">
-                  <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
-               </li>
+                  <li class="smenu">Mon espace
+                  <ul class="subMenu">
+                     <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
+                     </ul>
+                  </li>
              </ul>
             </div>'
             ;
@@ -106,7 +110,7 @@ switch($page)
                    </li>
                  
                    <li class="smenu">Médicaments
-                         <ul class="subMenu">
+                         <ul class="subMenu active">
                             <a href="index.php?page=3&uc=medicaments&action=default" title="Les médicaments">Consulter</a>
                          </ul>
                          </li>
@@ -126,9 +130,11 @@ switch($page)
                          <a href="index.php?page=6&uc=ac&action=default" title="Les activités complémentaires">Consulter</a>
                          </ul>
                       </li>
-                   <li class="smenu">
-                      <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
-                   </li>
+                      <li class="smenu">Mon espace
+                      <ul class="subMenu">
+                         <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
+                         </ul>
+                      </li>
                  </ul>
                 </div>'
                 ;
@@ -167,9 +173,11 @@ switch($page)
                              <a href="index.php?page=6&uc=ac&action=default" title="Les activités complémentaires">Consulter</a>
                              </ul>
                           </li>
-                       <li class="smenu">
-                          <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
-                       </li>
+                          <li class="smenu">Mon espace
+                          <ul class="subMenu">
+                             <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
+                             </ul>
+                          </li>
                      </ul>
                     </div>'
                     ;
@@ -207,9 +215,11 @@ switch($page)
                                <a href="index.php?page=6&uc=ac&action=default" title="Les activités complémentaires">Consulter</a>
                                </ul>
                             </li>
-                         <li class="smenu">
-                            <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
-                         </li>
+                            <li class="smenu">Mon espace
+                            <ul class="subMenu">
+                               <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
+                               </ul>
+                            </li>
                        </ul>
                       </div>'
                       ;
@@ -248,9 +258,11 @@ switch($page)
                                   <a href="index.php?page=6&uc=ac&action=default" title="Les activités complémentaires">Consulter</a>
                                   </ul>
                                </li>
-                           <li class="smenu">
-                              <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
-                           </li>
+                               <li class="smenu">Mon espace
+                               <ul class="subMenu">
+                                  <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
+                                  </ul>
+                               </li>
                          </ul>
                         </div>'
                         ;
@@ -289,9 +301,11 @@ switch($page)
                                   <a href="index.php?page=6&uc=ac&action=default" title="Les activités complémentaires">Consulter</a>
                                   </ul>
                                </li>
-                            <li class="smenu">
-                               <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
-                            </li>
+                               <li class="smenu">Mon espace
+                               <ul class="subMenu">
+                                  <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
+                                  </ul>
+                               </li>
                           </ul>
                          </div>'
                          ;
@@ -331,8 +345,10 @@ switch($page)
                                   <a href="index.php?page=6&uc=ac&action=default" title="Les activités complémentaires">Consulter</a>
                                   </ul>
                                </li>
-           <li class="smenu">
+           <li class="smenu">Mon espace
+           <ul class="subMenu">
               <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
+              </ul>
            </li>
          </ul>
         </div>'
