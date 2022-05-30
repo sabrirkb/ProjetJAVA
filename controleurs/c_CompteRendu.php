@@ -9,6 +9,7 @@ switch($action){
 	    // include("controleurs/c_Sommaire.php.php");
         // $lesPraticiens=$pdo->getPraticiens();
         //$lesProduits=$pdo->getLesProduits();
+        $_SESSION['CR_matricule'] = $pdo->getLeMatriculeVisiteur();
         include("vues/v_saisieCR.php");
 	    break;
 	}
@@ -33,6 +34,11 @@ switch($action){
 
     case 'consulterCR':{
         include("vues/v_consulterCR.php");
+        break;
+    }
+
+    default:{
+        include("vues/404.php");
         break;
     }
     

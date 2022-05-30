@@ -8,43 +8,43 @@
             <tr>
                     <td>D&Eacute;POT LEGAL</td>
                     <td>
-                        <input list="medicament" type="text" name="depot-medicament" autocomplete="off" disabled style="margin: auto; width: 30%" value="<?php echo $_SESSION['Med_depot'];?>">
+                        <input list="medicament" type="text" name="depot-medicament" autocomplete="off" readonly style="margin: auto; width: 30%" value="<?php echo $_SESSION['Med_depot'];?>">
                     </td>
                 </tr>
                 <tr>
                     <td>NOM COMMERCIAL</td>
                     <td>
-                        <input list="medicaments" type="text" name="nom-medicament" autocomplete="off" disabled style="margin: auto; width: 40%" value="<?php echo $_SESSION['Med_nom'];?>">
+                        <input list="medicaments" type="text" name="nom-medicament" autocomplete="off" readonly style="margin: auto; width: 40%" value="<?php echo $_SESSION['Med_nom'];?>">
                     </td>
                 </tr>
                 <tr>
                     <td>FAMILLE</td>
                     <td>
-                        <input list="medicaments" type="text" name="famille-medicament" autocomplete="off" disabled style="margin: auto; width: 35%" value="<?php echo $_SESSION['Med_famille'];?>">
+                        <input list="medicaments" type="text" name="famille-medicament" autocomplete="off" readonly style="margin: auto; width: 35%" value="<?php echo $_SESSION['Med_famille'];?>">
                     </td>
                 </tr>
                 <tr>
                     <td>COMPOSITION</td>
                     <td>
-                        <textarea rows="5" list="medicaments" name="compo-medicament" autocomplete="off" disabled style="margin: auto; width: 100%"><?php echo $_SESSION['Med_compo'];?></textarea>
+                        <textarea rows="5" list="medicaments" name="compo-medicament" autocomplete="off" readonly style="margin: auto; width: 100%"><?php echo $_SESSION['Med_compo'];?></textarea>
                     </td>
                 </tr>
                 <tr>
                     <td>EFFETS</td>
                     <td>
-                        <textarea rows="5" list="medicaments" name="effets-medicament" autocomplete="off" disabled style="margin: auto; width: 100%"><?php echo $_SESSION['Med_effets'];?></textarea>
+                        <textarea rows="5" list="medicaments" name="effets-medicament" autocomplete="off" readonly style="margin: auto; width: 100%"><?php echo $_SESSION['Med_effets'];?></textarea>
                     </td>
                 </tr>
                 <tr>
                     <td>CONTRE-INDICATIONS</td>
                     <td>
-                        <textarea rows="5" list="medicaments" name="contre-medicament" autocomplete="off" disabled style="margin: auto; width: 100%"><?php echo $_SESSION['Med_contre'];?></textarea>
+                        <textarea rows="5" list="medicaments" name="contre-medicament" autocomplete="off" readonly style="margin: auto; width: 100%"><?php echo $_SESSION['Med_contre'];?></textarea>
                     </td>
                 </tr>
                 <tr>
                     <td>PRIX &Eacute;CHANTILLON</td>
                     <td>
-                        <input list="medicaments" type="text" name="prix-medicament" autocomplete="off" disabled style="margin: auto; width: 15%; text-align: right" value="<?php echo $_SESSION['Med_prix'];?>">
+                        <input list="medicaments" type="text" name="prix-medicament" autocomplete="off" readonly style="margin: auto; width: 15%; text-align: right" value="<?php echo $_SESSION['Med_prix'];?>">
                         €
                     </td>
                 </tr>

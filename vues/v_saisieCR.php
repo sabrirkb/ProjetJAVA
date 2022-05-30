@@ -10,12 +10,12 @@
 
       <!-- Création d'une zone de texte "matricule" -->
       <tr> <td> MATRICULE* </td>
-      <td> <input style="margin: auto; width: 30%" type="text" name="matricule" required> </td> </tr>
+      <td> <input style="margin: auto; width: 10%" type="text" name="matricule" value="<?php echo strtoupper($_SESSION['CR_matricule']);?>" required readonly> </td> </tr>
 
       <!-- Création d'une zone de texte "numéro rapport" -->
 
-      <tr> <td><p>Numéro rapport :</p></td>
-              <td><input type="number" name="num" value="<?=  $pdo->retournerLeDernierNumRap()+1; ?>" readonly>*</td>
+      <tr> <td><p>NUM&Eacute;RO DE RAPPORT</p></td>
+              <td><input type="number" name="num" value="<?=  $pdo->retournerLeDernierNumRap()+1; ?>" readonly required>*</td>
       </tr>
 
       <!-- Création d'une zone de texte "Date visite" -->
@@ -42,7 +42,7 @@ du praticien donnent des détails sur le praticien-->
 
       <!-- Création d'une case à cocher "remplacant" -->
       <tr> <td > REMPLAÇANT* </td>
-      <td><input style="margin: auto; width: 30%" type="checkbox" name="remplacant">  </td> 
+      <td><input style="margin: auto; width: 30%" type="checkbox" name="remplacant" required>  </td> 
       </tr>
 
 
@@ -75,7 +75,7 @@ du praticien donnent des détails sur le praticien-->
     <!-- liste pour sélectionner un deuxième produit -->
     <!-- Création d'une liste déroulante avec une zone de texte possédant l'id du médicament en "value", le nom du médicament -->
 <tr> <td> <label for ="choix_produit"> PRODUITS 2*</td></label>
-<td><input style="margin: auto; width: 50%" list="produits" multiple="oui" type="text" name="choix_produit" autocomplete = 'off'>
+<td><input style="margin: auto; width: 50%" list="produits" multiple="oui" type="text" name="choix_produit" autocomplete = 'off' required>
       <datalist id="produits">
       <?php 
       $lesProduits = $pdo->getLesProduits();
@@ -89,21 +89,21 @@ du praticien donnent des détails sur le praticien-->
 </datalist> </td> </tr>
 
     <!-- Création d'un champ "nombre d'échantillons" -->
-    <tr> <td> NOMBRE D'&Eacute;CHANTILLONS* DU PRODUIT 2</td>
+    <tr> <td> NOMBRE D'&Eacute;CHANTILLONS DU PRODUIT 2*</td>
     <td><input style="margin: auto; width: 10%" type="number" name="nbreEchantillon" title="Nombre" value="5" min="0" max="20" step="1" required> </td>
     </tr>
 
 
       <!-- Création d'une zone de texte "bilan" -->
       
-      <tr> <td> <label for="bilan">BILAN</label> </td>
+      <tr> <td> <label for="bilan">BILAN*</label> </td>
 
-        <td> <textarea  name="bilan" rows="4" style="margin: auto; width: 100%""></textarea> </td>
+        <td> <textarea  name="bilan" rows="4" style="margin: auto; width: 100%" required></textarea> </td>
       </tr>
 
       <!-- Création d'une case à cocher "documentation" -->
       <tr> <td> DOCUMENTATION OFFERTE* </td>
-      <td><input style="margin: auto; width: 30%" type="checkbox" name="documentation">  </td> 
+      <td><input style="margin: auto; width: 30%" type="checkbox" name="documentation" required>  </td> 
       </tr>
 </tbody>
       </table>

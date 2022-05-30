@@ -8,49 +8,49 @@
             <tr>
                     <td>NOM</td>
                     <td>
-                        <input type="text" name="nom-praticien" autocomplete="off" disabled style="margin: auto; width: 40%" value="<?php echo strtoupper($_SESSION['Prat_nom']);?>">
+                        <input type="text" name="nom-praticien" autocomplete="off" readonly style="margin: auto; width: 40%" value="<?php echo strtoupper($_SESSION['Prat_nom']);?>">
                     </td>
                 </tr>
                 <tr>
                     <td>PR&Eacute;NOM</td>
                     <td>
-                        <input type="text" name="prenom-praticien" autocomplete="off" disabled style="margin: auto; width: 25%" value="<?php echo $_SESSION['Prat_prenom'];?>">
+                        <input type="text" name="prenom-praticien" autocomplete="off" readonly style="margin: auto; width: 25%" value="<?php echo $_SESSION['Prat_prenom'];?>">
                     </td>
                 </tr>
                 <tr>
                     <td>NUM&Eacute;RO DU PRATICIEN</td>
                     <td>
-                        <input type="text" name="num-praticien" autocomplete="off" disabled style="margin: auto; width: 10%" value="<?php echo strtoupper($_SESSION['Prat_num']);?>">
+                        <input type="text" name="num-praticien" autocomplete="off" readonly style="margin: auto; width: 10%" value="<?php echo strtoupper($_SESSION['Prat_num']);?>">
                     </td>
                 </tr>
                 <tr>
                     <td>ADRESSE</td>
                     <td>
-                        <textarea type="text" name="adresse-praticien" autocomplete="off" disabled style="margin: auto; width: 35%"><?php echo $_SESSION['Prat_adresse'];?></textarea>
+                        <textarea type="text" name="adresse-praticien" autocomplete="off" readonly style="margin: auto; width: 35%"><?php echo $_SESSION['Prat_adresse'];?></textarea>
                     </td>
                 </tr>
                 <tr>
                     <td>CODE POSTAL</td>
                     <td>
-                        <input type="text" name="cp-praticien" autocomplete="off" disabled style="margin: auto; width: 10%" value="<?php echo $_SESSION['Prat_cp'];?>">
+                        <input type="text" name="cp-praticien" autocomplete="off" readonly style="margin: auto; width: 10%" value="<?php echo $_SESSION['Prat_cp'];?>">
                     </td>
                 </tr>
                 <tr>
                     <td>VILLE</td>
                     <td>
-                        <input type="text" name="ville-praticien" autocomplete="off" disabled style="margin: auto; width: 40%" value="<?php echo $_SESSION['Prat_ville'];?>">
+                        <input type="text" name="ville-praticien" autocomplete="off" readonly style="margin: auto; width: 40%" value="<?php echo $_SESSION['Prat_ville'];?>">
                     </td>
                 </tr>
                 <tr>
                     <td>COEFFICIENT DE NOTORI&Eacute;T&Eacute;</td>
                     <td>
-                        <input type="text" name="coef-praticien" autocomplete="off" disabled style="margin: auto; width: 15%" value="<?php echo $_SESSION['Prat_coef'];?>">
+                        <input type="text" name="coef-praticien" autocomplete="off" readonly style="margin: auto; width: 15%" value="<?php echo $_SESSION['Prat_coef'];?>">
                     </td>
                 </tr>
                 <tr>
                     <td>CODE TYPE</td>
                     <td>
-                        <input type="text" name="codetype-praticien" autocomplete="off" disabled style="margin: auto; width: 10%; text-align: left" value="<?php echo $_SESSION['Prat_codetype'];?>">
+                        <input type="text" name="codetype-praticien" autocomplete="off" readonly style="margin: auto; width: 10%; text-align: left" value="<?php echo $_SESSION['Prat_codetype'];?>">
                     </td>
                 </tr>
             </tbody>

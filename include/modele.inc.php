@@ -130,6 +130,23 @@ class PdoGsb{
     //     }
 	// }
 
+	public function getLeMatriculeVisiteur()
+	{
+		
+		try
+		{
+			$prep = PdoGsb::$monPdo->prepare("SELECT * FROM visiteur WHERE VIS_NOM = :vis_nom");
+			$prep->bindValue(':vis_nom', $_SESSION['nom'],PDO::PARAM_STR);
+			$prep->execute();
+			$result=$prep->fetch(PDO::FETCH_ASSOC);
+			return $result['VIS_MATRICULE'];
+		}
+		catch(Exception $e)
+		{
+			echo 'Exception reçue : ', $e->getMessage(), "\n";
+		}
+	}
+
 	public function AjouterCR($Matricule,$Numero,$praticien,$dateVisite,$bilan,$Motif){ 
 		$prep = PdoGsb::$monPdo->prepare("INSERT INTO rapport_visite VALUES (:pVIS_MATRICULE, :pRAP_NUM, :pPRA_NUM, :pRAP_DATE, :pRAP_BILAN, :pRAP_MOTIF)");
 		try{
@@ -157,6 +174,7 @@ class PdoGsb{
 		$req = "select * FROM `medicament` LIMIT :value, 1";
 		try 
 			{
+				$value -= 1;
 				$prep = PdoGsb::$monPdo->prepare($req);
 				$prep->bindValue(':value', $value,PDO::PARAM_INT);
 				$prep->execute();
@@ -212,7 +230,7 @@ class PdoGsb{
 			{
 				$query = PdoGsb::$monPdo->query($req);
 				$result = $query->fetch(PDO::FETCH_ASSOC);
-				return $result['MaxMed']-1;
+				return $result['MaxMed'];
 			}
 		catch (Exception $e)
 		{
