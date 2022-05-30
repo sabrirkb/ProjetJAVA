@@ -1,30 +1,30 @@
 <main id="contenu">
-     <h1>Saisir un nouveau rapport</h1>
+     <h1>Saisir une nouvelle activité</h1>
 <form action="index.php?uc=ac&action=validerSaisieActivite" method="post">
 
-<!-- Création d'un formulaire permettant l'ajout d'un CR dans la base de données -->
+<!-- Création d'un formulaire permettant l'ajout d'un AC dans la base de données -->
   
 
       <table style="background-color: transparent">
       <tbody class="consultation">
 
-      !-- Création d'une zone de texte "matricule" -->
+     <!-- Création d'une zone de texte "matricule" -->
       <tr> <td> MATRICULE* </td>
       <td> <input style="margin: auto; width: 10%" type="text" name="matricule" value="<?php echo strtoupper($_SESSION['CR_matricule']);?>" required readonly> </td> </tr>
 
       <!-- Création d'une zone de texte "numéro AC" -->
       <tr> <td> NUM&Eacute;RO de l'AC* </td>
-      <td> <input style="margin: auto; width: 10%" type="text" name="numAC" required readonly> </td> </tr>
+      <td> <input style="margin: auto; width: 10%" type="text" name="numAC" value="<?=  $pdo->retournerLeDernierNumAC()+1; ?>" required readonly> </td> </tr>
 
       <!-- Création d'une zone de texte "Date AC" -->
       <tr> <td > DATE* </td>
       <td ><input style="margin: auto; width: 30%" type="date" name="dateAC"  max="<?= date('Y-m-d'); ?>" required>  </td> </tr>
 
 
-      <!-- Création d'une liste déroulante avec une zone de texte possédant l'id du praticien en "value", le nom et le prénom
+     <!-- Création d'une liste déroulante avec une zone de texte possédant l'id du praticien en "value", le nom et le prénom
 du praticien donnent des détails sur le praticien-->
 <tr> <td> <label for ="choix_praticien"> PRATICIENS INVIT&Eacute;S*</td></label>
-<td ><input list="praticiens" type="text" multiple="multiple" style="margin: auto; width: 50%" name="choix_praticien" required autocomplete = 'off'>
+<td ><input list="praticiens" type="text" style="margin: auto; width: 50%" name="choix_praticien" required autocomplete = 'off'>
       <datalist id="praticiens">
       <?php 
       $lesPraticiens = $pdo->getPraticiens();
@@ -38,10 +38,11 @@ du praticien donnent des détails sur le praticien-->
 ?>
 </datalist> </td> </tr>
 
+
 <!-- liste pour sélectionner le lieu -->
       <!-- Création d'une liste déroulante avec une zone de texte possédant l'id du lieu en "value", le nom du lieu -->
-      <tr> <td> <label for ="choix_lieu"> Lieu de l'AC*</td></label>
-<td><input style="margin: auto; width: 50%" list="lieux"  type="text" name="choix_lieu" autocomplete = 'off' required>
+      <tr> <td> <label for ="choix_lieu"> LIEU DE L'AC*</td></label>
+<td><input  list="lieux"  type="text" style="margin: auto; width: 50%" name="choix_lieu" required autocomplete = 'off'>
       <datalist id="lieux">
       <?php 
       $lesLieux= $pdo->getLesLieux();
@@ -61,10 +62,12 @@ du praticien donnent des détails sur le praticien-->
 
       <!-- Création d'une zone de texte "motif" -->
       
-      <tr> <td> <label for="bilan">MOTIF*</label> </td>
+      <tr> <td> <label for="motif">MOTIF*</label> </td>
 
         <td> <textarea  name="motif" rows="4" style="margin: auto; width: 100%" required></textarea> </td>
       </tr>
+      </tbody>
+      </table>
 
       
 <!-- Aide pour l'utilisateur signifiant que les champs précédés d'une astérisque sont obligatoires -->

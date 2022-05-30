@@ -1,6 +1,6 @@
 <main id="contenu">
      <h1>Saisir un nouveau rapport</h1>
-<form action="index.php?uc=gererCR&action=validerSaisieCR" method="post">
+<form action="index.php?uc=gererCR&action=SaisirCR" method="post">
 
 <!-- Création d'un formulaire permettant l'ajout d'un CR dans la base de données -->
   
@@ -14,8 +14,8 @@
 
       <!-- Création d'une zone de texte "numéro rapport" -->
 
-      <tr> <td><p>NUM&Eacute;RO DE RAPPORT</p></td>
-              <td><input type="number" name="num" value="<?=  $pdo->retournerLeDernierNumRap()+1; ?>" readonly required>*</td>
+      <tr> <td><p>NUM&Eacute;RO DE RAPPORT*</p></td>
+              <td><input type="number" name="num" value="<?=  $pdo->retournerLeDernierNumRap()+1; ?>" readonly required></td>
       </tr>
 
       <!-- Création d'une zone de texte "Date visite" -->
@@ -41,8 +41,8 @@ du praticien donnent des détails sur le praticien-->
 </datalist> </td> </tr>
 
       <!-- Création d'une case à cocher "remplacant" -->
-      <tr> <td > REMPLAÇANT* </td>
-      <td><input style="margin: auto; width: 30%" type="checkbox" name="remplacant" required>  </td> 
+      <tr> <td > REMPLAÇANT </td>
+      <td><input style="margin: auto; width: 30%" type="checkbox" name="remplacant">  </td> 
       </tr>
 
 
@@ -74,8 +74,8 @@ du praticien donnent des détails sur le praticien-->
 
     <!-- liste pour sélectionner un deuxième produit -->
     <!-- Création d'une liste déroulante avec une zone de texte possédant l'id du médicament en "value", le nom du médicament -->
-<tr> <td> <label for ="choix_produit"> PRODUITS 2*</td></label>
-<td><input style="margin: auto; width: 50%" list="produits" multiple="oui" type="text" name="choix_produit" autocomplete = 'off' required>
+<tr> <td> <label for ="choix_produit"> PRODUITS 2</td></label>
+<td><input style="margin: auto; width: 50%" list="produits" multiple="oui" type="text" name="choix_produit" autocomplete = 'off'>
       <datalist id="produits">
       <?php 
       $lesProduits = $pdo->getLesProduits();
@@ -89,8 +89,8 @@ du praticien donnent des détails sur le praticien-->
 </datalist> </td> </tr>
 
     <!-- Création d'un champ "nombre d'échantillons" -->
-    <tr> <td> NOMBRE D'&Eacute;CHANTILLONS DU PRODUIT 2*</td>
-    <td><input style="margin: auto; width: 10%" type="number" name="nbreEchantillon" title="Nombre" value="5" min="0" max="20" step="1" required> </td>
+    <tr> <td> NOMBRE D'&Eacute;CHANTILLONS DU PRODUIT 2</td>
+    <td><input style="margin: auto; width: 10%" type="number" name="nbreEchantillon" title="Nombre" value="5" min="0" max="20" step="1"> </td>
     </tr>
 
 
@@ -102,8 +102,8 @@ du praticien donnent des détails sur le praticien-->
       </tr>
 
       <!-- Création d'une case à cocher "documentation" -->
-      <tr> <td> DOCUMENTATION OFFERTE* </td>
-      <td><input style="margin: auto; width: 30%" type="checkbox" name="documentation" required>  </td> 
+      <tr> <td> DOCUMENTATION OFFERTE </td>
+      <td><input style="margin: auto; width: 30%" type="checkbox" name="documentation">  </td> 
       </tr>
 </tbody>
       </table>

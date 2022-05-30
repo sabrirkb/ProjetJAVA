@@ -19,6 +19,7 @@ switch($action){
         $Matricule = $_POST['matricule'];
         $Numero=$_POST ['num'];
         $praticien = $_POST['choix_praticien'];
+        $praticien = $_POST['choix_lieu'];
         $dateVisite = $_POST['dateVisite'];
         $bilan= $_POST['bilan'];
         $Motif=$_POST['motif'];

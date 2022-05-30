@@ -287,5 +287,65 @@ class PdoGsb{
 		}
     
 }
+
+public function AjouterAC($Numero, $dateAC, $Lieu, $Theme, $Motif){ 
+	$prep = PdoGsb::$monPdo->prepare("INSERT INTO activite_compl VALUES ( :pAC_NUM, :pAC_DATE, :pAC_LIEU, :pAC_THEME, :pAC_MOTIF)");
+	try{
+		$prep->bindValue(':pAC_NUM', $Numero, PDO::PARAM_INT);
+		$prep->bindValue(':pAC_DATE', $dateAC, PDO::PARAM_STR);
+		$prep->bindValue(':pAC_LIEU', $Lieu, PDO::PARAM_STR);
+		$prep->bindValue(':pAC_THEME', $Theme, PDO::PARAM_STR);
+		$prep->bindValue(':pAC_MOTIF', $Motif, PDO::PARAM_STR);
+		$success = $prep->execute();
+	
+		if($success){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	catch(Exception $e){
+		echo 'Exception reçue : ',  $e->getMessage(), "\n";
+	}
 }
+
+public function retournerLeDernierNumAC()
+{
+    // renvoie un result avec la liste des raports
+    $req = "SELECT AC_NUM
+            FROM activite_compl
+            ORDER BY AC_NUM DESC
+            LIMIT 1";
+			try
+			{
+				$query =PdoGsb::$monPdo -> query($req);
+		        $result = $query -> fetch(PDO::FETCH_ASSOC);
+		        return $result['AC_NUM'];
+			}
+			catch (Exception $e)
+		{
+			echo 'Exception reçue : ', $e->getMessage(), "\n";
+		}
+    
+}
+
+public function getLesLieux() {
+	$req="select REG_CODE, REG_NOM from region order by REG_NOM ";
+	try {
+		$prep = PdoGsb::$monPdo->prepare($req);
+		$rs = PdoGsb::$monPdo->query($req);
+		$ligne = $rs->fetchAll(PDO::FETCH_ASSOC);
+		return $ligne;
+	}
+
+	catch (Exception $e) 
+	{
+		echo 'Exception reçue : ',  $e->getMessage(), "\n";
+	}
+}
+
+
+}
+
+
   ?>

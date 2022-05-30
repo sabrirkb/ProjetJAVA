@@ -131,16 +131,25 @@ switch($action){
             break;
         }
 
-        case 'saisie': 
-            {
-                include("vues/v_saisieActivite.php");
-                break;
-            }
-            case 'validerSaisieActivite':
-                {
-                    
-                   break; 
-                }
+        case 'saisie':{
+            include("vues/v_saisieActivite.php");
+            $_SESSION['CR_matricule'] = $pdo->getLeMatriculeVisiteur();
+            break;
+        }
+            
+        case 'validerSaisieActivite':{
+             
+            $Numero=$_POST ['numAC'];
+            $dateAC = $_POST['dateAC'];
+            $Lieu = $_POST['choix_lieu'];
+            $Theme= $_POST['theme'];
+            $Motif=$_POST['motif'];
+    
+            $leAC=$pdo->AjouterAC($Numero, $dateAC, $Lieu, $Theme, $Motif);
+            $message = "Activité ajoutée avec succès";
+            include("vues/v_Message.php"); 
+            break;
+        }
         
 
     default: 
