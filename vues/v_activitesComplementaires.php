@@ -8,7 +8,7 @@
             <tr>
                     <td>ACTIVIT&Eacute; N°</td>
                     <td>
-                        <input type="text" name="num-activite" autocomplete="off" readonly style="margin: auto; width: 5%" value="<?php echo strtoupper($_SESSION['AC_num']);?>">
+                        <input type="text" name="num-activite" autocomplete="off" readonly style="margin: auto; width: 5%" value="<?php echo $_SESSION['AC_num'];?>">
                     </td>
                 </tr>
                 <tr>
