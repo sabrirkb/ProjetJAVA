@@ -19,16 +19,13 @@ switch($action){
 
     // Envoie sur la vue saisirCR permettant la saisie d'un CR
     case 'saisirCR':{
-	    // include("controleurs/c_Sommaire.php.php");
-        // $lesPraticiens=$pdo->getPraticiens();
-        //$lesProduits=$pdo->getLesProduits();
         $_SESSION['CR_matricule'] = $pdo->getLeMatriculeVisiteur();
         include("vues/v_saisieCR.php");
 	    break;
 	}
         
 	case 'validerSaisieCR':{
-		// include("controleurs/c_Sommaire.php.php");   
+		  
         $Matricule = $_POST['matricule'];
         $Numero=$_POST ['num'];
         $praticien = $_POST['choix_praticien'];
@@ -64,7 +61,7 @@ switch($action){
     
                     
                 include("vues/v_consulterCR.php");
-                break;
+                break;  
     }
 
     
