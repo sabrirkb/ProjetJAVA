@@ -47,7 +47,7 @@
       <!-- Création d'une zone de texte "coefficient de notorieté" -->
 
       <tr> <td><p>COEFFICIENT DE NOTORI&Eacute;T&Eacute;*</p></td>
-              <td><input type="text" name="coef" placeholder="250.5" required></td>
+              <td><input type="number" step="any" name="coef" placeholder="250.5" required></td>
       </tr>
 
       <!-- Création d'une liste déroulante avec une zone de texte possédant le code du type en "value" et le nom en libelle -->
