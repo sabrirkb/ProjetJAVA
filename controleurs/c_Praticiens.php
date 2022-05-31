@@ -160,10 +160,18 @@ switch($action){
 
         case 'validerSaisiePraticien':
             {
-                // Code sokhna
-                $message = "Praticien ajouté avec succès.";
-                include("vues/v_Message.php"); 
-                break;
+              $numero=$_POST ['num'];
+              $nom= $_POST['nom'];
+              $prenom = $_POST['prenom'];
+              $adresse = $_POST['adresse'];
+              $CP= $_POST['cp'];
+              $ville=$_POST['ville'];
+              $coef=$_POST['coef'];
+              $type=$_POST['choix_typePraticien'];
+        $lePRA=$pdo->AjouterPraticien($numero, $nom, $prenom, $adresse, $CP, $ville, $coef, $type);
+        $message = "Praticien ajouté avec succès.";
+        include("vues/v_Message.php"); 
+        break;
             }
     default: 
         {

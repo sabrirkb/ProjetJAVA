@@ -376,7 +376,7 @@ public function AjouterAC($Numero, $dateAC, $Lieu, $Theme, $Motif){
 
 public function retournerLeDernierNumAC()
 {
-    // renvoie un result avec la liste des raports
+    // renvoie un result avec la liste des activités
     $req = "SELECT AC_NUM
             FROM activite_compl
             ORDER BY AC_NUM DESC
@@ -407,6 +407,64 @@ public function getLesLieux() {
 	{
 		echo 'Exception reçue : ',  $e->getMessage(), "\n";
 	}
+}
+
+public function AjouterPraticien($numero, $nom, $prenom, $adresse, $CP, $ville, $coef, $type){ 
+	$prep = PdoGsb::$monPdo->prepare("INSERT INTO praticien VALUES ( :pPRA_NUM, :pPRA_NOM, :pPRA_PRENOM, :pPRA_ADRESSE, :pPRA_CP, :pPRA_VILLE, :pPRA_COEFNOTORIETE, pTYP_CODE)");
+	try{
+		$prep->bindValue(':pPRA_NUM', $numero, PDO::PARAM_INT);
+		$prep->bindValue(':pPRA_NOM', $nom, PDO::PARAM_STR);
+		$prep->bindValue(':pPRA_PRENOM', $prenom, PDO::PARAM_STR);
+		$prep->bindValue(':pPRA_ADRESSE', $adresse, PDO::PARAM_STR);
+		$prep->bindValue(':pPRA_CP', $CP, PDO::PARAM_STR);
+		$prep->bindValue(':pPRA_VILLE', $ville, PDO::PARAM_STR);
+		$prep->bindValue(':pPRA_COEFNOTORIETE', $coef, PDO::PARAM_STR);
+		$prep->bindValue(':pTYP_CODE', $type, PDO::PARAM_STR);
+		$success = $prep->execute();
+		if($success){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	catch(Exception $e){
+		echo 'Exception reçue : ',  $e->getMessage(), "\n";
+	}
+}
+
+public function getTypes() {
+	$req="select TYP_CODE, TYP_LIBELLE from type_praticien order by TYP_LIBELLE ";
+	try {
+		$prep = PdoGsb::$monPdo->prepare($req);
+		$rs = PdoGsb::$monPdo->query($req);
+		$ligne = $rs->fetchAll(PDO::FETCH_ASSOC);
+		return $ligne;
+	}
+
+	catch (Exception $e) 
+	{
+		echo 'Exception reçue : ',  $e->getMessage(), "\n";
+	}
+}
+
+public function retournerLeDernierNumPrat()
+{
+    // renvoie un result avec la liste des praticiens
+    $req = "SELECT PRA_NUM
+            FROM praticien
+            ORDER BY PRA_NUM DESC
+            LIMIT 1";
+			try
+			{
+				$query =PdoGsb::$monPdo -> query($req);
+		        $result = $query -> fetch(PDO::FETCH_ASSOC);
+		        return $result['PRA_NUM'];
+			}
+			catch (Exception $e)
+		{
+			echo 'Exception reçue : ', $e->getMessage(), "\n";
+		}
+    
 }
 
 
