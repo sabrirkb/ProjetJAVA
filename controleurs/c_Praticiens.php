@@ -37,18 +37,10 @@ switch($action){
             $ville=$_POST['ville'];
             $coef=$_POST['coef'];
             $type=$_POST['choix_typePraticien'];
-            var_dump($numero);
-            var_dump($nom);
-            var_dump($prenom);
-            var_dump($adresse);
-            var_dump($CP);
-            var_dump($ville);
-            var_dump($coef);
-            var_dump($type);
 
             $lePRA=$pdo->AjouterPraticien($numero, $nom, $prenom, $adresse, $CP, $ville, $coef, $type);
             $message = "Praticien ajouté avec succès.";
-            //include("vues/v_Message.php"); 
+            include("vues/v_Message.php"); 
             break;
         }
     case'lesPraticiens': 

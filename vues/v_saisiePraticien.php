@@ -60,7 +60,7 @@
                          $codeType = $unType['TYP_CODE'];
                          $libelleType = $unType['TYP_LIBELLE'];
         
-      echo '<option value='.$codeType.'>&nbsp;-&nbsp;'.$libelleType.'</option>';
+      echo '<option value='.$codeType.'></option>';
 }
 ?>
 </datalist> </td> </tr>
