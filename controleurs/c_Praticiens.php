@@ -41,7 +41,7 @@ switch($action){
             $lePRA=$pdo->AjouterPraticien($numero, $nom, $prenom, $adresse, $CP, $ville, $coef, $type);
             $message = "Praticien ajouté avec succès.";
             include("vues/v_Message.php"); 
-            break;
+             break;
         }
     case'lesPraticiens': 
         {
