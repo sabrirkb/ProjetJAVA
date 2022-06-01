@@ -1,7 +1,7 @@
 
   <!-- Division pour le pied de page -->
     <div id="pied">
-      © GSB 2022 – Application réalisée par Sokhna Maye Fall et Sabri Ryckebusch dans le cadre d'un projet de BTS SIO.
+      © GSB 2022 – Application réalisée par Sokhna Maye FALL et Sabri RYCKEBUSCH dans le cadre d'un projet de BTS SIO.
       <br>
       Ce site est susceptible d'utiliser des cookies pour faciliter votre navigation.
       <br>

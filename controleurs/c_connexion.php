@@ -27,6 +27,23 @@ switch($action)
 			$_SESSION['vis_matricule']= $id;
             $_SESSION['nom']= $nom;
             $_SESSION['prenom']= $prenom;
+			$_SESSION['role_vis'] = $pdo->getRoleUtilisateur($id);
+			if ($_SESSION['role_vis'] == "Délégué")
+			{
+				$_SESSION['STAT_TYPELIEU'] = "ma région : ";
+				$_SESSION['localite'] = $pdo->getRegionUtilisateur($id);
+			}
+			if ($_SESSION['role_vis'] == "Responsable")
+			{
+				$_SESSION['STAT_TYPELIEU'] = "mon secteur : ";
+				$_SESSION['localite'] = $pdo->getSecteurUtilisateur($id);
+			}
+			if ($_SESSION['role_vis'] == "Visiteur")
+			{
+				$_SESSION['STAT_TYPELIEU'] = "ma région : ";
+				$_SESSION['localite'] = $pdo->getRegionUtilisateur($id);
+			}
+			$_SESSION['region'] = $pdo->getRegionUtilisateur($id);
             include("controleurs/c_Sommaire.php");
 			include("vues/v_accueil.php");
 			}
