@@ -410,7 +410,7 @@ public function getLesLieux() {
 }
 
 public function AjouterPraticien($numero, $nom, $prenom, $adresse, $CP, $ville, $coef, $type){ 
-	$prep = PdoGsb::$monPdo->prepare("INSERT INTO praticien VALUES ( :pPRA_NUM, :pPRA_NOM, :pPRA_PRENOM, :pPRA_ADRESSE, :pPRA_CP, :pPRA_VILLE, :pPRA_COEFNOTORIETE, pTYP_CODE)");
+	$prep = PdoGsb::$monPdo->prepare("INSERT INTO praticien VALUES ( :pPRA_NUM, :pPRA_NOM, :pPRA_PRENOM, :pPRA_ADRESSE, :pPRA_CP, :pPRA_VILLE, :pPRA_COEFNOTORIETE, :pTYP_CODE)");
 	try{
 		$prep->bindValue(':pPRA_NUM', $numero, PDO::PARAM_STR);
 		$prep->bindValue(':pPRA_NOM', $nom, PDO::PARAM_STR);

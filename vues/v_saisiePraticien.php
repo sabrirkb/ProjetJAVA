@@ -1,6 +1,6 @@
 <main id="contenu">
      <h1>Saisir un nouveau praticien</h1>
-<form action="index.php?uc=praticiens&action=validerSaisiePraticien" method="post">
+<form action="index.php?uc=praticien&action=validerSaisiePraticien" method="post">
 
 <!-- Création d'un formulaire permettant l'ajout d'un CR dans la base de données -->
   
@@ -60,7 +60,7 @@
                          $codeType = $unType['TYP_CODE'];
                          $libelleType = $unType['TYP_LIBELLE'];
         
-      echo '<option value='.$codeType.'&nbsp;-&nbsp;'.$libelleType.'></option>';
+      echo '<option value='.$codeType.'>&nbsp;-&nbsp;'.$libelleType.'</option>';
 }
 ?>
 </datalist> </td> </tr>
