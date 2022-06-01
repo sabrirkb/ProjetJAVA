@@ -24,6 +24,9 @@ switch($uc){
 	case 'ac':{
 		include("controleurs/c_ActivitesComplementaires.php");break;
 	}
+	case 'statistiques':{
+		include("controleurs/c_Statistiques.php");break;
+	}
 	default:
 	{
 		include("controleurs/c_Sommaire.php");break;

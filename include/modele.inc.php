@@ -410,8 +410,8 @@ public function getLesLieux() {
 }
 
 public function AjouterPraticien($numero, $nom, $prenom, $adresse, $CP, $ville, $coef, $type){ 
-	$prep = PdoGsb::$monPdo->prepare("INSERT INTO praticien VALUES ( :pPRA_NUM, :pPRA_NOM, :pPRA_PRENOM, :pPRA_ADRESSE, :pPRA_CP, :pPRA_VILLE, :pPRA_COEFNOTORIETE, :pTYP_CODE)");
 	try{
+		$prep = PdoGsb::$monPdo->prepare("INSERT INTO praticien VALUES ( :pPRA_NUM, :pPRA_NOM, :pPRA_PRENOM, :pPRA_ADRESSE, :pPRA_CP, :pPRA_VILLE, :pPRA_COEFNOTORIETE, :pTYP_CODE)");
 		$prep->bindValue(':pPRA_NUM', $numero, PDO::PARAM_STR);
 		$prep->bindValue(':pPRA_NOM', $nom, PDO::PARAM_STR);
 		$prep->bindValue(':pPRA_PRENOM', $prenom, PDO::PARAM_STR);
@@ -463,10 +463,62 @@ public function retournerLeDernierNumPrat()
 			catch (Exception $e)
 		{
 			echo 'Exception reçue : ', $e->getMessage(), "\n";
-		}
-    
+		}    
 }
 
+public function getRoleUtilisateur($matricule)
+{
+	// renvoie le rôle de l'utilisateur dont le matricule est passé en paramètre
+	try
+	{
+		$req = "select TRA_ROLE from TRAVAILLER T inner join VISITEUR V ON T.VIS_MATRICULE = V.VIS_MATRICULE where V.VIS_MATRICULE = :vMatricule ORDER BY T.DATEDEBUT DESC LIMIT 1";
+		$prep = PdoGsb::$monPdo->prepare($req);
+		$prep->bindValue(':vMatricule', $matricule, PDO::PARAM_STR);
+		$prep->execute();
+		$result = $prep->fetch(PDO::FETCH_ASSOC);
+		return $result['TRA_ROLE'];
+	}
+	catch (Exception $e)
+	{
+		echo 'Exception reçue : ', $e->getMessage(), "\n";
+	}
+}
+
+public function getRegionUtilisateur($matricule)
+{
+	// renvoie le rôle de l'utilisateur dont le matricule est passé en paramètre
+	try
+	{
+		$req = "select REG_NOM from REGION R inner join TRAVAILLER T ON R.REG_CODE = T.REG_CODE inner join VISITEUR V ON T.VIS_MATRICULE = V.VIS_MATRICULE where V.VIS_MATRICULE = :vMatricule ORDER BY T.DATEDEBUT DESC LIMIT 1";
+		$prep = PdoGsb::$monPdo->prepare($req);
+		$prep->bindValue(':vMatricule', $matricule, PDO::PARAM_STR);
+		$prep->execute();
+		$result = $prep->fetch(PDO::FETCH_ASSOC);
+		return $result['REG_NOM'];
+	}
+	catch (Exception $e)
+	{
+		echo 'Exception reçue : ', $e->getMessage(), "\n";
+	}
+}
+
+public function getSecteurUtilisateur($matricule)
+{
+	// renvoie le rôle de l'utilisateur dont le matricule est passé en paramètre
+	try
+	{
+		$req = "select SEC_LIBELLE from SECTEUR S inner join REGION R ON S.SEC_CODE = R.SEC_CODE inner join TRAVAILLER T ON R.REG_CODE = T.REG_CODE inner join VISITEUR V ON T.VIS_MATRICULE = V.VIS_MATRICULE where V.VIS_MATRICULE = :vMatricule ORDER BY T.DATEDEBUT DESC LIMIT 1";
+		$prep = PdoGsb::$monPdo->prepare($req);
+		$prep->bindValue(':vMatricule', $matricule, PDO::PARAM_STR);
+		$prep->execute();
+		$result = $prep->fetch(PDO::FETCH_ASSOC);
+		return $result['SEC_LIBELLE'];
+	}
+	catch (Exception $e)
+	{
+		echo 'Exception reçue : ', $e->getMessage(), "\n";
+	}
+}
 
 }
 
