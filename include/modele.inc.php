@@ -14,10 +14,10 @@
  */
 
 class PdoGsb{   		
-      	private static $serveur='mysql:host=localhost';
+      	private static $serveur='mysql:host=gsbvisiteurs.mysql.database.azure.com';
       	private static $bdd='dbname=gsb_visiteurs';   		
       	private static $user='sabrisokhna' ;    		
-      	private static $mdp='PPPE-MVC!' ;
+      	private static $mdp='PPPE-mvc13!' ;
         private static $monPdo;
 		private static $monPdoGsb=null;
 
@@ -30,7 +30,7 @@ class PdoGsb{
     	PdoGsb::$monPdo = new PDO(PdoGsb::$serveur.';'.PdoGsb::$bdd, PdoGsb::$user, PdoGsb::$mdp); 
 		PdoGsb::$monPdo->query("SET CHARACTER SET utf8");
 	    } catch (Exception $e) {
-            throw new Exception("Erreur &agrave; la connexion \n" . $e->getMessage());
+            throw new Exception("Erreur à la connexion : \n" . $e->getMessage());
         }
     }
 
