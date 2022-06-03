@@ -39,15 +39,15 @@
         </table>
         <br>
         <div class="nav-cons-med" align="center">
-            <button class="btn-cons-med" type="button" onclick="window.location.href='index.php?uc=ac&action=precedent'">&laquo; Précédent</button>
+            <button class="btn-cons-med" type="button" onclick="window.location.href='index.php?page=6&uc=ac&action=precedent'">&laquo; Précédent</button>
             <span>
                 <input class="btn-cons-med" size="2" type="text" name="updateIndex" value="<?php echo $_SESSION['AC_index']; ?>" style="text-align: center;">
                 <strong>
                     /&nbsp;<?php echo $pdo->getMaxActivites();?>&nbsp;
                 </strong>
-                <input class="btn-cons-med" type="submit" formaction="index.php?uc=ac&action=custom" method="POST" hidden>
+                <input class="btn-cons-med" type="submit" formaction="index.php?page=6&uc=ac&action=custom" method="POST" hidden>
             </span>
-            <button class="btn-cons-med" type="button" onclick="window.location.href='index.php?uc=ac&action=suivant'">Suivant &raquo;</button>
+            <button class="btn-cons-med" type="button" onclick="window.location.href='index.php?page=6&uc=ac&action=suivant'">Suivant &raquo;</button>
         </div>
 </form>
 

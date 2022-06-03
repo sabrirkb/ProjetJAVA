@@ -132,8 +132,8 @@ switch($action){
         }
 
         case 'saisie':{
-            include("vues/v_saisieActivite.php");
             $_SESSION['CR_matricule'] = $pdo->getLeMatriculeVisiteur();
+            include("vues/v_saisieActivite.php");
             break;
         }
             

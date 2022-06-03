@@ -1,7 +1,14 @@
-<!--  premier exemple -->
+<div id="contenu">
+    <h1>Statistiques de <?php echo $_SESSION['STAT_TYPELIEU'] . strtoupper($_SESSION['localite']); ?></h1>
+    <br>
+	<h3>Répartition des ...</h3>
+    <div class="pie" style="--p:80"> 80% <br> des salariés</div>
+<div class="pie" style="--p:40;--c:darkblue;--b:10px"> 40% des trucs</div>
+<div class="pie no-round" style="--p:60;--c:purple;--b:15px"> 60% des machins</div>
+<div class="pie animate no-round" style="--p:80;--c:orange;"> 80%</div>
+<div class="pie animate" style="--p:90;--c:lightgreen"> 90%</div>
 
 <?php
- 
 $dataPoints = array(
 	array("label"=> "Education", "y"=> 284935, "indexLabel"=> "Highest"),
 	array("label"=> "Entertainment", "y"=> 256548),
@@ -14,11 +21,10 @@ $dataPoints = array(
 	array("label"=> "Travel & Local", "y"=> 118187),
 	array("label"=> "Puzzle", "y"=> 107530, "indexLabel"=> "Lowest")
 );
-	
 ?>
-<!DOCTYPE HTML>
-<html>
-<head>
+
+<br>
+
 <script>
 window.onload = function () {
  
@@ -26,10 +32,10 @@ var chart = new CanvasJS.Chart("chartContainer", {
 	animationEnabled: true,
 	theme: "light2", // "light1", "light2", "dark1", "dark2"
 	title: {
-		text: "Top 10 Google Play Categories - till 2017"
+		text: "Titre"
 	},
 	axisY: {
-		title: "Number of Apps"
+		title: "Axe Y"
 	},
 	data: [{
 		type: "column",
@@ -40,22 +46,9 @@ chart.render();
  
 }
 </script>
-</head>
-<body>
-<div id="chartContainer" style="position: relative; height:40vh; width:80vw"></div>
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-</body>
-</html>                              
 
-<!--  deuxième exemple -->
-<div id="contenu">
-    <h1>Statistiques de <?php echo $_SESSION['STAT_TYPELIEU'] . strtoupper($_SESSION['localite']); ?></h1>
-    <br>
-    <div class="pie" style="--p:20"> 20%</div>
-<div class="pie" style="--p:40;--c:darkblue;--b:10px"> 40%</div>
-<div class="pie no-round" style="--p:60;--c:purple;--b:15px"> 60%</div>
-<div class="pie animate no-round" style="--p:80;--c:orange;"> 80%</div>
-<div class="pie animate" style="--p:90;--c:lightgreen"> 90%</div>
-</div>
-                             
+<div id="chartContainer" style="position: relative; height:30vh; width:70vw"></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+</div>                             
 
