@@ -1,25 +1,44 @@
 <div id="contenu">
     <h1>Statistiques de <?php echo $_SESSION['STAT_TYPELIEU'] . strtoupper($_SESSION['localite']); ?></h1>
-    <br>
-	<h3>Répartition des ...</h3>
-    <div class="pie" style="--p:80"> 80% <br> des salariés</div>
-<div class="pie" style="--p:40;--c:darkblue;--b:10px"> 40% des trucs</div>
-<div class="pie no-round" style="--p:60;--c:purple;--b:15px"> 60% des machins</div>
-<div class="pie animate no-round" style="--p:80;--c:orange;"> 80% bidule</div>
-<div class="pie animate" style="--p:90;--c:lightgreen"> 90% chouette</div>
+	<div style="background-color: white; color: black; padding: 2px; border: 1px solid black">
+	<h3>Taux des visites concernant ma région sur l'ensemble des données GSB</h3>
+    <div class="pie" style="--p:43"> 43%</div>
+<div class="pie" style="--p:52;--c:darkblue;--b:10px"> 52%</div>
+<div class="pie no-round" style="--p:37;--c:purple;--b:15px"> 37%</div>
+<div class="pie animate no-round" style="--p:23;--c:orange;"> 23%</div>
+<div class="pie animate" style="--p:59;--c:lightgreen"> 59%</div>
+<br>
+<br>
+<table style="color:black; text-align: left; margin-left: 30%">
+	<tr>
+		<td>
+	<text style="color:darkred;">■</text> Visites effectuées dans ma région
+</td>
+<td>
+	<text style="color:darkblue;">■</text> Médécins concernés par ma région
+	</td>
+</tr>
+	<tr>
+		<td>
+	<text style="color:purple;">■</text> Ventes du laboratoire Gyverny
+</td>
+<td>
+	<text style="color:orange;">■</text> Ventes du laboratoire Swiss Kane&nbsp;&nbsp;&nbsp;
+</td>
+</tr>
+<tr>
+	<text style="color:lightgreen;">■</text> Ventes du laboratoire Bichat&nbsp;&nbsp;&nbsp;
+</tr>
+</table>
+</div>
 
 <?php
 $dataPoints = array(
-	array("label"=> "Salariés", "y"=> 17, "indexLabel"=> "Highest"),
-	array("label"=> "Truc", "y"=> 9),
-	array("label"=> "Machin", "y"=> 8),
-	array("label"=> "Bidule", "y"=> 7),
-	array("label"=> "Chose", "y"=> 6),
-	array("label"=> "Chouette", "y"=> 5),
-	array("label"=> "Item", "y"=> 7),
-	array("label"=> "Libellé", "y"=> 11),
-	array("label"=> "Nom", "y"=> 13),
-	array("label"=> "Texte", "y"=> 2, "indexLabel"=> "Lowest")
+	array("label"=> "Visites", "y"=> 86),
+	array("label"=> "Médecins", "y"=> 104),
+	array("label"=> "Ventes Gyverny", "y"=> 74),
+	array("label"=> "Ventes Swiss Kane", "y"=> 46),
+	array("label"=> "Ventes Bichat", "y"=> 118/*, "indexLabel"=> "Lowest"*/)
 );
 ?>
 
@@ -32,10 +51,10 @@ var chart = new CanvasJS.Chart("chartContainer", {
 	animationEnabled: true,
 	theme: "light2", // "light1", "light2", "dark1", "dark2"
 	title: {
-		text: "Titre"
+		text: "Chiffres concernant les visites de ma région"
 	},
 	axisY: {
-		title: "Axe Y"
+		title: "Nombre"
 	},
 	data: [{
 		type: "column",
@@ -47,7 +66,7 @@ chart.render();
 }
 </script>
 
-<div id="chartContainer" style="position: relative; height:30vh; width:70vw"></div>
+<div id="chartContainer" align="center" style="position: relative; height:50vh; width:100%; border: 1px solid black"></div>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
 </div>                             

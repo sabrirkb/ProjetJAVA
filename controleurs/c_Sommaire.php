@@ -91,7 +91,7 @@ switch($role_util)
       $_SESSION['afficherSmenu1'] = '';
       $_SESSION['afficherSmenu2'] = 'hidden';
       $_SESSION['afficherSmenu3'] = '';
-      $_SESSION['afficherSmenu4a'] = 'hidden';
+      $_SESSION['afficherSmenu4a'] = '';
       $_SESSION['afficherSmenu4b'] = '';
       $_SESSION['afficherSmenu5'] = '';
       $_SESSION['afficherSmenu6'] = '';
@@ -133,7 +133,7 @@ switch($role_util)
       $_SESSION['afficherSmenu1'] = '';
       $_SESSION['afficherSmenu2'] = 'hidden';
       $_SESSION['afficherSmenu3'] = '';
-      $_SESSION['afficherSmenu4a'] = 'hidden';
+      $_SESSION['afficherSmenu4a'] = '';
       $_SESSION['afficherSmenu4b'] = '';
       $_SESSION['afficherSmenu5'] = '';
       $_SESSION['afficherSmenu6'] = '';
