@@ -9,7 +9,7 @@
     <h3 style="font-weight: normal">
     Vous êtes connecté en tant que <?php echo strtolower($_SESSION['role_vis']);?>.
     <br>
-    <?php echo ucfirst($_SESSION['STAT_TYPELIEU']) . " " . strtoupper($_SESSION['localite']); ?>.
+    <?php echo ucfirst($_SESSION['STAT_TYPELIEU']) . " : " . strtoupper($_SESSION['localite']); ?>.
     <br>
     <br>
     ⯇ Les actions que vous êtes autorisé(e) à effectuer sont représentées par les onglets du menu ci-contre.

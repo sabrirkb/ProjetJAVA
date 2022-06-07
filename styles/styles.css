@@ -363,6 +363,12 @@ td:nth-child(0n+1)
   border: 8px solid white;
 }
 
+#statistiques td:nth-child(0n+1)
+{
+  margin: auto;
+  width: 50%;
+}
+
 .btn-cons-med, .btn-cons-med text
 {
   background-color: white;

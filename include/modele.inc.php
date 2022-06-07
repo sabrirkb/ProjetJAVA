@@ -29,7 +29,8 @@ class PdoGsb{
         try {
     	PdoGsb::$monPdo = new PDO(PdoGsb::$serveur.';'.PdoGsb::$bdd, PdoGsb::$user, PdoGsb::$mdp); 
 		PdoGsb::$monPdo->query("SET CHARACTER SET utf8");
-	    } catch (Exception $e) {
+	    } catch (Exception $e)
+		{
             throw new Exception("Erreur à la connexion : \n" . $e->getMessage());
         }
     }
@@ -519,6 +520,257 @@ public function getSecteurUtilisateur($matricule)
 		echo 'Exception reçue : ', $e->getMessage(), "\n";
 	}
 }
+
+public function getNbVisitesSecteur($localite)
+{
+	try
+	{
+		$req = "SELECT COUNT(*) AS TOTAL FROM gsb_visiteurs.rapport_visite RV INNER JOIN gsb_visiteurs.travailler T ON RV.VIS_MATRICULE = T.VIS_MATRICULE WHERE T.REG_CODE IN (SELECT REG_CODE FROM gsb_visiteurs.region WHERE SEC_CODE IN (SELECT SEC_CODE FROM gsb_visiteurs.secteur WHERE SEC_LIBELLE = :localite)) AND T.DATEFIN IS NULL;";
+		$prep = PdoGsb::$monPdo->prepare($req);
+		$prep->bindValue(':localite', $localite, PDO::PARAM_STR);
+		$prep->execute();
+		$result = $prep->fetch(PDO::FETCH_ASSOC);
+		return $result['TOTAL'];
+	}
+	catch (Exception $e)
+	{
+		echo 'Exception reçue : ', $e->getMessage(), "\n";
+	}
+}
+
+public function getNbVisitesRegion($localite)
+{
+	try
+	{
+		$req = "SELECT COUNT(*) AS TOTAL FROM rapport_visite RV INNER JOIN travailler T ON RV.VIS_MATRICULE = T.VIS_MATRICULE WHERE T.REG_CODE = (SELECT REG_CODE FROM region WHERE REG_NOM = :localite) AND T.DATEFIN IS NULL;";
+		$prep = PdoGsb::$monPdo->prepare($req);
+		$prep->bindValue(':localite', $localite, PDO::PARAM_STR);
+		$prep->execute();
+		$result = $prep->fetch(PDO::FETCH_ASSOC);
+		return $result['TOTAL'];
+	}
+	catch (Exception $e)
+	{
+		echo 'Exception reçue : ', $e->getMessage(), "\n";
+	}
+}
+
+public function getNbMedecinsSecteur($localite)
+{
+	try
+	{
+		$req = "SELECT COUNT(DISTINCT RV.PRA_NUM) AS TOTAL FROM gsb_visiteurs.rapport_visite RV INNER JOIN gsb_visiteurs.travailler T ON RV.VIS_MATRICULE = T.VIS_MATRICULE INNER JOIN gsb_visiteurs.praticien P ON RV.PRA_NUM = P.PRA_NUM WHERE T.REG_CODE IN (SELECT REG_CODE FROM gsb_visiteurs.region WHERE SEC_CODE IN (SELECT SEC_CODE FROM gsb_visiteurs.secteur WHERE SEC_LIBELLE = :localite)) AND T.DATEFIN IS NULL;";
+		$prep = PdoGsb::$monPdo->prepare($req);
+		$prep->bindValue(':localite', $localite, PDO::PARAM_STR);
+		$prep->execute();
+		$result = $prep->fetch(PDO::FETCH_ASSOC);
+		return $result['TOTAL'];
+	}
+	catch (Exception $e)
+	{
+		echo 'Exception reçue : ', $e->getMessage(), "\n";
+	}
+}
+
+public function getNbMedecinsRegion($localite)
+{
+	try
+	{
+		$req = "SELECT COUNT(DISTINCT RV.PRA_NUM) AS TOTAL FROM gsb_visiteurs.rapport_visite RV INNER JOIN gsb_visiteurs.travailler T ON RV.VIS_MATRICULE = T.VIS_MATRICULE INNER JOIN gsb_visiteurs.praticien P ON RV.PRA_NUM = P.PRA_NUM WHERE T.REG_CODE = (SELECT REG_CODE FROM gsb_visiteurs.region WHERE REG_NOM = :localite) AND T.DATEFIN IS NULL;";
+		$prep = PdoGsb::$monPdo->prepare($req);
+		$prep->bindValue(':localite', $localite, PDO::PARAM_STR);
+		$prep->execute();
+		$result = $prep->fetch(PDO::FETCH_ASSOC);
+		return $result['TOTAL'];
+	}
+	catch (Exception $e)
+	{
+		echo 'Exception reçue : ', $e->getMessage(), "\n";
+	}
+}
+
+public function getNbVisiteursSecteur($localite)
+{
+	try
+	{
+		$req = "SELECT COUNT(DISTINCT VIS_MATRICULE) AS TOTAL FROM gsb_visiteurs.travailler WHERE REG_CODE IN (SELECT REG_CODE FROM gsb_visiteurs.region WHERE SEC_CODE IN (SELECT SEC_CODE FROM gsb_visiteurs.secteur WHERE SEC_LIBELLE = :localite)) AND TRA_ROLE = 'Visiteur' AND DATEFIN IS NULL;";
+		$prep = PdoGsb::$monPdo->prepare($req);
+		$prep->bindValue(':localite', $localite, PDO::PARAM_STR);
+		$prep->execute();
+		$result = $prep->fetch(PDO::FETCH_ASSOC);
+		return $result['TOTAL'];
+	}
+	catch (Exception $e)
+	{
+		echo 'Exception reçue : ', $e->getMessage(), "\n";
+	}
+}
+
+public function getNbVisiteursRegion($localite)
+{
+	try
+	{
+		$req = "SELECT COUNT(DISTINCT VIS_MATRICULE) AS TOTAL FROM gsb_visiteurs.travailler WHERE REG_CODE = (SELECT REG_CODE FROM gsb_visiteurs.region WHERE REG_NOM = :localite) AND TRA_ROLE = 'Visiteur' AND DATEFIN IS NULL;";
+		$prep = PdoGsb::$monPdo->prepare($req);
+		$prep->bindValue(':localite', $localite, PDO::PARAM_STR);
+		$prep->execute();
+		$result = $prep->fetch(PDO::FETCH_ASSOC);
+		return $result['TOTAL'];
+	}
+	catch (Exception $e)
+	{
+		echo 'Exception reçue : ', $e->getMessage(), "\n";
+	}
+}
+
+public function getNbDeleguesSecteur($localite)
+{
+	try
+	{
+		$req = "SELECT COUNT(DISTINCT VIS_MATRICULE) AS TOTAL FROM gsb_visiteurs.travailler WHERE REG_CODE IN (SELECT REG_CODE FROM gsb_visiteurs.region WHERE SEC_CODE IN (SELECT SEC_CODE FROM gsb_visiteurs.secteur WHERE SEC_LIBELLE = :localite)) AND TRA_ROLE = 'Délégué' AND DATEFIN IS NULL;";
+		$prep = PdoGsb::$monPdo->prepare($req);
+		$prep->bindValue(':localite', $localite, PDO::PARAM_STR);
+		$prep->execute();
+		$result = $prep->fetch(PDO::FETCH_ASSOC);
+		return $result['TOTAL'];
+	}
+	catch (Exception $e)
+	{
+		echo 'Exception reçue : ', $e->getMessage(), "\n";
+	}
+}
+
+public function getNbDeleguesRegion($localite)
+{
+	try
+	{
+		$req = "SELECT COUNT(DISTINCT VIS_MATRICULE) AS TOTAL FROM gsb_visiteurs.travailler WHERE REG_CODE = (SELECT REG_CODE FROM gsb_visiteurs.region WHERE REG_NOM = :localite) AND TRA_ROLE = 'Délégué' AND DATEFIN IS NULL;";
+		$prep = PdoGsb::$monPdo->prepare($req);
+		$prep->bindValue(':localite', $localite, PDO::PARAM_STR);
+		$prep->execute();
+		$result = $prep->fetch(PDO::FETCH_ASSOC);
+		return $result['TOTAL'];
+	}
+	catch (Exception $e)
+	{
+		echo 'Exception reçue : ', $e->getMessage(), "\n";
+	}
+}
+
+public function getNbResponsablesSecteur($localite)
+{
+	try
+	{
+		$req = "SELECT COUNT(DISTINCT VIS_MATRICULE) AS TOTAL FROM gsb_visiteurs.travailler WHERE REG_CODE IN (SELECT REG_CODE FROM gsb_visiteurs.region WHERE SEC_CODE IN (SELECT SEC_CODE FROM gsb_visiteurs.secteur WHERE SEC_LIBELLE = :localite)) AND TRA_ROLE = 'Responsable' AND DATEFIN IS NULL;";
+		$prep = PdoGsb::$monPdo->prepare($req);
+		$prep->bindValue(':localite', $localite, PDO::PARAM_STR);
+		$prep->execute();
+		$result = $prep->fetch(PDO::FETCH_ASSOC);
+		return $result['TOTAL'];
+	}
+	catch (Exception $e)
+	{
+		echo 'Exception reçue : ', $e->getMessage(), "\n";
+	}
+}
+
+public function getNbResponsablesRegion($localite)
+{
+	try
+	{
+		$req = "SELECT COUNT(DISTINCT VIS_MATRICULE) AS TOTAL FROM gsb_visiteurs.travailler WHERE REG_CODE = (SELECT REG_CODE FROM gsb_visiteurs.region WHERE REG_NOM = :localite) AND TRA_ROLE = 'Responsable' AND DATEFIN IS NULL;";
+		$prep = PdoGsb::$monPdo->prepare($req);
+		$prep->bindValue(':localite', $localite, PDO::PARAM_STR);
+		$prep->execute();
+		$result = $prep->fetch(PDO::FETCH_ASSOC);
+		return $result['TOTAL'];
+	}
+	catch (Exception $e)
+	{
+		echo 'Exception reçue : ', $e->getMessage(), "\n";
+	}
+}
+
+public function getTotalVisites()
+{
+	try
+	{
+		$req = "SELECT count(*) AS TOTAL FROM rapport_visite;";
+		$prep = PdoGsb::$monPdo->prepare($req);
+		$prep->execute();
+		$result = $prep->fetch(PDO::FETCH_ASSOC);
+		return ($result['TOTAL']);
+	}
+	catch (Exception $e)
+	{
+		echo 'Exception reçue : ', $e->getMessage(), "\n";
+	}
+}
+
+public function getTotalMedecins()
+{
+	try
+	{
+		$req = "SELECT count(*) AS TOTAL FROM praticien;";
+		$prep = PdoGsb::$monPdo->prepare($req);
+		$prep->execute();
+		$result = $prep->fetch(PDO::FETCH_ASSOC);
+		return ($result['TOTAL']);
+	}
+	catch (Exception $e)
+	{
+		echo 'Exception reçue : ', $e->getMessage(), "\n";
+	}
+}
+
+public function getTotalVisiteurs()
+{
+	try
+	{
+		$req = "SELECT count(*) AS TOTAL FROM gsb_visiteurs.visiteur V INNER JOIN gsb_visiteurs.travailler T on V.VIS_MATRICULE = T.VIS_MATRICULE WHERE TRA_ROLE = 'Visiteur' AND DATEFIN IS NULL;";
+		$prep = PdoGsb::$monPdo->prepare($req);
+		$prep->execute();
+		$result = $prep->fetch(PDO::FETCH_ASSOC);
+		return ($result['TOTAL']);
+	}
+	catch (Exception $e)
+	{
+		echo 'Exception reçue : ', $e->getMessage(), "\n";
+	}
+}
+
+public function getTotalDelegues()
+{
+	try
+	{
+		$req = "SELECT count(*) AS TOTAL FROM gsb_visiteurs.visiteur V INNER JOIN gsb_visiteurs.travailler T on V.VIS_MATRICULE = T.VIS_MATRICULE WHERE TRA_ROLE = 'Délégué' AND DATEFIN IS NULL;";
+		$prep = PdoGsb::$monPdo->prepare($req);
+		$prep->execute();
+		$result = $prep->fetch(PDO::FETCH_ASSOC);
+		return ($result['TOTAL']);
+	}
+	catch (Exception $e)
+	{
+		echo 'Exception reçue : ', $e->getMessage(), "\n";
+	}
+}
+
+public function getTotalResponsables()
+{
+	try
+	{
+		$req = "SELECT count(*) AS TOTAL FROM gsb_visiteurs.visiteur V INNER JOIN gsb_visiteurs.travailler T on V.VIS_MATRICULE = T.VIS_MATRICULE WHERE TRA_ROLE = 'Responsable' AND DATEFIN IS NULL;";
+		$prep = PdoGsb::$monPdo->prepare($req);
+		$prep->execute();
+		$result = $prep->fetch(PDO::FETCH_ASSOC);
+		return ($result['TOTAL']);
+	}
+	catch (Exception $e)
+	{
+		echo 'Exception reçue : ', $e->getMessage(), "\n";
+	}
+}
+
 
 }
 

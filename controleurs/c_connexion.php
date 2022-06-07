@@ -30,20 +30,30 @@ switch($action)
 			$_SESSION['role_vis'] = $pdo->getRoleUtilisateur($id);
 			if ($_SESSION['role_vis'] == "Délégué")
 			{
-				$_SESSION['STAT_TYPELIEU'] = "ma région : ";
+				$_SESSION['STAT_TYPELIEU'] = "ma région";
 				$_SESSION['localite'] = $pdo->getRegionUtilisateur($id);
 			}
 			if ($_SESSION['role_vis'] == "Responsable")
 			{
-				$_SESSION['STAT_TYPELIEU'] = "mon secteur : ";
+				$_SESSION['STAT_TYPELIEU'] = "mon secteur";
 				$_SESSION['localite'] = $pdo->getSecteurUtilisateur($id);
 			}
 			if ($_SESSION['role_vis'] == "Visiteur")
 			{
-				$_SESSION['STAT_TYPELIEU'] = "ma région : ";
+				$_SESSION['STAT_TYPELIEU'] = "ma région";
 				$_SESSION['localite'] = $pdo->getRegionUtilisateur($id);
 			}
 			$_SESSION['region'] = $pdo->getRegionUtilisateur($id);
+			$_SESSION['STAT_VISITE'] = 0;
+			$_SESSION['STAT_MEDECIN'] = 0;
+			$_SESSION['STAT_VISITEURS'] = 0;
+			$_SESSION['STAT_DELEGUES'] = 0;
+			$_SESSION['STAT_RESPONSABLES'] = 0;
+			$_SESSION['STAT_VISITE_POURCENT'] = 0;
+			$_SESSION['STAT_MEDECIN_POURCENT'] = 0;
+			$_SESSION['STAT_VISITEURS_POURCENT'] = 0;
+			$_SESSION['STAT_DELEGUES_POURCENT'] = 0;
+			$_SESSION['STAT_RESPONSABLES_POURCENT'] = 0;
             include("controleurs/c_Sommaire.php");
 			include("vues/v_accueil.php");
 			}

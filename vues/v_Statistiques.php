@@ -1,44 +1,49 @@
 <div id="contenu">
-    <h1>Statistiques de <?php echo $_SESSION['STAT_TYPELIEU'] . strtoupper($_SESSION['localite']); ?></h1>
+    <h1>Statistiques de <?php echo $_SESSION['STAT_TYPELIEU'] . " : " . strtoupper($_SESSION['localite']); ?></h1>
 	<div style="background-color: white; color: black; padding: 2px; border: 1px solid black">
-	<h3>Taux des visites concernant ma région sur l'ensemble des données GSB</h3>
-    <div class="pie" style="--p:43"> 43%</div>
-<div class="pie" style="--p:52;--c:darkblue;--b:10px"> 52%</div>
-<div class="pie no-round" style="--p:37;--c:purple;--b:15px"> 37%</div>
-<div class="pie animate no-round" style="--p:23;--c:orange;"> 23%</div>
-<div class="pie animate" style="--p:59;--c:lightgreen"> 59%</div>
+	<h3>Taux concernant <?php echo $_SESSION['STAT_TYPELIEU'];?> (sur l'ensemble des données GSB)</h3>
+    <div class="pie animate" style="--p:<?php echo $_SESSION['STAT_VISITE_POURCENT'];?>"> <?php echo $_SESSION['STAT_VISITE_POURCENT'];?>%</div>
+<div class="pie animate" style="--p:<?php echo $_SESSION['STAT_MEDECIN_POURCENT'];?>;--c:darkblue;--b:10px"> <?php echo $_SESSION['STAT_MEDECIN_POURCENT'];?>%</div>
+<div class="pie animate no-round" style="--p:<?php echo $_SESSION['STAT_VISITEURS_POURCENT'];?>;--c:purple;--b:15px"> <?php echo $_SESSION['STAT_VISITEURS_POURCENT'];?>%</div>
+<div class="pie animate no-round" style="--p:<?php echo $_SESSION['STAT_DELEGUES_POURCENT'];?>;--c:orange;"> <?php echo $_SESSION['STAT_DELEGUES_POURCENT'];?>%</div>
+<div class="pie animate" style="--p:<?php echo $_SESSION['STAT_RESPONSABLES_POURCENT'];?>;--c:lightgreen"> <?php echo $_SESSION['STAT_RESPONSABLES_POURCENT'];?>%</div>
 <br>
 <br>
-<table style="color:black; text-align: left; margin-left: 30%">
+
+<table id="statistiques" style="color:black; text-align: left; padding-left: 15%">
+	<tr style="color:black; text-align: left; padding-left: 30%">
+		<td>
+			<text style="color:darkred;">■</text> Visites effectuées dans <?php echo $_SESSION['STAT_TYPELIEU'];?>
+		</td>
+		<td>
+			<text style="color:darkblue;">■</text> Médécins concernés par <?php echo $_SESSION['STAT_TYPELIEU'];?>
+		</td>
+	</tr>
+	<tr style="color:black; text-align: left; padding-left: 30%">
+		<td>
+			<text style="color:purple;">■</text> Visiteurs concernés par <?php echo $_SESSION['STAT_TYPELIEU'];?>
+		</td>
+		<td>
+			<text style="color:orange;">■</text> Délégués concernés par <?php echo $_SESSION['STAT_TYPELIEU'];?>
+		</td>
+	</tr>
 	<tr>
 		<td>
-	<text style="color:darkred;">■</text> Visites effectuées dans ma région
-</td>
-<td>
-	<text style="color:darkblue;">■</text> Médécins concernés par ma région
-	</td>
-</tr>
-	<tr>
-		<td>
-	<text style="color:purple;">■</text> Ventes du laboratoire Gyverny
-</td>
-<td>
-	<text style="color:orange;">■</text> Ventes du laboratoire Swiss Kane&nbsp;&nbsp;&nbsp;
-</td>
-</tr>
-<tr>
-	<text style="color:lightgreen;">■</text> Ventes du laboratoire Bichat&nbsp;&nbsp;&nbsp;
-</tr>
+			<text style="color:lightgreen;">■</text> Responsables concernés par <?php echo $_SESSION['STAT_TYPELIEU'];?>
+		</td>
+	</tr>
 </table>
+<br>
+
 </div>
 
 <?php
 $dataPoints = array(
-	array("label"=> "Visites", "y"=> 86),
-	array("label"=> "Médecins", "y"=> 104),
-	array("label"=> "Ventes Gyverny", "y"=> 74),
-	array("label"=> "Ventes Swiss Kane", "y"=> 46),
-	array("label"=> "Ventes Bichat", "y"=> 118/*, "indexLabel"=> "Lowest"*/)
+	array("label"=> "Visites", "y"=> $_SESSION['STAT_VISITE']),
+	array("label"=> "Médecins", "y"=> $_SESSION['STAT_MEDECIN']),
+	array("label"=> "Visiteurs", "y"=> $_SESSION['STAT_VISITEURS']),
+	array("label"=> "Délégués", "y"=> $_SESSION['STAT_DELEGUES']),
+	array("label"=> "Responsables", "y"=> $_SESSION['STAT_RESPONSABLES'])
 );
 ?>
 
@@ -51,10 +56,10 @@ var chart = new CanvasJS.Chart("chartContainer", {
 	animationEnabled: true,
 	theme: "light2", // "light1", "light2", "dark1", "dark2"
 	title: {
-		text: "Chiffres concernant les visites de ma région"
+		text: "Chiffres concernant les visites de <?php echo $_SESSION['STAT_TYPELIEU'];?>"
 	},
 	axisY: {
-		title: "Nombre"
+		title: "Quantité"
 	},
 	data: [{
 		type: "column",
