@@ -29,7 +29,7 @@
       <!-- Création d'une zone de texte "adresse" -->
 
       <tr> <td><p>ADRESSE*</p></td>
-              <td><input type="text" name="adresse"  placeholder="160 r saitn pierre" required></td>
+              <td><input type="text" name="adresse"  placeholder="160 r saint pierre" required></td>
       </tr>
 
       <!-- Création d'une zone de texte "code postal" -->
