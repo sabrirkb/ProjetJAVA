@@ -1,10 +1,15 @@
 package jeu;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class Jeu {
 	
-    private GUI gui; 
+    public static GUI gui; 
 	private Zone zoneCourante;
+    private Horloge Temps = new Horloge();
     
-    public Jeu() {
+    public Jeu() throws InterruptedException {
 
         // --------------------------------
         // Inclure un menu de départ -> reprendre une sauvegarde / créer une nouvelle partie
@@ -19,10 +24,27 @@ public class Jeu {
         // --------------------------------
     }
 
+    // DÉMARRE LE TIMER QUI PERMET À L'HORLOGE DU JEU DE TOURNER
+    public void StartTime() throws InterruptedException
+    {
+        Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+              Temps.addTime();
+            }
+          }, 0, 700); // réduire 'period: 700' pour accélérer le temps in-game
+    }
+
+    // INITIALISATION
     public void setGUI( GUI g) { gui = g; afficherMessageDeBienvenue(); }
-    
     private void creerCarte() {
-        Zone [] zones = new Zone [15];
+
+        // CREE UN TABLEAU QUI CONTIENT LES ZONES ET CINEMATIQUES(*) DE NOTRE JEU
+        // (*) : une cinématique se définit comme un enchaînement de zones, dont les messages et/ou
+        // les images varient lorsque le joueur tape les actions [SUIVANT] / [OK]
+        Zone [] zones = new Zone [15]; 
+
 
         // EXEMPLES DE CREATION D'UNE NOUVELLE ZONE
         // zone[x] = new Zone("description de la zone", "src/image.png");
@@ -33,18 +55,25 @@ public class Jeu {
 
 
         // EXEMPLES D'AJOUT D'UNE SORTIE DANS UNE ZONE EXISTANTE
-        // zone[x].ajouteSortie(Sortie.DIRECTION, zone[y]);
-        // zones[0].ajouteSortie(Sortie.EST, zones[1]);
-        // zones[1].ajouteSortie(Sortie.OUEST, zones[0]);
-        // zones[1].ajouteSortie(Sortie.EST, zones[2]);
-        // zones[2].ajouteSortie(Sortie.OUEST, zones[1]);
-        // zones[3].ajouteSortie(Sortie.NORD, zones[1]);
-        // zones[1].ajouteSortie(Sortie.SUD, zones[3]);
+        //
+        //  Fonction :
+        //      zone[x].ajouteSortie(Sortie.DIRECTION, zone[y]);
+        //
+        //  Avec zones[x] -> la zone qui contient la direction 'DIRECTION' (NORD/SUD/EST/OUEST)
+        //  et zones[y] -> la zone vers laquelle pointe la direction
+        //
+        //  Exemples :
+        //  zones[0].ajouteSortie(Sortie.EST, zones[1]);
+        //    -> La zone [0] contient maintenant une sortie vers l'EST qui pointe vers la zone [1]
+        //  zones[1].ajouteSortie(Sortie.OUEST, zones[0]);
+        //    -> La zone [1] contient maintenant une sortie vers l'OUEST qui pointe vers la zone [0]
 
 
         // EXEMPLE DE CHANGEMENT DE LA ZONE COURANTE (QUI S'AFFICHE SUR LE JEU)
         // zoneCourante = zones[1];   
 
+
+        // ZONES DE NOTRE JEU
         // zone[0] = new Zone(description: "menu principal", image: "/interface/menuPrincipal.png");
         zones[1] = new Zone("l'île de XXXX (jour).", "/exterieur/ile/ileJournee.png");
         zones[2] = new Zone("l'île de XXXX (nuit).", "/exterieur/ile/ileNuit.png");
@@ -55,19 +84,40 @@ public class Jeu {
         zones[7] = new Zone("le refectoire (nuit).", "/interieur/refectoire/refectoireNuit.png");
         zones[8] = new Zone("le refectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
 
-        zones[1].ajouteSortie(Sortie.NORD, zones[3]);
-        // zones[1].ajouteSortie(Sortie.SUD, zones[x]); -> ajouter la sortie sud UNIQUEMENT en fin de jeu
-        // et mettre à jour zones[x] vers zone interface de fin du jeu
 
+        // AJOUT DES SORTIES AUX ZONES DU JEU
+        zones[1].ajouteSortie(Sortie.NORD, zones[3]);
+        // zones[1].ajouteSortie(Sortie.SUD, zones[x]); 
+        // Ajouter la sortie sud à la zone [1] UNIQUEMENT en fin de jeu
+        // avec 'zones[x]' la zone affichant l'interface de fin du jeu
         zones[2].ajouteSortie(Sortie.NORD, zones[4]);
         // zones[2].ajouteSortie(Sortie.SUD, zones[x]); -> idem, mais le joueur s'enfuit la nuit
 
+
+        // EXEMPLE D'UNE CINEMATIQUE
+        // La cinématique débute lorsque le joueur arrive jusque la zone [9] :
+        zones[9] = new Cinematique("Vous assistez au combat qui vient d'éclater entre Bart et Marco."
+                                   + "\nLes gardes viennent rapidement séparer les deux protagonistes.", 
+                                "/interieur/refectoire/refectoireRepas.png");
+        zones[10] = new Cinematique("Le repas suit son cours lorsqu'un détenu vous murmure :"
+                                   + "\n« L'un des gardes a laissé une de ses clé sur le plan de travail de la cuisine."
+                                   + "\n« Je m'en occuperais volontiers, mais je suis trop vieux pour tenter une évasion. »", 
+                                "/interieur/refectoire/refectoireRepas.png");
+        zones[9].ajouteAction(Action.SUIVANT, zones[10]); // Ajoute la scène zones[10] à la scène zones[9] (toujours créer les scènes AVANT de les lier)
+        zones[10].ajouteAction(Action.OK, zones[8]); // Affiche la zones[8] en fin de cinématique
+        zones[4].ajouteSortie(Sortie.EST, zones[9]); // Affecte le déclenchement de la cinématique à zones[4] 
+                                                     // si le joueur prend la sortie 'EST'
+        zones[8].ajouteSortie(Sortie.NORD, zones[4]);
+
+
+        // ZONE AFFICHEE LORSQUE LE JOUEUR CREE UNE NOUVELLE PARTIE
         // Mettre la zone de depart sur zones[0] lorsque
         // l'interface du menu principal sera créée
         zoneCourante = zones[2]; // -> Pour l'instant, on se contentera de mettre zoneCourante exterieur prison
     }
 
     private void afficherLocalisation() {
+            gui.afficher(Temps.getTime());
             gui.afficher( zoneCourante.descriptionLongue());
             gui.afficher();
     }
@@ -102,6 +152,12 @@ public class Jeu {
         case "Q" : case "QUITTER" :
         	terminer();
         	break;
+        case "SUIVANT" :
+        	nextScene(  "SUIVANT");
+        	break;
+        case "OK" :
+        	nextScene( "OK");
+        	break;
        	default : 
             gui.afficher("Commande inconnue");
             break;
@@ -109,8 +165,8 @@ public class Jeu {
     }
 
     private void afficherAide() {
-        gui.afficher("Etes-vous perdu ?");
-        gui.afficher();
+        gui.afficher("Vous êtes perdu ?");
+        gui.afficher(Temps.getTime());
         gui.afficher("Les commandes autorisées sont :");
         gui.afficher();
         gui.afficher(Commande.toutesLesDescriptions().toString());
@@ -125,10 +181,20 @@ public class Jeu {
     	}
         else {
         	zoneCourante = nouvelle;
+            gui.afficher(Temps.getTime());
         	gui.afficher(zoneCourante.descriptionLongue());
         	gui.afficher();
         	gui.afficheImage(zoneCourante.nomImage());
         }
+    }
+
+    private void nextScene(String uneAction) {
+    	Zone nouvelle = zoneCourante.obtientSortie( uneAction);
+        zoneCourante = nouvelle;
+        gui.afficher(Temps.getTime());
+        gui.afficher(zoneCourante.descriptionLongue());
+        gui.afficher();
+        gui.afficheImage(zoneCourante.nomImage());
     }
     
     private void terminer() {

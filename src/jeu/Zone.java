@@ -3,9 +3,9 @@ import java.util.HashMap;
 
 public class Zone 
 {
-    private String description;
+    protected String description;
     private String nomImage;
-    private HashMap<String,Zone> sorties;   
+    protected HashMap<String,Zone> sorties;   
 
     public Zone(String description, String image) {
         this.description = description;
@@ -15,6 +15,11 @@ public class Zone
 
     public void ajouteSortie(Sortie sortie, Zone zoneVoisine) {
         sorties.put(sortie.name(), zoneVoisine);
+    }
+
+    // Permet d'ajouter les actions aux cinématiques
+    public void ajouteAction(Action action, Zone sceneSuivante) {
+        sorties.put(action.name(), sceneSuivante);
     }
 
     public String nomImage() {
