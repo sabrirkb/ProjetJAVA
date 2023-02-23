@@ -5,7 +5,11 @@ public class Jeu {
 	private Zone zoneCourante;
     
     public Jeu() {
+        // Inclure un menu de départ pour permettre au joueur de reprendre une sauvegarde / créer une nouvelle partie
+        
+        // N'utiliser cette fonction QUE lorsque le joueur décide de créer une nouvelle partie.
         creerCarte();
+
         gui = null;
     }
 
@@ -27,8 +31,11 @@ public class Jeu {
         zoneCourante = zones[1];   */
 
         // TEST //
+        // zone[0] = new Zone(description: "menu principal", image: "");
+        zones[1] = new Zone("l'ile de jour", "/exterieur/ile/ileJournee.png");
+        zones[2] = new Zone("l'ile de nuit", "/exterieur/ile/ileNuit.png");
 
-        zones[1] = new Zone("l'ile", "/exterieur/ile/ileJournee.png");
+        // Mettre la zone de depart sur zones[0] une fois l'interface du menu principal créée
         zoneCourante = zones[1];
     }
 
