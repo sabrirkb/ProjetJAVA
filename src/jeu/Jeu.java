@@ -28,7 +28,8 @@ public class Jeu {
 
         // TEST //
 
-        zones[1] = new Zone("l'ile", "/exterieur/ile.png");
+        zones[1] = new Zone("l'ile", "/exterieur/ile/ile.png");
+        zoneCourante = zones[1];
     }
 
     private void afficherLocalisation() {
