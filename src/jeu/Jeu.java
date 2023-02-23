@@ -117,6 +117,7 @@ public class Jeu {
     }
 
     private void afficherLocalisation() {
+            gui.afficher();
             gui.afficher(Temps.getTime());
             gui.afficher( zoneCourante.descriptionLongue());
             gui.afficher();
@@ -132,7 +133,7 @@ public class Jeu {
     }
     
     public void traiterCommande(String commandeLue) {
-    	gui.afficher( "> "+ commandeLue + "\n");
+    	gui.afficher( "\n > "+ commandeLue + "\n");
         switch (commandeLue.toUpperCase()) {
         case "?" : case "AIDE" : 
             afficherAide(); 
@@ -158,6 +159,9 @@ public class Jeu {
         case "OK" :
         	nextScene( "OK");
         	break;
+        case "TEMPS" : case "T" :
+        	gui.afficher(Temps.getTime());
+        	break;
        	default : 
             gui.afficher("Commande inconnue");
             break;
@@ -165,7 +169,7 @@ public class Jeu {
     }
 
     private void afficherAide() {
-        gui.afficher("Vous êtes perdu ?");
+        gui.afficher("Vous êtes perdu ?\n");
         gui.afficher(Temps.getTime());
         gui.afficher("Les commandes autorisées sont :");
         gui.afficher();
