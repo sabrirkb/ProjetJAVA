@@ -28,7 +28,7 @@ public class Jeu {
 
         // TEST //
 
-        zones[1] = new Zone("l'ile", "/exterieur/ile/ile.png");
+        zones[1] = new Zone("l'ile", "/exterieur/ile/ileJournee.png");
         zoneCourante = zones[1];
     }
 
