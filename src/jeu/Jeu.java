@@ -26,7 +26,7 @@ public class Jeu {
         zones[1].ajouteSortie(Sortie.SUD, zones[3]);
         zoneCourante = zones[1];   */
 
-        // TEST
+        // TEST //
 
         zones[1] = new Zone("l'ile", "/exterieur/ile.png");
     }
