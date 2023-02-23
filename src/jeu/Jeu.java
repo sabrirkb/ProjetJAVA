@@ -22,7 +22,7 @@ public class Jeu {
     public void setGUI( GUI g) { gui = g; afficherMessageDeBienvenue(); }
     
     private void creerCarte() {
-        Zone [] zones = new Zone [4];
+        Zone [] zones = new Zone [15];
 
         // EXEMPLES DE CREATION D'UNE NOUVELLE ZONE
         // zone[x] = new Zone("description de la zone", "src/image.png");
@@ -46,12 +46,25 @@ public class Jeu {
         // zoneCourante = zones[1];   
 
         // zone[0] = new Zone(description: "menu principal", image: "/interface/menuPrincipal.png");
-        zones[1] = new Zone("l'ile de jour", "/exterieur/ile/ileJournee.png");
-        zones[2] = new Zone("l'ile de nuit", "/exterieur/ile/ileNuit.png");
+        zones[1] = new Zone("l'île de XXXX (jour).", "/exterieur/ile/ileJournee.png");
+        zones[2] = new Zone("l'île de XXXX (nuit).", "/exterieur/ile/ileNuit.png");
+        zones[3] = new Zone("cour (jour).", "/exterieur/cour/courJournee.png");
+        zones[4] = new Zone("cour (nuit).", "/exterieur/cour/courNuit.png");
+        zones[5] = new Zone("la cour (heure de promenade).", "/exterieur/cour/courPromenade.png");
+        zones[6] = new Zone("le refectoire (jour).", "/interieur/refectoire/refectoireJournee.png");
+        zones[7] = new Zone("le refectoire (nuit).", "/interieur/refectoire/refectoireNuit.png");
+        zones[8] = new Zone("le refectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
+
+        zones[1].ajouteSortie(Sortie.NORD, zones[3]);
+        // zones[1].ajouteSortie(Sortie.SUD, zones[x]); -> ajouter la sortie sud UNIQUEMENT en fin de jeu
+        // et mettre à jour zones[x] vers zone interface de fin du jeu
+
+        zones[2].ajouteSortie(Sortie.NORD, zones[4]);
+        // zones[2].ajouteSortie(Sortie.SUD, zones[x]); -> idem, mais le joueur s'enfuit la nuit
 
         // Mettre la zone de depart sur zones[0] lorsque
         // l'interface du menu principal sera créée
-        zoneCourante = zones[1]; // -> Pour l'instant, on se contentera de mettre zoneCourante sur l'exterieur de la prison
+        zoneCourante = zones[2]; // -> Pour l'instant, on se contentera de mettre zoneCourante exterieur prison
     }
 
     private void afficherLocalisation() {
