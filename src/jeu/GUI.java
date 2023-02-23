@@ -41,7 +41,7 @@ public class GUI implements ActionListener
     }
 
     private void creerGUI() {
-        fenetre = new JFrame("Jeu");
+        fenetre = new JFrame("Le titre de notre jeu");
         
         entree = new JTextField(34);
 
