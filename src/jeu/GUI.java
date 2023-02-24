@@ -1,7 +1,11 @@
 package jeu;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 
 public class GUI implements ActionListener
@@ -11,8 +15,9 @@ public class GUI implements ActionListener
     private JTextField entree;
     private JTextArea texte;
     private JLabel image;
+    private JPanel panel = new JPanel();
 
-    public GUI(Jeu j) {
+    public GUI(Jeu j) throws FileNotFoundException, FontFormatException, IOException {
         jeu = j;
         creerGUI();
     }
@@ -44,6 +49,7 @@ public class GUI implements ActionListener
 
     public void afficheJoueur( String direction) {
         URL imageURL = null;
+        JLabel imageJoueur = new JLabel();
         if (direction == "NORD" || direction == "N")
         {
             imageURL = this.getClass().getClassLoader().getResource("jeu/images/sprites/heros/monte.png");
@@ -61,12 +67,9 @@ public class GUI implements ActionListener
             imageURL = this.getClass().getClassLoader().getResource("jeu/images/sprites/heros/gauche.png");
         }
         if( imageURL != null ) {
-            //JLabel imageJoueur = new JLabel();
-            //imageJoueur.setIcon( new ImageIcon( imageURL ));
-            //JPanel panel2 = new JPanel();
-            //panel2.add(imageJoueur, BorderLayout.NORTH);
-            //fenetre.getContentPane().add(panel2, BorderLayout.CENTER);
-            //fenetre.pack();
+            
+            imageJoueur.setIcon( new ImageIcon( imageURL ));
+            //panel.add(imageJoueur, BorderLayout.NORTH);
         }
     }
 
@@ -76,7 +79,7 @@ public class GUI implements ActionListener
             entree.getCaret().setBlinkRate(0);
     }
 
-    private void creerGUI() {
+    private void creerGUI() throws FileNotFoundException, FontFormatException, IOException {
         // TITRE DU JEU A MODIFIER
         fenetre = new JFrame("Le titre de notre jeu");
         
@@ -84,17 +87,30 @@ public class GUI implements ActionListener
 
         texte = new JTextArea();
         texte.setEditable(false);
+        texte.setBackground(Color.black);
+        texte.setForeground(Color.white);
+        texte.setLineWrap(true);
+        texte.setWrapStyleWord(true);
+        texte.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));
+
+
+        FileInputStream fontURL = new FileInputStream("src/jeu/fonts/TerminalVector.ttf");
+        Font police = Font.createFont(Font.TRUETYPE_FONT, fontURL);
+        float size = police.getSize() + 13f;
+        texte.setFont(police.deriveFont(size));
         JScrollPane listScroller = new JScrollPane(texte);
         listScroller.setPreferredSize(new Dimension(200, 200));
         listScroller.setMinimumSize(new Dimension(100,100));
+        listScroller.setBorder(BorderFactory.createMatteBorder(2, 0, 2, 0, Color.WHITE));
 
-        JPanel panel = new JPanel();
         image = new JLabel();
+        image.setBackground(Color.black);
 
         panel.setLayout(new BorderLayout());
         panel.add(image, BorderLayout.NORTH);
         panel.add(listScroller, BorderLayout.CENTER);
         panel.add(entree, BorderLayout.SOUTH);
+        panel.setBackground(Color.black);
 
         fenetre.getContentPane().add(panel, BorderLayout.CENTER);
         
@@ -104,7 +120,15 @@ public class GUI implements ActionListener
 
         fenetre.pack();
         fenetre.setVisible(true);
+        fenetre.setBackground(Color.black);
+
         entree.requestFocus();
+        entree.setBackground(Color.black);
+        entree.setForeground(Color.white);
+        entree.setFont(police.deriveFont(size));
+        entree.setCaretColor(Color.WHITE);
+        entree.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));
+
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -115,5 +139,10 @@ public class GUI implements ActionListener
         String commandeLue = entree.getText();
         entree.setText("");
         jeu.traiterCommande( commandeLue);
+    }
+
+    public void clearText()
+    {
+        texte.setText("");
     }
 }

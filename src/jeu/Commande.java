@@ -3,12 +3,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum Commande {
-	NORD("N", "N (aller à la sortie nord)"), 
-	SUD("S", "S (aller à la sortie sud)"), 
-	EST("E", "E (aller à la sortie est)"), 
-	OUEST("O", "O (aller à la sortie ouest)"), 
-	AIDE("?", "? (aide)"), 
-	QUITTER("Q", "Q (quitter)");
+	DIRECTION("D", "Direction\t(D)  :  Directions disponibles"),
+	NORD("N", "Nord\t\t(N)  :  Aller à la sortie nord"), 
+	SUD("S", "Sud\t\t(S)  :  Aller à la sortie sud"), 
+	EST("E", "Est\t\t(E)  :  Aller à la sortie est"), 
+	OUEST("O", "Ouest\t\t(O)  :  Aller à la sortie ouest"), 
+	TEMPS("T", "Temps\t\t(T)  :  Afficher le temps"), 
+	INVENTAIRE("I", "Inventaire\t(I)  :  Afficher l'inventaire"), 
+	AIDE("?", "Aide\t\t(?)  :  Aide"), 
+	QUITTER("Q", "Quitter\t\t(Q)  :  Quitter");
 
 	private String abreviation;
 	private String description;

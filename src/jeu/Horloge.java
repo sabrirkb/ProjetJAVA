@@ -6,7 +6,7 @@ public class Horloge {
     private int minutes = 0;
 
     public Horloge() { 
-        this.heure = 23;
+        this.heure = 7;
         this.minutes = 50;
     }
 

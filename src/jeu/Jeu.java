@@ -1,5 +1,6 @@
 package jeu;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -8,6 +9,13 @@ public class Jeu {
     public static GUI gui; 
 	private Zone zoneCourante;
     private Horloge Temps = new Horloge();
+    private List<Objets> Inventaire;
+    private boolean coffreOuvert = false;
+    private boolean celluleOuverte = false;
+    private boolean indiceCodetenu = false;
+    private boolean rdvMarco = false;
+    private boolean sceneBagarre = false;
+    private Zone [] zones;
     
     public Jeu() throws InterruptedException {
 
@@ -32,6 +40,7 @@ public class Jeu {
             @Override
             public void run() {
               Temps.addTime();
+              checkJourNuit();
             }
           }, 0, 700); // réduire 'period: 700' pour accélérer le temps in-game
     }
@@ -40,11 +49,13 @@ public class Jeu {
     public void setGUI( GUI g) { gui = g; afficherMessageDeBienvenue(); }
     private void creerCarte() {
 
-        // CREE UN TABLEAU QUI CONTIENT LES ZONES ET CINEMATIQUES(*) DE NOTRE JEU
+        // CRÉATION D'UN TABLEAU QUI CONTIENT LES ZONES ET CINÉMATIQUES(*) DE NOTRE JEU
         // (*) : une cinématique se définit comme un enchaînement de zones, dont les messages et/ou
         // les images varient lorsque le joueur tape les actions [SUIVANT] / [OK]
-        Zone [] zones = new Zone [15]; 
 
+                zones = new Zone [50];  // Il n'y a pas réellement 50 zones,
+                                        // les scènes variantes (jour/nuit) et cinématiques
+                                        // sont également inclues dans le tableau.
 
         // EXEMPLES DE CREATION D'UNE NOUVELLE ZONE
         // zone[x] = new Zone("description de la zone", "src/image.png");
@@ -80,10 +91,16 @@ public class Jeu {
         zones[3] = new Zone("cour (jour).", "/exterieur/cour/courJournee.png");
         zones[4] = new Zone("cour (nuit).", "/exterieur/cour/courNuit.png");
         zones[5] = new Zone("la cour (heure de promenade).", "/exterieur/cour/courPromenade.png");
-        zones[6] = new Zone("le refectoire (jour).", "/interieur/refectoire/refectoireJournee.png");
-        zones[7] = new Zone("le refectoire (nuit).", "/interieur/refectoire/refectoireNuit.png");
-        zones[8] = new Zone("le refectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
-
+        zones[6] = new Zone("le réfectoire (jour).", "/interieur/refectoire/refectoireJournee.png");
+        zones[7] = new Zone("le réfectoire (nuit).", "/interieur/refectoire/refectoireNuit.png");
+        zones[8] = new Zone("le réfectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
+        // zones[11] = new Zone("le réfectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
+        // zones[12] = new Zone("le réfectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
+        // zones[13] = new Zone("le réfectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
+        // zones[14] = new Zone("le réfectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
+        // zones[15] = new Zone("le réfectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
+        // zones[16] = new Zone("le réfectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
+        // zones[17] = new Zone("le réfectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
 
         // AJOUT DES SORTIES AUX ZONES DU JEU
         zones[1].ajouteSortie(Sortie.NORD, zones[3]);
@@ -96,12 +113,13 @@ public class Jeu {
 
         // EXEMPLE D'UNE CINEMATIQUE
         // La cinématique débute lorsque le joueur arrive jusque la zone [9] :
-        zones[9] = new Cinematique( "Vous êtes dans le réfectoire.\nVous assistez au combat qui vient d'éclater entre Bart et Marco."
-                                   + "\nLes gardes viennent rapidement séparer les deux protagonistes.", 
+        zones[9] = new Cinematique( "Vous êtes dans le réfectoire.\nUne bagarre vient d'éclater entre Bart "
+                                   + "et Marco… Après quelques minutes, les gardes viennent séparer les deux "
+                                   + "protagonistes et les conduisent dans leurs cellules respectives.", 
                                 "/interieur/refectoire/refectoireRepas.png");
         zones[10] = new Cinematique("Le repas suit son cours lorsqu'un détenu vous murmure :"
                                    + "\n« L'un des gardes a laissé une de ses clé sur le plan de travail de la cuisine."
-                                   + "\n« Je m'en occuperais volontiers, mais je suis trop vieux pour tenter une évasion. »", 
+                                   + " Je m'en occuperais volontiers, mais je suis trop vieux pour tenter une évasion. »", 
                                 "/interieur/refectoire/refectoireRepas.png");
         zones[9].ajouteAction(Action.SUIVANT, zones[10]); // Ajoute la scène zones[10] à la scène zones[9] (toujours créer les scènes AVANT de les lier)
         zones[10].ajouteAction(Action.OK, zones[8]); // Affiche la zones[8] en fin de cinématique
@@ -117,10 +135,10 @@ public class Jeu {
 
 
         // CREATION DES SPRITES DU JOUEUR
-        String JoueurMonte = "/sprites/heros/monte.png";
-        String JoueurDescend = "/sprites/heros/descend.png";
-        String JoueurGauche = "/sprites/heros/gauche.png";
-        String JoueurDroite = "/sprites/heros/droite.png";
+        // String JoueurMonte = "/sprites/heros/monte.png";
+        // String JoueurDescend = "/sprites/heros/descend.png";
+        // String JoueurGauche = "/sprites/heros/gauche.png";
+        // String JoueurDroite = "/sprites/heros/droite.png";
 
         // CREATION DES SPRITES DES NPC
 
@@ -133,7 +151,7 @@ public class Jeu {
         // gui.afficheObjet(garde, SUD);
         // gui.afficheObjet(garde, SUD);
 
-        }
+    }
 
     private void afficherLocalisation() {
             gui.afficher();
@@ -153,15 +171,19 @@ public class Jeu {
     }
     
     public void traiterCommande(String commandeLue) {
-    	gui.afficher( "\n > "+ commandeLue + "\n");
+        gui.clearText();
+    	gui.afficher( "> "+ commandeLue + "\n\n");
         switch (commandeLue.toUpperCase()) {
-        case "?" : case "AIDE" : 
+        case "?" : case "AIDE" : case "HELP" :
             afficherAide(); 
         	break;
         case "N" : case "NORD" :
         	allerEn( "NORD"); 
         	break;
-       case "S" : case "SUD" :
+        case "D" : case "DIRECTION" : case "DIRECTIONS" :
+        	afficherLocalisation(); 
+        	break;
+        case "S" : case "SUD" :
         	allerEn( "SUD"); 
         	break;
         case "E" : case "EST" :
@@ -170,37 +192,131 @@ public class Jeu {
         case "O" : case "OUEST" :
         	allerEn( "OUEST"); 
         	break;
-        case "Q" : case "QUITTER" :
-        	terminer();
+        case "Q" : case "QUITTER" : case "QUIT" :
+            gui.afficher("Voulez-vous vraiment quitter ? \n[YES] - [NO]");
         	break;
-        case "SUIVANT" :
+        case "I" : case "INVENTAIRE" : case "INV" :
+        	checkInventaire();
+        	break;
+        case "YES" :
+        	terminer();
+            break;
+        case "NO" :
+        	afficherLocalisation();
+            break;
+        case "COFFRE" :
+        	ouvrirCoffre();
+            break;
+        case "SUIVANT" : case "SUIV" :
         	nextScene(  "SUIVANT");
         	break;
         case "OK" :
         	nextScene( "OK");
         	break;
-        case "TEMPS" : case "T" :
+        case "TEMPS" : case "T" : case "TIME" :
         	gui.afficher(Temps.getTime());
         	break;
        	default : 
-            gui.afficher("Commande inconnue");
+            gui.clearText();
+            gui.afficher("Commande inconnue.\nTapez '?' pour obtenir de l'aide.");
             break;
         }
     }
 
+    private void ouvrirCoffre()
+    {
+        boolean clePossedee = false;
+        if (Inventaire != null)
+        {
+            for (Objets objet : Inventaire)
+            {
+                if (objet == Objets.CLE1)
+                {
+                    clePossedee = true;
+                } 
+                else 
+                { 
+                    clePossedee = false;
+                }
+            }
+        }
+        if (clePossedee == true /*&& zoneCourante = zones[x]*/)
+        {
+            coffreOuvert = true;
+            // zoneActuelle = zones[x]; -> Cinématique d'ouverture du coffre / récupération clé cellule
+            // Ajouter CLE2 à l'inventaire en fin de cinématique (Inventaire.add(CLE2);)
+        }
+        else
+        {
+            gui.afficher("Vous n'êtes pas dans la salle des gardes ou ne possédez pas la clé du coffre.");
+        }
+    }
+
+    public void checkInventaire()
+    {
+        gui.afficher("Voici le contenu de votre inventaire :\n");
+        gui.afficher();
+        if(this.Inventaire != null)
+        {
+            for (Objets objet : Inventaire)
+            {
+                gui.afficher(objet.name().toString());
+            }
+        }
+        else
+        {
+            gui.afficher("Aucun objet\n");
+        }
+    }
+
+    // Vérifie si l'heure actuelle doit changer la zone actuelle sur une scène de jour ou une scène de nuit
+    private void checkJourNuit()
+    {
+        if (Temps.getHeure() < 20 && Temps.getHeure() >= 8)
+        {
+            if (zoneCourante == zones[2]) // Si la zone courante est une zone de type "jour" ,
+            {
+                zoneCourante = zones[1]; // on repasse zone courante à la même scène de type "nuit" .
+                gui.afficheImage(zoneCourante.nomImage());
+                gui.clearText();
+                gui.afficher("Il fait maintenant jour.\n");
+            }
+
+            //  if (zoneCourante == zones[4])   // Faire de même pour les autres zones sauf les zones
+            //  {                               // de cinématiques et d'événements (repas, bagarre, etc.)
+            //    zoneCourante = zones[3];
+            //  }
+            // etc
+        }
+        else if (Temps.getHeure() >= 20 && Temps.getHeure() < 8)
+        {
+            if(zoneCourante == zones[1])
+            {
+                zoneCourante = zones[2];
+                gui.afficheImage(zoneCourante.nomImage());
+                gui.clearText();
+                gui.afficher("Il fait maintenant nuit.\n");
+            }
+            //  if (zoneCourante == zones[3])
+            //  {
+            //    zoneCourante = zones[4];
+            //  }
+            // etc
+        }
+    }
+
     private void afficherAide() {
-        gui.afficher("Vous êtes perdu ?\n");
-        gui.afficher(Temps.getTime());
-        gui.afficher("Les commandes autorisées sont :");
-        gui.afficher();
-        gui.afficher(Commande.toutesLesDescriptions().toString());
-        gui.afficher();
+        gui.afficher("Vous êtes perdu? Les commandes autorisées sont : ");
+        for( String str : Commande.toutesLesDescriptions() )
+        {
+            gui.afficher("\n" + str.toString());
+        }
     }
 
     private void allerEn(String direction) {
     	Zone nouvelle = zoneCourante.obtientSortie( direction);
     	if ( nouvelle == null ) {
-        	gui.afficher( "Pas de sortie " + direction);
+        	gui.afficher( "Il n'y a pas de sortie vers le " + direction + ".");
     		gui.afficher();
     	}
         else {
@@ -209,10 +325,7 @@ public class Jeu {
         	gui.afficher(zoneCourante.descriptionLongue());
         	gui.afficher();
         	gui.afficheImage(zoneCourante.nomImage());
-            //if (zoneCourante == Jeu.zones[0])
-            //{
-                gui.afficheJoueur(direction); // affichage du joueur
-            //}
+            gui.afficheJoueur(direction);
         }
     }
 
@@ -226,7 +339,14 @@ public class Jeu {
     }
     
     private void terminer() {
-    	gui.afficher( "Au revoir...");
+    	gui.afficher( "Fermeture du jeu...\nAu revoir!");
     	gui.enable( false);
+        Timer chrono = new Timer();
+        chrono.schedule(new TimerTask() {
+            @Override
+            public void run() {
+              System.exit(0);
+            }
+          }, 3500, 1000);
     }
 }
