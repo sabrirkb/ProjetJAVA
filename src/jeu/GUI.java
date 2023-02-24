@@ -34,6 +34,42 @@ public class GUI implements ActionListener
         }
    }
 
+    public void afficheObjet( String nomObjet) {
+        URL imageURL = this.getClass().getClassLoader().getResource("jeu/images/" + nomObjet);
+        if( imageURL != null ) {
+            image.setIcon( new ImageIcon( imageURL ));
+            fenetre.pack();
+        }
+    }
+
+    public void afficheJoueur( String direction) {
+        URL imageURL = null;
+        if (direction == "NORD" || direction == "N")
+        {
+            imageURL = this.getClass().getClassLoader().getResource("jeu/images/sprites/heros/monte.png");
+        }
+        if (direction == "SUD" || direction == "S")
+        {
+            imageURL = this.getClass().getClassLoader().getResource("jeu/images/sprites/heros/descend.png");
+        }
+        if (direction == "EST" || direction == "E")
+        {
+            imageURL = this.getClass().getClassLoader().getResource("jeu/images/sprites/heros/droite.png");
+        }
+        if (direction == "OUEST" || direction == "O")
+        {
+            imageURL = this.getClass().getClassLoader().getResource("jeu/images/sprites/heros/gauche.png");
+        }
+        if( imageURL != null ) {
+            //JLabel imageJoueur = new JLabel();
+            //imageJoueur.setIcon( new ImageIcon( imageURL ));
+            //JPanel panel2 = new JPanel();
+            //panel2.add(imageJoueur, BorderLayout.NORTH);
+            //fenetre.getContentPane().add(panel2, BorderLayout.CENTER);
+            //fenetre.pack();
+        }
+    }
+
     public void enable(boolean ok) {
         entree.setEditable(ok);
         if ( ! ok )

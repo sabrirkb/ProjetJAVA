@@ -96,7 +96,7 @@ public class Jeu {
 
         // EXEMPLE D'UNE CINEMATIQUE
         // La cinématique débute lorsque le joueur arrive jusque la zone [9] :
-        zones[9] = new Cinematique("Vous assistez au combat qui vient d'éclater entre Bart et Marco."
+        zones[9] = new Cinematique( "Vous êtes dans le réfectoire.\nVous assistez au combat qui vient d'éclater entre Bart et Marco."
                                    + "\nLes gardes viennent rapidement séparer les deux protagonistes.", 
                                 "/interieur/refectoire/refectoireRepas.png");
         zones[10] = new Cinematique("Le repas suit son cours lorsqu'un détenu vous murmure :"
@@ -114,7 +114,26 @@ public class Jeu {
         // Mettre la zone de depart sur zones[0] lorsque
         // l'interface du menu principal sera créée
         zoneCourante = zones[2]; // -> Pour l'instant, on se contentera de mettre zoneCourante exterieur prison
-    }
+
+
+        // CREATION DES SPRITES DU JOUEUR
+        String JoueurMonte = "/sprites/heros/monte.png";
+        String JoueurDescend = "/sprites/heros/descend.png";
+        String JoueurGauche = "/sprites/heros/gauche.png";
+        String JoueurDroite = "/sprites/heros/droite.png";
+
+        // CREATION DES SPRITES DES NPC
+
+
+        // CREATION DES SPRITES DES OBJETS
+
+
+        // INITIALISATION DU JEU
+        // gui.afficheJoueur("NORD");
+        // gui.afficheObjet(garde, SUD);
+        // gui.afficheObjet(garde, SUD);
+
+        }
 
     private void afficherLocalisation() {
             gui.afficher();
@@ -130,6 +149,7 @@ public class Jeu {
         gui.afficher();
         afficherLocalisation();
         gui.afficheImage(zoneCourante.nomImage());
+        gui.afficheJoueur("NORD");
     }
     
     public void traiterCommande(String commandeLue) {
@@ -189,6 +209,10 @@ public class Jeu {
         	gui.afficher(zoneCourante.descriptionLongue());
         	gui.afficher();
         	gui.afficheImage(zoneCourante.nomImage());
+            //if (zoneCourante == Jeu.zones[0])
+            //{
+                gui.afficheJoueur(direction); // affichage du joueur
+            //}
         }
     }
 
