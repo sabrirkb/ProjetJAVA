@@ -107,6 +107,7 @@ public class Jeu {
         // zones[1].ajouteSortie(Sortie.SUD, zones[x]); 
         // Ajouter la sortie sud à la zone [1] UNIQUEMENT en fin de jeu
         // avec 'zones[x]' la zone affichant l'interface de fin du jeu
+
         zones[2].ajouteSortie(Sortie.NORD, zones[4]);
         // zones[2].ajouteSortie(Sortie.SUD, zones[x]); -> idem, mais le joueur s'enfuit la nuit
 
@@ -123,9 +124,9 @@ public class Jeu {
                                 "/interieur/refectoire/refectoireRepas.png");
         zones[9].ajouteAction(Action.SUIVANT, zones[10]); // Ajoute la scène zones[10] à la scène zones[9] (toujours créer les scènes AVANT de les lier)
         zones[10].ajouteAction(Action.OK, zones[8]); // Affiche la zones[8] en fin de cinématique
-        zones[4].ajouteSortie(Sortie.EST, zones[9]); // Affecte le déclenchement de la cinématique à zones[4] 
+        zones[3].ajouteSortie(Sortie.EST, zones[9]); // Affecte le déclenchement de la cinématique à zones[3] 
                                                      // si le joueur prend la sortie 'EST'
-        zones[8].ajouteSortie(Sortie.NORD, zones[4]);
+        zones[8].ajouteSortie(Sortie.NORD, zones[3]);
 
 
         // ZONE AFFICHEE LORSQUE LE JOUEUR CREE UNE NOUVELLE PARTIE
