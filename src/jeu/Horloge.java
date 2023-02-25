@@ -26,6 +26,48 @@ public class Horloge {
             else {}
     }
 
+    public String skip()
+    {
+        // Si on passe le temps entre 20h et 8h du matin, le personnage "dort" et se réveille
+        // à huit heures du matin.
+        if ((this.heure >= 20 && this.heure <=24) || (this.heure >= 0 && this.heure < 8))
+        {
+            this.heure = 8;
+            this.minutes = 0;
+            return "\nVous vous réveillez après avoir dormi quelques heures…\n";
+        }
+        if (this.heure >= 8 && this.heure < 10)
+        {
+            this.heure = 10;
+            this.minutes = 0;
+            return "\nVous vous réveillez après avoir fait une sieste…\n";
+        }
+        if (this.heure >= 10 && this.heure < 12)
+        {
+            this.heure = 12;
+            this.minutes = 0;
+            return "\nVous vous réveillez après avoir fait une sieste…\n";
+        }
+        if (this.heure >= 12 && this.heure < 15)
+        {
+            this.heure = 15;
+            this.minutes = 0;
+            return "\nVous vous réveillez après avoir fait une sieste…\n";
+        }
+        if (this.heure >= 15 && this.heure < 18)
+        {
+            this.heure = 18;
+            this.minutes = 0;
+            return "\nVous vous réveillez après avoir fait une sieste…\n";
+        }
+        else
+        {
+            this.heure = 20;
+            this.minutes = 0;
+            return "\nVous vous réveillez après avoir fait une sieste…\n";
+        }
+    }
+
     public int getHeure()
     {
         return this.heure;

@@ -135,10 +135,46 @@ public class Jeu {
         zones[7].ajouteSortie(Sortie.NORD, zones[4]);
 
 
+        // CINEMATIQUE DE DEPART :
+        zones[11] = new Cinematique("Vous êtes arrêté pour avoir participé à une embuscade contre "
+                                    + "la garde royale. Vous avez été condamné à purger votre peine sur la prison "
+                                    + "de l'île XXXX…", "/exterieur/ile/ileJournee.png");
+        zones[12] = new Cinematique("Durant le voyage jusqu'à l'île, vous entendez les gardes discuter  "
+                                    + "à propos du sort qui vous est réservé. Vous comprenez rapidement "
+                                    + "que vous allez devoir trouver le moyen de vous échapper si vous "
+                                    + "ne voulez pas finir votre vie derrière les barreaux… "
+                                    , "/exterieur/ile/ileJournee.png");
+        zones[13] = new Cinematique("Le bateau accoste sur l'île. Vous êtes escorté par la garde royale"
+                                    + " jusqu'à votre cellule." , "/exterieur/ile/ileJournee.png"); 
+        zones[14] = new Cinematique("Garde royale: « Voici la cour. C'est ici que tu passeras ton temps"
+                                    + "durant les promenades. »", "/exterieur/cour/courPromenade.png");
+        zones[15] = new Cinematique("Garde royale: « Voilà ta cellule. J'espère que t'as prévu de quoi t'occuper…"
+                                    + "On reviendra te chercher lorsqu'un temps de promenade te sera accordé. »", "/exterieur/cour/courPromenade.png");
+
+        zones[16] = new Zone("votre cellule. Vous n'avez devez attendre la prochaine promenade…"
+                            , "");
+        zones[17] = new Zone("votre cellule. C'est l'heure de la promenade.", "");
+        zones[18] = new Zone("votre cellule. C'est l'heure du repas.", "");
+        zones[19] = new Zone("votre cellule. Vous êtes escorté jusque dans les douches.", "");
+
+        zones[20] = new Zone("couloir Ouest.", "");
+        zones[21] = new Zone("couloir Est.", "");
+
+        zones[16].ajouteAction(Action.DORMIR, zones[17]);
+        zones[16].ajouteAction(Action.DORMIR, zones[17]);
+
+        zones[11].ajouteAction(Action.SUIVANT, zones[12]);
+        zones[12].ajouteAction(Action.SUIVANT, zones[13]);
+        zones[13].ajouteAction(Action.OK, zones[14]);
+        zones[14].ajouteAction(Action.SUIVANT, zones[15]);
+        zones[15].ajouteAction(Action.OK, zones[16]);
+        zones[17].ajouteSortie(Sortie.SUD, zones[20]);
+        zones[20].ajouteSortie(Sortie.NORD, zones[17]);
+
         // ZONE AFFICHEE LORSQUE LE JOUEUR CREE UNE NOUVELLE PARTIE
         // Mettre la zone de depart sur zones[0] lorsque
         // l'interface du menu principal sera créée
-        zoneCourante = zones[1]; // -> Pour l'instant, on se contentera de mettre zoneCourante exterieur prison
+        zoneCourante = zones[11]; // -> Pour l'instant, on se contentera de mettre zoneCourante exterieur prison
 
     }
 
@@ -202,6 +238,9 @@ public class Jeu {
         case "OK" :
         	nextScene( "OK");
         	break;
+        case "DORMIR" :
+        	dormir();
+        	break;
         case "TEMPS" : case "T" : case "TIME" :
         	gui.afficher(Temps.getTime());
         	break;
@@ -241,6 +280,14 @@ public class Jeu {
         }
     }
 
+    public void dormir()
+    {
+        Temps.skip();
+        if (Temps.getHeure() == 8)
+        {
+
+        }
+    }
     public void checkInventaire()
     {
         gui.afficher("Voici le contenu de votre inventaire :\n");
