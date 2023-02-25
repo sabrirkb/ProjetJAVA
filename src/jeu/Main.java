@@ -10,5 +10,7 @@ public class Main {
 		GUI gui = new GUI( jeu);
 		jeu.setGUI( gui);
 		jeu.StartTime();
+		gui.refreshLayers();
+		gui.afficheJoueur("NORD", 258, 343); // Initialisation joueur (au cas ou le premier fail)
 	}
 }

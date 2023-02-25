@@ -14,7 +14,20 @@ public class GUI implements ActionListener
     private JFrame fenetre;
     private JTextField entree;
     private JTextArea texte;
-    private JLabel image;
+    private JLayeredPane layers = new JLayeredPane(); // Ajout des plans dans une layeredPane
+
+    // Couches superposées qui composent l'image de notre jeu (calques)
+    
+    private JLabel image1 = new JLabel(); // Arrière Plan -> zones du jeu
+    private JLabel image2 = new JLabel(); // Neuvieme Plan -> Personnage / Garde / Item / Rien
+    private JLabel image3 = new JLabel(); // Huitieme Plan -> Personnage / Garde / Item / Rien
+    private JLabel image4 = new JLabel(); // Septieme Plan -> Personnage / Garde / Item / Rien
+    private JLabel image5 = new JLabel(); // Sixieme Plan -> Personnage / Garde / Item / Rien
+    private JLabel image6 = new JLabel(); // Cinquieme Plan -> Personnage / Garde / Item / Rien
+    private JLabel image7 = new JLabel(); // Quatrieme Plan -> Personnage / Garde / Item / Rien
+    private JLabel image8 = new JLabel(); // Troisieme Plan -> Personnage / Garde / Item / Rien
+    private JLabel image9 = new JLabel(); // Deuxieme Plan -> Personnage / Garde / Item / Rien
+    private JLabel image10 = new JLabel(); // Premier Plan -> Celui du héros
     private JPanel panel = new JPanel();
 
     public GUI(Jeu j) throws FileNotFoundException, FontFormatException, IOException {
@@ -31,25 +44,61 @@ public class GUI implements ActionListener
         afficher("\n");
     }
 
-   public void afficheImage( String nomImage) {
+    public void afficheImage( String nomImage) {
 	   	URL imageURL = this.getClass().getClassLoader().getResource("jeu/images/" + nomImage);
 	   	if( imageURL != null ) {
-        	image.setIcon( new ImageIcon( imageURL ));
-            fenetre.pack();
-        }
-   }
-
-    public void afficheObjet( String nomObjet) {
-        URL imageURL = this.getClass().getClassLoader().getResource("jeu/images/" + nomObjet);
-        if( imageURL != null ) {
-            image.setIcon( new ImageIcon( imageURL ));
-            fenetre.pack();
+        	image1.setIcon( new ImageIcon( imageURL ));
         }
     }
 
-    public void afficheJoueur( String direction) {
+    // Affiche les autres couches (Objets / Personnages / Gardes)
+    public void afficheAutre( String nomAutre, int Plan, int x, int y) {
+        URL imageURL = this.getClass().getClassLoader().getResource("jeu/images/" + nomAutre);
+        if( imageURL != null ) {
+            switch(Plan)
+            {
+                case 2 :
+                    image2.setIcon( new ImageIcon( imageURL ));
+                    image2.setBounds(x, y, 27, 32);
+                    break;
+                case 3:
+                    image3.setIcon( new ImageIcon( imageURL ));
+                    image3.setBounds(x, y, 27, 32);
+                    break;
+                case 4 :
+                    image4.setIcon( new ImageIcon( imageURL ));
+                    image4.setBounds(x, y, 27, 32);
+                    break;
+                case 5 :
+                    image5.setIcon( new ImageIcon( imageURL ));
+                    image5.setBounds(x, y, 27, 32);
+                    break;
+                case 6 :
+                    image6.setIcon( new ImageIcon( imageURL ));
+                    image6.setBounds(x, y, 27, 32);
+                    break;
+                case 7 :
+                    image7.setIcon( new ImageIcon( imageURL ));
+                    image7.setBounds(x, y, 27, 32);
+                    break;
+                case 8 :
+                    image8.setIcon( new ImageIcon( imageURL ));
+                    image8.setBounds(x, y, 27, 32);
+                    break;
+                case 9 :
+                    image9.setIcon( new ImageIcon( imageURL ));
+                    image9.setBounds(x, y, 27, 32);
+                    break;
+            }
+        }
+    }
+
+    public void afficheJoueur() { 
+        image10.removeAll();
+    }
+
+    public void afficheJoueur( String direction, int x, int y) {
         URL imageURL = null;
-        JLabel imageJoueur = new JLabel();
         if (direction == "NORD" || direction == "N")
         {
             imageURL = this.getClass().getClassLoader().getResource("jeu/images/sprites/heros/monte.png");
@@ -67,10 +116,24 @@ public class GUI implements ActionListener
             imageURL = this.getClass().getClassLoader().getResource("jeu/images/sprites/heros/gauche.png");
         }
         if( imageURL != null ) {
-            
-            imageJoueur.setIcon( new ImageIcon( imageURL ));
-            //panel.add(imageJoueur, BorderLayout.NORTH);
+            image10.setIcon( new ImageIcon( imageURL ));
+            image10.setBounds(x, y, 27, 32);
         }
+    }
+
+    public void refreshLayers()
+    {
+        layers.removeAll();
+        layers.add(image10, 1);
+        layers.add(image9, 2);
+        layers.add(image8, 3);
+        layers.add(image7, 4);
+        layers.add(image6, 5);
+        layers.add(image5, 6);
+        layers.add(image4, 7);
+        layers.add(image3, 8);
+        layers.add(image2, 9);
+        layers.add(image1, 10);
     }
 
     public void enable(boolean ok) {
@@ -82,6 +145,7 @@ public class GUI implements ActionListener
     private void creerGUI() throws FileNotFoundException, FontFormatException, IOException {
         // TITRE DU JEU A MODIFIER
         fenetre = new JFrame("Le titre de notre jeu");
+        fenetre.setResizable(false);
         
         entree = new JTextField(34);
 
@@ -103,11 +167,27 @@ public class GUI implements ActionListener
         listScroller.setMinimumSize(new Dimension(100,100));
         listScroller.setBorder(BorderFactory.createMatteBorder(2, 0, 2, 0, Color.WHITE));
 
-        image = new JLabel();
-        image.setBackground(Color.black);
+        layers.setVisible(true);
+        layers.setOpaque(false);
+        layers.setBackground(Color.black);
+        layers.setLayout(new OverlayLayout(layers));
+        
+        layers.add(image10, 1);
+        layers.add(image9, 2);
+        layers.add(image8, 3);
+        layers.add(image7, 4);
+        layers.add(image6, 5);
+        layers.add(image5, 6);
+        layers.add(image4, 7);
+        layers.add(image3, 8);
+        layers.add(image2, 9);
+        layers.add(image1, 10);
 
+        layers.setPreferredSize(new Dimension(542, 416));
+
+        panel.setOpaque(false);
         panel.setLayout(new BorderLayout());
-        panel.add(image, BorderLayout.NORTH);
+        panel.add(layers, BorderLayout.NORTH); // Ajout de la layeredPane au Panel de la fenetre
         panel.add(listScroller, BorderLayout.CENTER);
         panel.add(entree, BorderLayout.SOUTH);
         panel.setBackground(Color.black);

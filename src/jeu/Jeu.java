@@ -16,6 +16,7 @@ public class Jeu {
     private boolean rdvMarco = false;
     private boolean sceneBagarre = false;
     private Zone [] zones;
+    private Zone ancienneZone;
     
     public Jeu() throws InterruptedException {
 
@@ -124,33 +125,20 @@ public class Jeu {
                                 "/interieur/refectoire/refectoireRepas.png");
         zones[9].ajouteAction(Action.SUIVANT, zones[10]); // Ajoute la scène zones[10] à la scène zones[9] (toujours créer les scènes AVANT de les lier)
         zones[10].ajouteAction(Action.OK, zones[8]); // Affiche la zones[8] en fin de cinématique
-        zones[3].ajouteSortie(Sortie.EST, zones[9]); // Affecte le déclenchement de la cinématique à zones[3] 
-                                                     // si le joueur prend la sortie 'EST'
+        zones[3].ajouteSortie(Sortie.OUEST, zones[9]); // Affecte le déclenchement de la cinématique à zones[3] 
+                                                       // si le joueur prend la sortie 'OUEST'
+
+        
         zones[8].ajouteSortie(Sortie.NORD, zones[3]);
+
+        zones[4].ajouteSortie(Sortie.OUEST, zones[7]);
+        zones[7].ajouteSortie(Sortie.NORD, zones[4]);
 
 
         // ZONE AFFICHEE LORSQUE LE JOUEUR CREE UNE NOUVELLE PARTIE
         // Mettre la zone de depart sur zones[0] lorsque
         // l'interface du menu principal sera créée
-        zoneCourante = zones[2]; // -> Pour l'instant, on se contentera de mettre zoneCourante exterieur prison
-
-
-        // CREATION DES SPRITES DU JOUEUR
-        // String JoueurMonte = "/sprites/heros/monte.png";
-        // String JoueurDescend = "/sprites/heros/descend.png";
-        // String JoueurGauche = "/sprites/heros/gauche.png";
-        // String JoueurDroite = "/sprites/heros/droite.png";
-
-        // CREATION DES SPRITES DES NPC
-
-
-        // CREATION DES SPRITES DES OBJETS
-
-
-        // INITIALISATION DU JEU
-        // gui.afficheJoueur("NORD");
-        // gui.afficheObjet(garde, SUD);
-        // gui.afficheObjet(garde, SUD);
+        zoneCourante = zones[1]; // -> Pour l'instant, on se contentera de mettre zoneCourante exterieur prison
 
     }
 
@@ -168,7 +156,7 @@ public class Jeu {
         gui.afficher();
         afficherLocalisation();
         gui.afficheImage(zoneCourante.nomImage());
-        gui.afficheJoueur("NORD");
+        gui.afficheJoueur("NORD", 258, 343); // Initialisation du joueur
     }
     
     public void traiterCommande(String commandeLue) {
@@ -321,13 +309,36 @@ public class Jeu {
     		gui.afficher();
     	}
         else {
+            ancienneZone = zoneCourante;
         	zoneCourante = nouvelle;
             gui.afficher(Temps.getTime());
         	gui.afficher(zoneCourante.descriptionLongue());
         	gui.afficher();
         	gui.afficheImage(zoneCourante.nomImage());
-            gui.afficheJoueur(direction);
+            updatePositionJoueur(direction);
         }
+    }
+
+    // Contient la liste des positions du joueur en fonction de sa
+    // provenance, de sa direction, des événements ou cinématiques
+    private void updatePositionJoueur(String direction)
+    {
+        if ((ancienneZone == zones[1] || ancienneZone == zones[2]) && direction == "NORD")
+            {
+                gui.afficheJoueur("NORD", 258, 325);
+            }
+        if ((ancienneZone == zones[3] || ancienneZone == zones[4]) && direction == "OUEST")
+            {
+                gui.afficheJoueur("SUD", 450, 50);
+            }
+        if ((ancienneZone == zones[8] || ancienneZone == zones[6] || ancienneZone == zones[7]) && direction == "NORD")
+            {
+                gui.afficheJoueur("EST", 100, 250);
+            }
+    // 
+    //  etc...
+    //
+    
     }
 
     private void nextScene(String uneAction) {

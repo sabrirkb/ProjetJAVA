@@ -6,8 +6,8 @@ public class Horloge {
     private int minutes = 0;
 
     public Horloge() { 
-        this.heure = 7;
-        this.minutes = 50;
+        this.heure = 10;
+        this.minutes = 30;
     }
 
     public void addTime()
