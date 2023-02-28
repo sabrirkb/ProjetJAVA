@@ -8,7 +8,7 @@ public class Cinematique extends Zone
 
     @Override
     public String descriptionLongue()  {
-        return "" + super.description + "\nActions possibles : " + actions();
+        return "" + super.description + "\n\nCommandes disponibles : " + actions();
     }
 
     private String actions() {

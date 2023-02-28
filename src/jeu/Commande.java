@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum Commande {
-	DIRECTION("D", "Direction\t(D)  :  Directions disponibles"),
+	DIRECTION("L", "Localiser\t(L)  :  Indique votre position"),
 	NORD("N", "Nord\t\t(N)  :  Aller à la sortie nord"), 
 	SUD("S", "Sud\t\t(S)  :  Aller à la sortie sud"), 
 	EST("E", "Est\t\t(E)  :  Aller à la sortie est"), 

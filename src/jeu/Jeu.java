@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.lang.model.util.ElementScanner6;
+
 public class Jeu {
 	
     public static GUI gui; 
@@ -147,9 +149,9 @@ public class Jeu {
         zones[13] = new Cinematique("Le bateau accoste sur l'île. Vous êtes escorté par la garde royale"
                                     + " jusqu'à votre cellule." , "/exterieur/ile/ileJournee.png"); 
         zones[14] = new Cinematique("Garde royale: « Voici la cour. C'est ici que tu passeras ton temps"
-                                    + "durant les promenades. »", "/exterieur/cour/courPromenade.png");
+                                    + " durant les promenades. »", "/exterieur/cour/courPromenade.png");
         zones[15] = new Cinematique("Garde royale: « Voilà ta cellule. J'espère que t'as prévu de quoi t'occuper…"
-                                    + "On reviendra te chercher lorsqu'un temps de promenade te sera accordé. »", "/exterieur/cour/courPromenade.png");
+                                    + " On reviendra te chercher lorsqu'un temps de promenade te sera accordé. »", "/exterieur/cour/courPromenade.png");
 
         zones[16] = new Zone("votre cellule. Vous n'avez devez attendre la prochaine promenade…"
                             , "");
@@ -166,16 +168,13 @@ public class Jeu {
         zones[11].ajouteAction(Action.SUIVANT, zones[12]);
         zones[12].ajouteAction(Action.SUIVANT, zones[13]);
         zones[13].ajouteAction(Action.OK, zones[14]);
-        zones[14].ajouteAction(Action.SUIVANT, zones[15]);
+        zones[14].ajouteAction(Action.OK, zones[15]);
         zones[15].ajouteAction(Action.OK, zones[16]);
         zones[17].ajouteSortie(Sortie.SUD, zones[20]);
         zones[20].ajouteSortie(Sortie.NORD, zones[17]);
 
-        // ZONE AFFICHEE LORSQUE LE JOUEUR CREE UNE NOUVELLE PARTIE
-        // Mettre la zone de depart sur zones[0] lorsque
-        // l'interface du menu principal sera créée
-        zoneCourante = zones[11]; // -> Pour l'instant, on se contentera de mettre zoneCourante exterieur prison
-
+        // INSTANCIATION DE LA ZONE COURANTE (DEBUT DU JEU => ZONE COURANTE = CINEMATIQUE DE DEPART (Soit zones[11]))
+        zoneCourante = zones[11];
     }
 
     private void afficherLocalisation() {
@@ -205,7 +204,7 @@ public class Jeu {
         case "N" : case "NORD" :
         	allerEn( "NORD"); 
         	break;
-        case "D" : case "DIRECTION" : case "DIRECTIONS" :
+        case "L" : case "LOCALISATION" : case "LOCALISATIONS" : case "LOCALISER" : case "LOC" : case "LOCAL" :
         	afficherLocalisation(); 
         	break;
         case "S" : case "SUD" :
@@ -282,11 +281,17 @@ public class Jeu {
 
     public void dormir()
     {
-        Temps.skip();
-        if (Temps.getHeure() == 8)
+        if (zoneCourante == zones[16]) // Si on se trouve dans la cellule
         {
-
+            String Message = Temps.skip();
+            gui.afficher(Temps.getTime());
+            gui.afficher(Message);
         }
+        else    // Sinon on n'est pas autorisé à dormir
+        {
+            gui.afficher("Vous ne pouvez dormir que lorsque vous êtes dans votre cellule.");
+        }
+        
     }
     public void checkInventaire()
     {
@@ -352,7 +357,7 @@ public class Jeu {
     private void allerEn(String direction) {
     	Zone nouvelle = zoneCourante.obtientSortie( direction);
     	if ( nouvelle == null ) {
-        	gui.afficher( "Il n'y a pas de sortie vers le " + direction + ".");
+        	gui.afficher( "Il n'y a pas de sortie dans la direction : " + direction + ".");
     		gui.afficher();
     	}
         else {

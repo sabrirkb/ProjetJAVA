@@ -31,7 +31,7 @@ public class Zone
     }
 
     public String descriptionLongue()  {
-        return "Vous êtes dans " + description + "\nDirections disponibles : " + sorties();
+        return "Vous êtes dans " + description + "\n\nCommandes disponibles : " + sorties();
     }
 
     private String sorties() {

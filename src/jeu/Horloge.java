@@ -34,37 +34,37 @@ public class Horloge {
         {
             this.heure = 8;
             this.minutes = 0;
-            return "\nVous vous réveillez après avoir dormi quelques heures…\n";
+            return "Vous vous réveillez après avoir dormi quelques heures…\n";
         }
         if (this.heure >= 8 && this.heure < 10)
         {
             this.heure = 10;
             this.minutes = 0;
-            return "\nVous vous réveillez après avoir fait une sieste…\n";
+            return "Vous vous réveillez après avoir fait une sieste…\n";
         }
         if (this.heure >= 10 && this.heure < 12)
         {
             this.heure = 12;
             this.minutes = 0;
-            return "\nVous vous réveillez après avoir fait une sieste…\n";
+            return "Vous vous réveillez après avoir fait une sieste…\n";
         }
         if (this.heure >= 12 && this.heure < 15)
         {
             this.heure = 15;
             this.minutes = 0;
-            return "\nVous vous réveillez après avoir fait une sieste…\n";
+            return "Vous vous réveillez après avoir fait une sieste…\n";
         }
         if (this.heure >= 15 && this.heure < 18)
         {
             this.heure = 18;
             this.minutes = 0;
-            return "\nVous vous réveillez après avoir fait une sieste…\n";
+            return "Vous vous réveillez après avoir fait une sieste…\n";
         }
         else
         {
             this.heure = 20;
             this.minutes = 0;
-            return "\nVous vous réveillez après avoir fait une sieste…\n";
+            return "Vous vous réveillez après avoir fait une sieste…\n";
         }
     }
 
@@ -81,13 +81,13 @@ public class Horloge {
     public String getTime()
     {
         if (this.minutes < 10)
-        return "Il est " + this.heure + "h0" + this.minutes + ".\n";
-        if (this.heure < 10)
-        return "Il est 0" + this.heure + "h" + this.minutes + ".\n";
+        return "Il est " + this.heure + "h0" + this.minutes + ".\n\n";
+        if (this.heure < 10 && this.minutes >= 10)
+        return "Il est 0" + this.heure + "h" + this.minutes + ".\n\n";
         if (this.heure < 10 && this.minutes < 10)
-        return "Il est 0" + this.heure + "h0" + this.minutes + ".\n";
+        return "Il est 0" + this.heure + "h0" + this.minutes + ".\n\n";
         else
-        return "Il est " + this.heure + "h" + this.minutes + ".\n";
+        return "Il est " + this.heure + "h" + this.minutes + ".\n\n";
     }
     
 }
