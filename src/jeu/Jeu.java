@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.lang.model.util.ElementScanner6;
-
 public class Jeu {
 	
     public static GUI gui; 
