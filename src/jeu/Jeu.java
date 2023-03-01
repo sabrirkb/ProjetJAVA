@@ -10,10 +10,12 @@ public class Jeu {
 	private Zone zoneCourante;
     private Horloge Temps = new Horloge();
     private List<Objets> Inventaire;
+    private boolean debutJeu = true;
     private boolean coffreOuvert = false;
     private boolean celluleOuverte = false;
+    private boolean armeRecuperee = false;
     private boolean indiceCodetenu = false;
-    private boolean rdvMarco = false;
+    private boolean battreMarco = false;
     private boolean sceneBagarre = false;
     private Zone [] zones;
     private Zone ancienneZone;
@@ -47,16 +49,16 @@ public class Jeu {
     }
 
     // INITIALISATION
-    public void setGUI( GUI g) { gui = g; afficherMessageDeBienvenue(); }
+    public void setGUI( GUI g) { gui = g; afficherLocalisation(); gui.afficheImage(zoneCourante.nomImage());}
     private void creerCarte() {
 
         // CRÉATION D'UN TABLEAU QUI CONTIENT LES ZONES ET CINÉMATIQUES(*) DE NOTRE JEU
         // (*) : une cinématique se définit comme un enchaînement de zones, dont les messages et/ou
         // les images varient lorsque le joueur tape les actions [SUIVANT] / [OK]
 
-                zones = new Zone [50];  // Il n'y a pas réellement 50 zones,
-                                        // les scènes variantes (jour/nuit) et cinématiques
-                                        // sont également inclues dans le tableau.
+                zones = new Zone [50];  // Il n'y a pas réellement 50 "zones", on choisit un tableau
+                                        // large car les scènes variantes (jour/nuit) et cinématiques
+                                        // sont également inclues dans ce tableau.
 
         // EXEMPLES DE CREATION D'UNE NOUVELLE ZONE
         // zone[x] = new Zone("description de la zone", "src/image.png");
@@ -87,21 +89,14 @@ public class Jeu {
 
         // ZONES DE NOTRE JEU
         // zone[0] = new Zone(description: "menu principal", image: "/interface/menuPrincipal.png");
-        zones[1] = new Zone("l'île de XXXX (jour).", "/exterieur/ile/ileJournee.png");
-        zones[2] = new Zone("l'île de XXXX (nuit).", "/exterieur/ile/ileNuit.png");
+        zones[1] = new Zone("l'île de Mors Insula (jour).", "/exterieur/ile/ileJournee.png");
+        zones[2] = new Zone("l'île de Mors Insula (nuit).", "/exterieur/ile/ileNuit.png");
         zones[3] = new Zone("cour (jour).", "/exterieur/cour/courJournee.png");
         zones[4] = new Zone("cour (nuit).", "/exterieur/cour/courNuit.png");
         zones[5] = new Zone("la cour (heure de promenade).", "/exterieur/cour/courPromenade.png");
         zones[6] = new Zone("le réfectoire (jour).", "/interieur/refectoire/refectoireJournee.png");
         zones[7] = new Zone("le réfectoire (nuit).", "/interieur/refectoire/refectoireNuit.png");
         zones[8] = new Zone("le réfectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
-        // zones[11] = new Zone("le réfectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
-        // zones[12] = new Zone("le réfectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
-        // zones[13] = new Zone("le réfectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
-        // zones[14] = new Zone("le réfectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
-        // zones[15] = new Zone("le réfectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
-        // zones[16] = new Zone("le réfectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
-        // zones[17] = new Zone("le réfectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
 
         // AJOUT DES SORTIES AUX ZONES DU JEU
         zones[1].ajouteSortie(Sortie.NORD, zones[3]);
@@ -136,60 +131,77 @@ public class Jeu {
 
 
         // CINEMATIQUE DE DEPART :
-        zones[11] = new Cinematique("Vous êtes arrêté pour avoir participé à une embuscade contre "
-                                    + "la garde royale. Vous avez été condamné à purger votre peine sur la prison "
-                                    + "de l'île XXXX…", "/exterieur/ile/ileJournee.png");
-        zones[12] = new Cinematique("Durant le voyage jusqu'à l'île, vous entendez les gardes discuter  "
-                                    + "à propos du sort qui vous est réservé. Vous comprenez rapidement "
-                                    + "que vous allez devoir trouver le moyen de vous échapper si vous "
-                                    + "ne voulez pas finir votre vie derrière les barreaux… "
-                                    , "/exterieur/ile/ileJournee.png");
-        zones[13] = new Cinematique("Le bateau accoste sur l'île. Vous êtes escorté par la garde royale"
-                                    + " jusqu'à votre cellule." , "/exterieur/ile/ileJournee.png"); 
-        zones[14] = new Cinematique("Garde royale: « Voici la cour. C'est ici que tu passeras ton temps"
-                                    + " durant les promenades. »", "/exterieur/cour/courPromenade.png");
-        zones[15] = new Cinematique("Garde royale: « Voilà ta cellule. J'espère que t'as prévu de quoi t'occuper…"
-                                    + " On reviendra te chercher lorsqu'un temps de promenade te sera accordé. »", "/exterieur/cour/courPromenade.png");
+        zones[11] = new Cinematique(">\n\nPercival Lebrave était un Noble chevalier du royaume d'Aeternum. Un matin, alors "
+                                    + "qu'il venait de se lever, il se fit arrêter par la garde royale, qui l'accusa à tort "
+                                    + "d'avoir volé le trésor du Roi et le condamna à purger sa peine sur une île tristement "
+                                    + "renommée : Mors Insula."
+                                    , "/cinematiques/arrestation.png");
+        zones[12] = new Cinematique("Durant le voyage jusqu'à l'île, il entend les gardes discuter  "
+                                    + "à propos du sort qui lui est réservé. Il comprend rapidement "
+                                    + "qu'il va devoir trouver le moyen de s'échapper s'il ne veut "
+                                    + "pas finir sa vie à croupir derrière les barreaux… "
+                                    , "/cinematiques/traversee.png");
+        zones[13] = new Cinematique("Après quelques heures de voyage, le bateau accoste sur l'île. "
+                                    + "Percival est brièvement escorté par la garde royale jusqu'à sa cellule."
+                                    , "/exterieur/ile/ileJournee.png"); 
+        zones[14] = new Cinematique("Garde royale: « Voici la cour. C'est ici que tu pourras passeras du temps "
+                                    + "durant tes heures de promenade. »", "/exterieur/cour/courPromenade.png");
+        zones[15] = new Cinematique("Garde royale: « Et voilà ta cellule, petit voleur. J'espère que t'as prévu "
+                                    + "de quoi t'occuper… Tu risques de trouver le temps long ici, haha! "
+                                    + "T'en fais pas, on reviendra s'occuper de toi bientôt. »"
+                                    , "/interieur/cellule/celluleJour.png");
 
-        zones[16] = new Zone("votre cellule. Vous n'avez devez attendre la prochaine promenade…"
-                            , "");
-        zones[17] = new Zone("votre cellule. C'est l'heure de la promenade.", "");
-        zones[18] = new Zone("votre cellule. C'est l'heure du repas.", "");
-        zones[19] = new Zone("votre cellule. Vous êtes escorté jusque dans les douches.", "");
+        
+        ////////////////////
 
-        zones[20] = new Zone("couloir Ouest.", "");
-        zones[21] = new Zone("couloir Est.", "");
 
-        zones[16].ajouteAction(Action.DORMIR, zones[17]);
-        zones[16].ajouteAction(Action.DORMIR, zones[17]);
+        zones[16] = new Zone("votre cellule (jour). Vous devez attendre que les gardes vous autorisent à sortir…"
+                            , "/interieur/cellule/celluleJour.png"); // Image cellule fermée (jour)
+        zones[22] = new Zone("votre cellule (nuit). Vous devez attendre que les gardes vous autorisent à sortir…"
+                            , "/interieur/cellule/celluleNuit.png"); // Image cellule fermée (nuit)
+        zones[17] = new Zone("votre cellule. C'est l'heure de la promenade. Vous êtes libre de vous rendre ou non dans la cour."
+                            , "/interieur/cellule/celluleJour.png"); // Image cellule ouverte
+        zones[18] = new Zone("votre cellule. C'est l'heure du repas. Vous êtes libre de vous rendre ou non au réfectoire."
+                            , "/interieur/cellule/celluleJour.png"); // Image cellule ouverte
+        zones[19] = new Zone("votre cellule. C'est l'heure de la douche. Vous êtes escorté par les gardes jusque dans les douches."
+                            , "/interieur/cellule/celluleJour.png"); // Image cellule ouverte
 
-        zones[11].ajouteAction(Action.SUIVANT, zones[12]);
-        zones[12].ajouteAction(Action.SUIVANT, zones[13]);
+        zones[20] = new Zone("couloir (jour).", "/interieur/couloir/couloirJour.png");
+        zones[21] = new Zone("couloir (nuit).", "/interieur/couloir/couloirNuit.png");
+
+        zones[16].ajouteAction(Action.DORMIR, zones[16]);
+        zones[17].ajouteAction(Action.DORMIR, zones[16]);
+        zones[18].ajouteAction(Action.DORMIR, zones[16]);
+        zones[19].ajouteAction(Action.DORMIR, zones[16]);
+        zones[22].ajouteAction(Action.DORMIR, zones[16]);
+
+        zones[11].ajouteAction(Action.OK, zones[12]);
+        zones[12].ajouteAction(Action.OK, zones[13]);
         zones[13].ajouteAction(Action.OK, zones[14]);
         zones[14].ajouteAction(Action.OK, zones[15]);
         zones[15].ajouteAction(Action.OK, zones[16]);
-        zones[17].ajouteSortie(Sortie.SUD, zones[20]);
-        zones[20].ajouteSortie(Sortie.NORD, zones[17]);
+
+        zones[17].ajouteSortie(Sortie.SUD, zones[20]); // Si heure promenade -> Sortie SUD (couloir) autorisée (jour)
+        zones[18].ajouteSortie(Sortie.SUD, zones[20]); // Si heure repas -> Sortie SUD (couloir) autorisée (jour)
+        zones[19].ajouteAction(Action.OK, zones[20]); // Si heures douche -> [OK] dirige vers douches (jour)
+        zones[20].ajouteSortie(Sortie.SUD, zones[3]);
 
         // INSTANCIATION DE LA ZONE COURANTE (DEBUT DU JEU => ZONE COURANTE = CINEMATIQUE DE DEPART (Soit zones[11]))
         zoneCourante = zones[11];
     }
 
     private void afficherLocalisation() {
-            gui.afficher();
-            gui.afficher(Temps.getTime());
+            
             gui.afficher( zoneCourante.descriptionLongue());
             gui.afficher();
     }
 
     private void afficherMessageDeBienvenue() {
-    	gui.afficher("Bienvenue !");
+    	gui.afficher("Bienvenue sur la prison de Mors Insula, cher Percival!");
     	gui.afficher();
-        gui.afficher("Tapez '?' pour obtenir de l'aide.");
+        gui.afficher("Tapez '?' pour obtenir de l'aide à tout moment.\n");
         gui.afficher();
-        afficherLocalisation();
         gui.afficheImage(zoneCourante.nomImage());
-        gui.afficheJoueur("NORD", 258, 343); // Initialisation du joueur
     }
     
     public void traiterCommande(String commandeLue) {
@@ -237,9 +249,11 @@ public class Jeu {
         	break;
         case "DORMIR" :
         	dormir();
+            gui.afficher("\n" + zoneCourante.descriptionLongue());
         	break;
         case "TEMPS" : case "T" : case "TIME" :
         	gui.afficher(Temps.getTime());
+            gui.afficher("Tapez '?' pour obtenir de l'aide à tout moment.\n");
         	break;
        	default : 
             gui.clearText();
@@ -277,17 +291,70 @@ public class Jeu {
         }
     }
 
+    private void ouvrirCellule()
+    {
+        boolean clePossedee = false;
+        if (Inventaire != null)
+        {
+            for (Objets objet : Inventaire)
+            {
+                if (objet == Objets.CLE2)
+                {
+                    clePossedee = true;
+                } 
+                else 
+                { 
+                    clePossedee = false;
+                }
+            }
+        }
+        if (clePossedee == true /*&& zoneCourante = zones[16/17/18/22]*/)
+        {
+            celluleOuverte = true;
+            // zoneActuelle = zones[x]; -> Cellule ouverte (jour ou nuit)
+        }
+        else
+        {
+            gui.afficher("Vous n'êtes pas dans votre cellule ou ne possédez pas la clé pour vous échapper.");
+        }
+    }
+
     public void dormir()
     {
-        if (zoneCourante == zones[16]) // Si on se trouve dans la cellule
+        if (zoneCourante == zones[16] || zoneCourante == zones[17]
+            || zoneCourante == zones[18] || zoneCourante == zones[19] || zoneCourante == zones[22]) // Si on se trouve dans la cellule
         {
             String Message = Temps.skip();
+            if (Temps.getHeure()  == 8 ) // Heure du repas (petit-déjeuner)
+            {
+                zoneCourante = zones[18];
+            }
+            if (Temps.getHeure()  == 10 ) // Heure de la promenade (matin)
+            {
+                zoneCourante = zones[17];
+            }
+            if (Temps.getHeure()  == 12 ) // Heure du repas (déjeuner)
+            {
+                zoneCourante = zones[18];
+            }
+            if (Temps.getHeure()  == 15 ) // Heure de la promenade (soir)
+            {
+                zoneCourante = zones[17];
+            }
+            if (Temps.getHeure()  == 18 ) // Heure de la douche
+            {
+                zoneCourante = zones[19];
+            }
+            if (Temps.getHeure()  == 20 ) // Heure du repas (dîner)
+            {
+                zoneCourante = zones[18];
+            }
             gui.afficher(Temps.getTime());
             gui.afficher(Message);
         }
         else    // Sinon on n'est pas autorisé à dormir
         {
-            gui.afficher("Vous ne pouvez dormir que lorsque vous êtes dans votre cellule.");
+            gui.afficher("Vous ne pouvez dormir que lorsque vous êtes dans votre cellule.\n");
         }
         
     }
@@ -304,7 +371,7 @@ public class Jeu {
         }
         else
         {
-            gui.afficher("Aucun objet\n");
+            gui.afficher("Aucun objet possédé.\n");
         }
     }
 
@@ -317,8 +384,6 @@ public class Jeu {
             {
                 zoneCourante = zones[1]; // on repasse zone courante à la même scène de type "nuit" .
                 gui.afficheImage(zoneCourante.nomImage());
-                gui.clearText();
-                gui.afficher("Il fait maintenant jour.\n");
             }
 
             //  if (zoneCourante == zones[4])   // Faire de même pour les autres zones sauf les zones
@@ -333,8 +398,6 @@ public class Jeu {
             {
                 zoneCourante = zones[2];
                 gui.afficheImage(zoneCourante.nomImage());
-                gui.clearText();
-                gui.afficher("Il fait maintenant nuit.\n");
             }
             //  if (zoneCourante == zones[3])
             //  {
@@ -357,6 +420,7 @@ public class Jeu {
     	if ( nouvelle == null ) {
         	gui.afficher( "Il n'y a pas de sortie dans la direction : " + direction + ".");
     		gui.afficher();
+            gui.afficher("Tapez 'Localiser' pour obtenir les commandes disponibles.\n");
     	}
         else {
             ancienneZone = zoneCourante;
@@ -373,6 +437,10 @@ public class Jeu {
     // provenance, de sa direction, des événements ou cinématiques
     private void updatePositionJoueur(String direction)
     {
+        if (ancienneZone == zones[12] && direction == "NORD")
+            {
+                gui.afficheJoueur("NORD", 258, 343);
+            }
         if ((ancienneZone == zones[1] || ancienneZone == zones[2]) && direction == "NORD")
             {
                 gui.afficheJoueur("NORD", 258, 325);
@@ -394,10 +462,22 @@ public class Jeu {
     private void nextScene(String uneAction) {
     	Zone nouvelle = zoneCourante.obtientSortie( uneAction);
         zoneCourante = nouvelle;
-        gui.afficher(Temps.getTime());
+        if (zoneCourante == zones[16] && debutJeu == true)
+        {
+            afficherMessageDeBienvenue();
+            gui.afficher(Temps.getTime());
+            debutJeu = false;
+        }
         gui.afficher(zoneCourante.descriptionLongue());
         gui.afficher();
         gui.afficheImage(zoneCourante.nomImage());
+        if (zoneCourante == zones[13])
+        {
+            ancienneZone = zones[12];
+            gui.refreshLayers();
+            gui.afficheJoueur("NORD", 258, 343);
+            updatePositionJoueur("NORD"); // Initialisation du joueur
+        }
     }
     
     private void terminer() {

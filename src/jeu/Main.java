@@ -10,7 +10,7 @@ public class Main {
 		GUI gui = new GUI( jeu);
 		jeu.setGUI( gui);
 		jeu.StartTime(); // Démarre le timer qui permet de gérer le temps in-game
-		gui.refreshLayers(); // Rafraîchit les couches (calques) affichée à l'écran
-		gui.afficheJoueur("NORD", 258, 343); // Initialisation joueur (au cas ou le premier fail)
+		gui.refreshLayers();
+		gui.afficheJoueur("NONE", 0, 0);
 	}
 }

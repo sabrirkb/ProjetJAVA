@@ -99,6 +99,10 @@ public class GUI implements ActionListener
 
     public void afficheJoueur( String direction, int x, int y) {
         URL imageURL = null;
+        if (direction == "NONE" || direction == "N")
+        {
+            imageURL = this.getClass().getClassLoader().getResource("jeu/images/sprites/null.png");
+        }
         if (direction == "NORD" || direction == "N")
         {
             imageURL = this.getClass().getClassLoader().getResource("jeu/images/sprites/heros/monte.png");
