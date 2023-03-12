@@ -23,6 +23,15 @@ public class Horloge {
                 this.minutes = 0;
                 this.heure = 0;
             }
+            if (this.heure < 0)
+            {
+                this.minutes = 0;
+                this.heure = 0;
+            }
+            if (this.minutes < 0)
+            {
+                this.minutes = 0;
+            }
             else {}
     }
 
@@ -76,6 +85,20 @@ public class Horloge {
     public int getMinutes()
     {
         return this.minutes;
+    }
+
+    public void setHeure(int uneHeure)
+    {
+        // pas besoin de if(uneHeure < 0) ou if(uneHeure > 23) puisque 
+        // la méthode addTime() se chargera de rectifier l'heure
+        this.heure = uneHeure;
+    }
+
+    public void setMinutes(int desMinutes)
+    {
+        // pas besoin de if(desMinutes < 0) ou if(desMinutes > 59) puisque 
+        // la méthode addTime() se chargera de rectifier l'heure
+        this.minutes = desMinutes;
     }
 
     public String getTime()

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.lang.model.util.ElementScanner14;
+
 public class Jeu {
 
     public static GUI gui;
@@ -21,6 +23,9 @@ public class Jeu {
     private boolean mainMenu = false;
     private Zone[] zones;
     private Zone ancienneZone;
+    private Zone temporaryPauseZone;
+    private int temporaryPauseHeure;
+    private int temporaryPauseMinutes;
     private int tentatives = 3;
 
     public Jeu() throws InterruptedException {
@@ -108,10 +113,10 @@ public class Jeu {
         // zones[2].ajouteSortie(Sortie.SUD, zones[x]); -> idem, mais le joueur s'enfuit
         // la nuit
 
-        // zones[0] = new Zone("le menu principal.", "/interface/menuPrincipal.png");
-        // zones[0].ajouteAction(Action.NOUVEAU, zones[11]);
-        // zones[0].ajouteAction(Action.REPRENDRE, zones[10]);
-        // zones[0].ajouteAction(Action.QUITTER, zones[10]);
+        zones[0] = new Zone("le menu principal.", "/interface/menuPrincipal.png");
+        // zones[0].ajouteAction(Action.NOUVEAU, zones[11]); -> GERER DANS LE SWITCH DES COMMANDES
+        // zones[0].ajouteAction(Action.REPRENDRE, zones[10]); -> GERER DANS LE SWITCH DES COMMANDES
+        // zones[0].ajouteAction(Action.QUITTER, zones[10]); -> GERER DANS LE SWITCH DES COMMANDES
 
         zones[1] = new Zone("l'île de Mors Insula (jour).", "/exterieur/ile/ileJournee.png");
 
@@ -175,7 +180,7 @@ public class Jeu {
                 "votre cellule. C'est l'heure du repas. Vous êtes libre de vous rendre ou non au réfectoire.",
                 "/interieur/cellule/celluleJour.png"); // Zone cellule porte ouverte
 
-        zones[19] = new Zone(
+        zones[19] = new Cinematique(
                 "votre cellule. C'est l'heure de la douche. Vous êtes escorté par les gardes jusque dans les douches.",
                 "/interieur/cellule/celluleJour.png"); // Zone cellule porte ouverte
 
@@ -259,13 +264,13 @@ public class Jeu {
 
         zones[10].ajouteAction(Action.OK, zones[8]); // Affiche la zones[8] en fin de cinématique
 
-        zones[11].ajouteAction(Action.OK, zones[12]);
+        zones[11].ajouteAction(Action.SUIVANT, zones[12]);
 
-        zones[12].ajouteAction(Action.OK, zones[13]);
+        zones[12].ajouteAction(Action.SUIVANT, zones[13]);
 
-        zones[13].ajouteAction(Action.OK, zones[14]);
+        zones[13].ajouteAction(Action.SUIVANT, zones[14]);
 
-        zones[14].ajouteAction(Action.OK, zones[15]);
+        zones[14].ajouteAction(Action.SUIVANT, zones[15]);
 
         zones[15].ajouteAction(Action.OK, zones[16]);
 
@@ -277,7 +282,7 @@ public class Jeu {
         zones[18].ajouteAction(Action.DORMIR, zones[16]);
         zones[18].ajouteSortie(Sortie.SUD, zones[20]); // Si heure repas -> Sortie SUD (couloir) autorisée (jour)
 
-        zones[19].ajouteAction(Action.OK, zones[25]); // Si heures douche -> [OK] dirige vers douches (jour)
+        zones[19].ajouteAction(Action.SUIVANT, zones[25]); // Si heures douche -> [OK] dirige vers douches (jour)
 
         zones[20].ajouteSortie(Sortie.EST, zones[3]);
         zones[20].ajouteSortie(Sortie.OUEST, zones[23]);
@@ -289,7 +294,7 @@ public class Jeu {
 
         zones[23].ajouteSortie(Sortie.SUD, zones[20]);
 
-        zones[25].ajouteAction(Action.OK, zones[31]);
+        zones[25].ajouteAction(Action.SUIVANT, zones[31]);
 
         zones[26].ajouteSortie(Sortie.OUEST, zones[3]);
 
@@ -350,7 +355,8 @@ public class Jeu {
             case "QUITTER":
             case "QUIT":
                 quitMenu = true;
-                gui.afficher("Voulez-vous vraiment quitter ? \n[YES] - [NO]");
+                gui.afficher("Attention! Vous êtes sur le point de quitter le jeu. Assurez-vous d'avoir sauvegardé votre partie!\n");
+                gui.afficher("\nVoulez-vous vraiment quitter ? \n[YES] - [NO]");
                 break;
             case "I":
             case "INVENTAIRE":
@@ -410,12 +416,60 @@ public class Jeu {
                 }
                 break;
             case "REPRENDRE":
-                // if (zoneCourante == zones[0]) {
+                if (zoneCourante == zones[0]) {
                 //
-                // } else {
+                } else {
                 gui.clearText();
                 gui.afficher("Commande inconnue.\nTapez '?' pour obtenir de l'aide.");
-                // }
+                }
+                break;
+            case "PAUSE": case "P" :
+                mainMenu = true;
+                temporaryPauseHeure = Temps.getHeure();
+                temporaryPauseMinutes = Temps.getMinutes();
+                temporaryPauseZone = zoneCourante;
+                // SET LA ZONE COURANTE SUR ZONE <PAUSE>
+                gui.afficher("Vous êtes dans le menu pause.\n\nListe des commmandes disponibles :\n");
+                gui.afficher("\nJouer\t\t (J) : Reprendre la partie");
+                gui.afficher("\nSauvegarder\t (SAVE) : Sauvegarder la partie");
+                gui.afficher("\nQuitter\t\t (Q) : Quitter le jeu");
+                break;
+            case "JOUER": case "J" :
+                if (mainMenu)
+                {
+                    Temps.setHeure(temporaryPauseHeure);
+                    Temps.setMinutes(temporaryPauseMinutes);
+                    zoneCourante = temporaryPauseZone;
+                    afficherLocalisation();
+                    mainMenu = false;
+                }
+                else {
+                    gui.clearText();
+                    gui.afficher("Commande inconnue.\nTapez '?' pour obtenir de l'aide.");
+                }
+                break;
+                case "SAUVEGARDER": case "SAVE" :
+                if (mainMenu || quitMenu)
+                {
+                    // SET LA ZONE COURANTE SUR ZONE <SAUVEGARDE>
+                    gui.afficher("Sauvegarde en cours…\n");
+                    try
+                    {
+                        // SAUVEGARDE DE TOUTES LES VARIABLES DE CHAQUE FICHIER DANS UN REPERTOIRE
+                        // [...]
+                        gui.afficher("\nSauvegarde effectuée avec succès.");
+                        // ajout action OK à la zone Sauvegarde -> retour à la zone Pause
+                    }
+                    catch (Exception e)
+                    {
+                        gui.afficher("\nErreur durant la sauvegarde : \n" + e.getMessage());
+                        // ajout action OK à la zone Sauvegarde -> retour à la zone Pause
+                    }
+                }
+                else {
+                    gui.clearText();
+                    gui.afficher("Commande inconnue.\nTapez '?' pour obtenir de l'aide.");
+                }
                 break;
             default:
                 gui.clearText();
