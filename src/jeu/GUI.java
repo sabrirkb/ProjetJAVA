@@ -147,8 +147,8 @@ public class GUI implements ActionListener
     }
 
     private void creerGUI() throws FileNotFoundException, FontFormatException, IOException {
-        // TITRE DU JEU A MODIFIER
-        fenetre = new JFrame("Le titre de notre jeu");
+        // TITRE DU JEU (A MODIFIER SI NECESSAIRE)
+        fenetre = new JFrame("Percival Escapes");
         fenetre.setResizable(false);
         
         entree = new JTextField(34);

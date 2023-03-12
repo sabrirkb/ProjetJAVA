@@ -12,5 +12,9 @@ public class Main {
 		jeu.StartTime(); // Démarre le timer qui permet de gérer le temps in-game
 		gui.refreshLayers();
 		gui.afficheJoueur("NONE", 0, 0);
+		for (int i = 2; i <= 9; i++)
+		{
+			gui.afficheAutre("sprites/null.png", i, 0, 0);
+		}
 	}
 }
