@@ -17,6 +17,7 @@ public class Jeu {
     private boolean indiceCodetenu = false;
     private boolean battreMarco = false;
     private boolean sceneBagarre = false;
+    private boolean quitMenu = false;
     private Zone [] zones;
     private Zone ancienneZone;
     
@@ -227,16 +228,34 @@ public class Jeu {
         	allerEn( "OUEST"); 
         	break;
         case "Q" : case "QUITTER" : case "QUIT" :
+            quitMenu = true;
             gui.afficher("Voulez-vous vraiment quitter ? \n[YES] - [NO]");
         	break;
         case "I" : case "INVENTAIRE" : case "INV" :
         	checkInventaire();
         	break;
         case "YES" :
-        	terminer();
+            if (quitMenu)
+            {
+            	terminer();
+            }
+            else
+            {
+                gui.clearText();
+                gui.afficher("Commande inconnue.\nTapez '?' pour obtenir de l'aide.");
+            }
             break;
         case "NO" :
-        	afficherLocalisation();
+            if (quitMenu)
+            {
+                quitMenu = false;
+        	    afficherLocalisation();
+            }
+            else
+            {
+                gui.clearText();
+                gui.afficher("Commande inconnue.\nTapez '?' pour obtenir de l'aide.");
+            }
             break;
         case "COFFRE" :
         	ouvrirCoffre();
