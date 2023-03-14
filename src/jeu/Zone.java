@@ -5,7 +5,8 @@ public class Zone
 {
     protected String description;
     private String nomImage;
-    protected HashMap<String,Zone> sorties;   
+    protected HashMap<String,Zone> sorties;  
+    protected HashMap<String,Zone> actions; 
 
     public Zone(String description, String image) {
         this.description = description;
