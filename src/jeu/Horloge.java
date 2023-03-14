@@ -35,11 +35,18 @@ public class Horloge {
             else {}
     }
 
+    public void setTime(int lesHeures, int lesMinutes)
+    {
+        this.minutes = lesMinutes;
+        this.heure = lesHeures;
+    }
+
+
     public String skip()
     {
         // Si on passe le temps entre 20h et 8h du matin, le personnage "dort" et se réveille
         // à huit heures du matin.
-        if ((this.heure >= 20 && this.heure <=24) || (this.heure >= 0 && this.heure < 8))
+        if ((this.heure >= 22 && this.heure <=24) || (this.heure >= 0 && this.heure < 8))
         {
             this.heure = 8; // Heure du repas
             this.minutes = 0;
@@ -103,14 +110,16 @@ public class Horloge {
 
     public String getTime()
     {
-        if (this.minutes < 10)
-        return "Il est " + this.heure + "h0" + this.minutes + ".\n\n";
+        if (this.heure >= 10 && this.minutes < 10)
+            return "Il est " + this.heure + "h0" + this.minutes + ".\n\n";
         if (this.heure < 10 && this.minutes >= 10)
-        return "Il est 0" + this.heure + "h" + this.minutes + ".\n\n";
+            return "Il est 0" + this.heure + "h" + this.minutes + ".\n\n";
         if (this.heure < 10 && this.minutes < 10)
-        return "Il est 0" + this.heure + "h0" + this.minutes + ".\n\n";
+            return "Il est 0" + this.heure + "h0" + this.minutes + ".\n\n";
+        if (this.heure >=10 && this.minutes >= 10)
+            return "Il est " + this.heure + "h" + this.minutes + ".\n\n";
         else
-        return "Il est " + this.heure + "h" + this.minutes + ".\n\n";
+            return "Zut! L'horloge est cassée…"; // Ce résultat est censé ne jamais être retourné
     }
     
 }
