@@ -254,11 +254,6 @@ public class Jeu {
         // la cinématique à zones[3]
         // si le joueur prend la sortie 'OUEST'
 
-        // AFFECTATION DE LA ZONE COURANTE - DEBUT DU JEU -> ZONE COURANTE = CINEMATIQUE
-        // DE DEPART (pour l'instant zones[11])
-        zoneCourante = zones[11];
-        // Temps.setTime(21, 30); // -> permet de changer l'heure de départ du jeu
-
         // AJOUT DES SORTIES ET DES COMMANDES AUX ZONES/CINEMATIQUES DU JEU
         zones[1].ajouteSortie(Sortie.NORD, zones[3]);
 
@@ -319,6 +314,13 @@ public class Jeu {
         zones[29].ajouteSortie(Sortie.EST, zones[6]);
 
         zones[31].ajouteAction(Action.OK, zones[16]);
+
+        
+
+        // AFFECTATION DE LA ZONE COURANTE - DEBUT DU JEU -> ZONE COURANTE = CINEMATIQUE
+        // DE DEPART (pour l'instant zones[11])
+        zoneCourante = zones[11];
+        // Temps.setTime(21, 30); // -> permet de changer l'heure de départ du jeu
 
     }
 
@@ -700,6 +702,12 @@ public class Jeu {
         }
         if ((ancienneZone == zones[17] || ancienneZone == zones[18]) && direction == "SUD") {
             gui.afficheJoueur("SUD", 160, 170);
+        }
+        if ((ancienneZone == zones[6] || ancienneZone == zones[7] || ancienneZone == zones[8]) && direction == "OUEST") {
+            gui.afficheJoueur("OUEST", 380, 200);
+        }
+        if ((ancienneZone == zones[29] || ancienneZone == zones[30]) && direction == "EST") {
+            gui.afficheJoueur("EST", 25, 330);
         }
         //
         // etc...
