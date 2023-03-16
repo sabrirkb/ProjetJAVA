@@ -79,7 +79,9 @@ public class Audio implements LineListener {
             myAudioClip.open(myStream);
         }
 
-        // On démarre le clip audio (le son se joue)
+        // On set la frame sur 0 (début de l'audio)
+        // et on démarre le clip (le son se joue)
+        myAudioClip.setFramePosition(0);
         myAudioClip.start();
 
         // On patiente la durée de l'audio
@@ -90,10 +92,9 @@ public class Audio implements LineListener {
                 e.printStackTrace();
             }
         
-        // Enfin, on arrête l'audio et on replace le clip à 0s
+        // Enfin, on arrête l'audio
         // NB: Si le timer précédent ne s'est pas executé, le son ne se lancera pas
         myAudioClip.stop();
-        myAudioClip.setFramePosition(0);
     }
 
     @Override

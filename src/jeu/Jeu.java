@@ -666,13 +666,14 @@ public class Jeu {
         }
     }
 
-    private void allerEn(String direction) {
+    private void allerEn(String direction) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         Zone nouvelle = zoneCourante.obtientSortie(direction);
         if (nouvelle == null) {
             gui.afficher("Il n'y a pas de sortie dans la direction : " + direction + ".");
             gui.afficher();
             gui.afficher("Tapez 'Localiser' pour obtenir les commandes disponibles.\n");
         } else {
+            leSon.jouerAudioPas();
             ancienneZone = zoneCourante;
             zoneCourante = nouvelle;
             gui.afficher(zoneCourante.descriptionLongue());
