@@ -1,8 +1,12 @@
 package jeu;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Jeu {
 
@@ -26,7 +30,8 @@ public class Jeu {
     private Zone temporaryPauseZone;
     private int temporaryPauseHeure;
     private int temporaryPauseMinutes;
-    private int tentatives = 3;
+    private int tentatives = 3; 
+    private Audio leSon = new Audio();
 
     public Jeu() throws InterruptedException {
 
@@ -176,26 +181,26 @@ public class Jeu {
         /////////////////////////////////////////////////////
 
         zones[16] = new Zone("votre cellule (jour). Vous devez attendre que les gardes vous autorisent à sortir…",
-                "/interieur/cellule/celluleJour.png"); // Zone cellule porte fermée (jour)
+                "/interieur/cellule/celluleJour.png"); // Zone cellule -> ajouter porte fermée (jour)
 
         zones[17] = new Zone(
                 "votre cellule. C'est l'heure de la promenade. Les gardes ouvrent votre cellule pour vous laisser vous rendre dans la cour.",
-                "/interieur/cellule/celluleJour.png"); // Zone cellule porte ouverte
+                "/interieur/cellule/celluleJour.png"); // Zone cellule -> porte ouverte
 
         zones[18] = new Zone(
                 "votre cellule. C'est l'heure du repas. Les gardes ouvrent votre cellule pour vous laisser vous rendre au réfectoire.",
-                "/interieur/cellule/celluleJour.png"); // Zone cellule porte ouverte
+                "/interieur/cellule/celluleJour.png"); // Zone cellule -> porte ouverte
 
         zones[19] = new Cinematique(
                 "Vous êtes dans votre cellule. C'est l'heure de la douche. Vous êtes escorté par les gardes jusque dans les douches.",
-                "/interieur/cellule/celluleJour.png"); // Zone cellule porte ouverte
+                "/interieur/cellule/celluleJour.png"); // Zone cellule -> porte ouverte
 
         zones[20] = new Zone("le couloir (jour).", "/interieur/couloir/couloirJour.png");
 
         zones[21] = new Zone("le couloir (nuit).", "/interieur/couloir/couloirNuit.png");
 
         zones[22] = new Zone("votre cellule (nuit). Vous devez attendre que les gardes vous autorisent à sortir…",
-                "/interieur/cellule/celluleNuit.png"); // Zone cellule porte fermée (nuit)
+                "/interieur/cellule/celluleNuit.png"); // Zone cellule -> ajouter porte fermée (nuit)
 
         zones[23] = new Zone("les douches (jour).",
                 "/interieur/douches/douchesJour.png");
@@ -315,8 +320,6 @@ public class Jeu {
 
         zones[31].ajouteAction(Action.OK, zones[16]);
 
-        
-
         // AFFECTATION DE LA ZONE COURANTE - DEBUT DU JEU -> ZONE COURANTE = CINEMATIQUE
         // DE DEPART (pour l'instant zones[11])
         zoneCourante = zones[11];
@@ -338,7 +341,7 @@ public class Jeu {
         gui.afficheImage(zoneCourante.nomImage());
     }
 
-    public void traiterCommande(String commandeLue) {
+    public void traiterCommande(String commandeLue) throws UnsupportedAudioFileException, InterruptedException, IOException, LineUnavailableException {
         gui.clearText();
         gui.afficher("> " + commandeLue + "\n\n");
         switch (commandeLue.toUpperCase()) {
@@ -679,49 +682,59 @@ public class Jeu {
         }
     }
 
-    // Contient la liste des positions du joueur en fonction de sa
-    // provenance, de sa direction, des événements ou cinématiques
-    private void updatePositionJoueur(String direction) {
-        if (ancienneZone == zones[12] && direction == "NORD") {
-            gui.afficheJoueur("NORD", 258, 343);
+    // Contient la liste des positions (sprite et coordonnées x,y)
+    // du joueur en fonction de sa provenance, de sa direction, des événements ou des cinématiques
+    private void updatePositionJoueur(String commandeLue) {
+
+        // Si le joueur était en zone exterieur_île (1;2) et qu'il se rend vers le NORD
+        if ((ancienneZone == zones[1] || ancienneZone == zones[2]) && commandeLue == "NORD") {
+            gui.afficheJoueur("NORD", 258, 325);    // on demande à la GUI de l'afficher
+                                                                    // avec l'image du joueur qui regarde le "NORD",
+                                                                    // en position x:258 y:325 sur l'interface graphique
         }
-        if ((ancienneZone == zones[1] || ancienneZone == zones[2]) && direction == "NORD") {
-            gui.afficheJoueur("NORD", 258, 325);
-        }
-        if ((ancienneZone == zones[3] || ancienneZone == zones[4]) && direction == "OUEST") {
+        // Si le joueur était en zone cour (3;4;5) et qu'il se rend vers l'OUEST
+        if ((ancienneZone == zones[3] || ancienneZone == zones[4] || ancienneZone == zones[5])
+                && commandeLue == "OUEST") {
             gui.afficheJoueur("SUD", 450, 50);
         }
-        if ((ancienneZone == zones[3] || ancienneZone == zones[4]) && direction == "OUEST") {
-            gui.afficheJoueur("SUD", 450, 50);
+        // Si le joueur était en zone cour (3;4;5) et qu'il se rend vers le NORD
+        if ((ancienneZone == zones[3] || ancienneZone == zones[4] || ancienneZone == zones[5])
+                && commandeLue == "NORD") {
+            gui.afficheJoueur("OEST", 25, 230);
         }
-        if ((ancienneZone == zones[3] || ancienneZone == zones[4]) && direction == "OUEST") {
-            gui.afficheJoueur("SUD", 450, 50);
-        }
-        if ((ancienneZone == zones[8] || ancienneZone == zones[6] || ancienneZone == zones[7]) && direction == "NORD") {
+        // Si le joueur était en zone réfectoire (6;7;8) et qu'il se rend vers le NORD
+        if ((ancienneZone == zones[6] || ancienneZone == zones[7] || ancienneZone == zones[8])
+                && commandeLue == "NORD") {
             gui.afficheJoueur("EST", 100, 250);
         }
-        if ((ancienneZone == zones[17] || ancienneZone == zones[18]) && direction == "SUD") {
-            gui.afficheJoueur("SUD", 160, 170);
-        }
-        if ((ancienneZone == zones[6] || ancienneZone == zones[7] || ancienneZone == zones[8]) && direction == "OUEST") {
+        // Si le joueur était en zone réfectoire (6;7;8) et qu'il se rend vers l'OUEST
+        if ((ancienneZone == zones[6] || ancienneZone == zones[7] || ancienneZone == zones[8])
+                && commandeLue == "OUEST") {
             gui.afficheJoueur("OUEST", 380, 200);
         }
-        if ((ancienneZone == zones[29] || ancienneZone == zones[30]) && direction == "EST") {
+        // Si le joueur était en zone cellule (17;18) et qu'il se rend vers le SUD
+        if ((ancienneZone == zones[17] || ancienneZone == zones[18]) && commandeLue == "SUD") {
+            gui.afficheJoueur("SUD", 160, 170);
+        }
+        // Si le joueur était en zone cuisine (29;30) et qu'il se rend vers l'EST
+        if ((ancienneZone == zones[29] || ancienneZone == zones[30]) && commandeLue == "EST") {
             gui.afficheJoueur("EST", 25, 330);
         }
+
         //
         // etc...
         //
 
     }
 
-    private void nextScene(String uneAction) {
+    private void nextScene(String uneAction) throws UnsupportedAudioFileException, InterruptedException, IOException, LineUnavailableException {
         Zone nouvelle = zoneCourante.obtientSortie(uneAction);
         if (nouvelle == null) {
             gui.afficher("La commande " + uneAction + " n'est pas disponible.");
             gui.afficher();
             gui.afficher("Tapez 'Localiser' pour obtenir les commandes disponibles.\n");
         } else {
+            leSon.jouerAudioNext();
             zoneCourante = nouvelle;
             if (zoneCourante == zones[16] && debutJeu == true) {
                 gui.afficheBarre();
@@ -737,7 +750,16 @@ public class Jeu {
                 gui.afficheJoueur("NORD", 258, 343);
                 updatePositionJoueur("NORD"); // Initialisation du joueur
             }
-
+            if (zoneCourante == zones[14]) {
+                ancienneZone = zones[13];
+                gui.refreshLayers();
+                gui.afficheJoueur("NORD", 258, 343); // Changement position joueur
+            }
+            if (zoneCourante == zones[15]) {
+                ancienneZone = zones[14];
+                gui.refreshLayers();
+                gui.afficheJoueur("NORD", 258, 343); // Changement position joueur
+            }
         }
     }
 

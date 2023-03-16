@@ -1,5 +1,7 @@
 package jeu;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 
 import java.awt.*;
@@ -233,10 +235,20 @@ public class GUI implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        executerCommande();
+        try {
+            executerCommande();
+        } catch (UnsupportedAudioFileException e1) {
+            e1.printStackTrace();
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (LineUnavailableException e1) {
+            e1.printStackTrace();
+        }
     }
 
-    private void executerCommande() {
+    private void executerCommande() throws UnsupportedAudioFileException, InterruptedException, IOException, LineUnavailableException {
         String commandeLue = entree.getText();
         entree.setText("");
         jeu.traiterCommande(commandeLue);
