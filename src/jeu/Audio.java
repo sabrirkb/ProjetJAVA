@@ -88,7 +88,6 @@ public class Audio implements LineListener {
             try {
                 Thread.sleep(dureeEnMilis);
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         
