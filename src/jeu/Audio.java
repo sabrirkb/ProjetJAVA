@@ -20,6 +20,7 @@ public class Audio implements LineListener {
     AudioInputStream resume;
     AudioInputStream inventory;
     Clip myAudioClip = initClip();
+    Clip nouveauClip = initClip();
 
     public Audio() {
         try {
@@ -60,7 +61,21 @@ public class Audio implements LineListener {
     }
 
     public void jouerAudioPas() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        this.jouer(bruitDePas);
+        
+        long dureeEnMilis = 1000 * bruitDePas.getFrameLength() / (long) bruitDePas.getFormat().getFrameRate();
+        if (!nouveauClip.isOpen())
+        {
+            nouveauClip.open(bruitDePas);    
+            nouveauClip.start();
+        }
+        nouveauClip.setFramePosition(0);
+        nouveauClip.start();
+            try {
+                Thread.sleep(dureeEnMilis);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        nouveauClip.stop();
     }
 
     public void jouerAudioNext() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
@@ -70,28 +85,32 @@ public class Audio implements LineListener {
     public void jouer(AudioInputStream myStream)
             throws UnsupportedAudioFileException, LineUnavailableException, IOException {
 
-        // Calcule la longueur en ms du fichier audio
+        // On calcule la longueur en milliscondes du fichier audio
         long dureeEnMilis = 1000 * myStream.getFrameLength() / (long) myStream.getFormat().getFrameRate();
 
-        // si l'audioclip n'est pas ouvert, on en ouvre un
+        // Si l'audioclip n'est pas ouvert, on en ouvre un nouveau
         // avec l'audioStream passé en paramètre de la méthode
         if (!myAudioClip.isOpen()) {
             myAudioClip.open(myStream);
+            
+            myAudioClip.start();
         }
 
         // On set la frame sur 0 (début de l'audio)
         // et on démarre le clip (le son se joue)
+
         myAudioClip.setFramePosition(0);
         myAudioClip.start();
 
-        // On patiente la durée de l'audio
+        // On execute un timer qui patiente la durée de l'audio
+        // avant de poursuivre la lecture du code
             try {
                 Thread.sleep(dureeEnMilis);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         
-        // Enfin, on arrête l'audio
+        // Enfin, on arrête l'audio après la fin du timer
         // NB: Si le timer précédent ne s'est pas executé, le son ne se lancera pas
         myAudioClip.stop();
     }

@@ -597,7 +597,7 @@ public class Jeu {
         }
     }
 
-    public void checkInventaire() {
+    public void checkInventaire() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         gui.afficher("Voici le contenu de votre inventaire :\n");
         gui.afficher();
         if (this.Inventaire != null) {
