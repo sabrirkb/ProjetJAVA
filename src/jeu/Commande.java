@@ -4,10 +4,9 @@ import java.util.List;
 
 public enum Commande {
 	LOCALISER("L", "Localiser\t(L)  :  Indique votre position"),
-	NORD("N", "Nord\t\t(N)  :  Aller à la sortie nord"), 
-	SUD("S", "Sud\t\t(S)  :  Aller à la sortie sud"), 
-	EST("E", "Est\t\t(E)  :  Aller à la sortie est"), 
-	OUEST("O", "Ouest\t\t(O)  :  Aller à la sortie ouest"), 
+	NORD("N/S", "Nord/Sud\t(N/S)  :  Aller à la sortie nord/sud"), 
+	EST("E/O", "Est/Ouest\t(E/O)  :  Aller à la sortie est/ouest"),
+	CARTE("C", "Map\t\t(M)  :  Afficher la carte"),  
 	TEMPS("T", "Temps\t\t(T)  :  Afficher le temps"), 
 	INVENTAIRE("I", "Inventaire\t(I)  :  Afficher l'inventaire"), 
 	AIDE("?", "Aide\t\t(?)  :  Aide"), 

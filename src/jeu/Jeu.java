@@ -25,6 +25,7 @@ public class Jeu {
     private boolean pauseMenu = false;
     private boolean nightTime = false;
     private boolean alerteNuit = true;
+    private boolean carteTrouvee = false;
     private Zone[] zones;
     private Zone ancienneZone;
     private Zone temporaryPauseZone;
@@ -345,6 +346,25 @@ public class Jeu {
         gui.clearText();
         gui.afficher("> " + commandeLue + "\n\n");
         switch (commandeLue.toUpperCase()) {
+
+
+            /* RAJOUTER UNE COMMANDE AFFICHER CARTE 
+                -> Si carteTrouvee == true -> zone[x] correspondant à l'affichage de la map
+                -> else { "Commande non disponible" + liste des commandes } 
+            */
+            case "MAP": case "M" : case "CARTE" : case "C" :
+                if (carteTrouvee)
+                {
+                    // zoneCourante = zone[x]
+                }
+                else
+                {
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
+                }
+                break;
+
             case "?":
             case "AIDE":
             case "HELP":
@@ -664,6 +684,11 @@ public class Jeu {
             // Si le joueur se trouve dans la zone [3] (cour jour) et qu'il est plus de 22h, la zone courante passe à zone [4] (cour nuit)
             if (zoneCourante == zones[3]) {
                 zoneCourante = zones[4];
+                gui.afficheImage(zoneCourante.nomImage());
+            }
+            // Si le joueur se trouve dans la zone [6] (refectoire jour) et qu'il est plus de 22h, la zone courante passe à zone [7] (refectoire nuit)
+            if (zoneCourante == zones[6]) {
+                zoneCourante = zones[7];
                 gui.afficheImage(zoneCourante.nomImage());
             }
         }
