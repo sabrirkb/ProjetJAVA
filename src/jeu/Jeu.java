@@ -391,9 +391,9 @@ public class Jeu {
                 if (quitMenu) {
                     terminer();
                 } else {
-                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
-                    gui.afficher();
-                    gui.afficher("Tapez 'Localiser' pour obtenir les commandes disponibles.\n");
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    gui.afficher("\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
                 }
                 break;
             case "NO":
@@ -401,9 +401,9 @@ public class Jeu {
                     quitMenu = false;
                     afficherLocalisation();
                 } else {
-                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
-                    gui.afficher();
-                    gui.afficher("Tapez 'Localiser' pour obtenir les commandes disponibles.\n");
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    gui.afficher("\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
                 }
                 break;
             case "COFFRE":
@@ -435,9 +435,9 @@ public class Jeu {
                 if (zoneCourante == zones[0]) {
                     zoneCourante = zones[11];
                 } else {
-                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
-                    gui.afficher();
-                    gui.afficher("Tapez 'Localiser' pour obtenir les commandes disponibles.\n");
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    gui.afficher("\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
                 }
                 break;
             case "REPRENDRE":
@@ -445,9 +445,9 @@ public class Jeu {
                     // AFFICHER SELECTIONNEUR DE FICHIER ET LE LIRE / RECUPERER VARIABLES
                     // zoneCourante == zonePause
                 } else {
-                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
-                    gui.afficher();
-                    gui.afficher("Tapez 'Localiser' pour obtenir les commandes disponibles.\n");
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    gui.afficher("\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
                 }
                 break;
             case "PAUSE":
@@ -464,9 +464,9 @@ public class Jeu {
                     gui.afficher("\nSauvegarder   (SAVE) : Sauvegarder la partie");
                     gui.afficher("\nQuitter\t\t (Q) : Quitter le jeu");
                 } else {
-                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
-                    gui.afficher();
-                    gui.afficher("Tapez 'Localiser' pour obtenir les commandes disponibles.\n");
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    gui.afficher("\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
                 }
                 break;
             case "JOUER":
@@ -479,9 +479,9 @@ public class Jeu {
                     afficherLocalisation();
                     pauseMenu = false;
                 } else {
-                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
-                    gui.afficher();
-                    gui.afficher("Tapez 'Localiser' pour obtenir les commandes disponibles.\n");
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    gui.afficher("\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
                 }
                 break;
             case "SAUVEGARDER":
@@ -492,29 +492,33 @@ public class Jeu {
                     try {
                         // SAUVEGARDE DE TOUTES LES VARIABLES DE CHAQUE FICHIER DANS UN REPERTOIRE
                         // [...]
-                        // Wait 3 secondes
+                        Thread.sleep(3000);
+                        gui.clearText();
                         gui.afficher("\nSauvegarde effectuée avec succès, retour au menu pause…");
-                        // Wait 3 secondes
+                        Thread.sleep(3000);
                         Temps.setHeure(temporaryPauseHeure);
                         Temps.setMinutes(temporaryPauseMinutes);
                         traiterCommande("PAUSE");
                     } catch (Exception e) {
                         gui.clearText();
                         gui.afficher("\nErreur durant la sauvegarde, retour au menu pause…\n \n" + e.getMessage());
-                        // WAIT 3 secondes
+                        Thread.sleep(3000);
                         Temps.setHeure(temporaryPauseHeure);
                         Temps.setMinutes(temporaryPauseMinutes);
                         traiterCommande("PAUSE");
                     }
                 } else {
-                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
-                    gui.afficher();
-                    gui.afficher("Tapez 'Localiser' pour obtenir les commandes disponibles.\n");
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    gui.afficher("\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
                 }
                 break;
             default:
                 gui.clearText();
-                gui.afficher("Commande inconnue.\nTapez '?' pour obtenir de l'aide.");
+                gui.afficher("Commande inconnue.\nTapez '?' pour obtenir de l'aide.\n\n");
+                gui.afficher(zoneCourante.commandesDispo());
+                gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
+
                 break;
         }
     }
@@ -673,13 +677,13 @@ public class Jeu {
             gui.afficher();
             gui.afficher("Tapez 'Localiser' pour obtenir les commandes disponibles.\n");
         } else {
-            leSon.jouerAudioPas();
             ancienneZone = zoneCourante;
             zoneCourante = nouvelle;
             gui.afficher(zoneCourante.descriptionLongue());
             gui.afficher();
             gui.afficheImage(zoneCourante.nomImage());
             updatePositionJoueur(direction);
+            leSon.jouerAudioPas();
         }
     }
 
@@ -698,10 +702,15 @@ public class Jeu {
                 && commandeLue == "OUEST") {
             gui.afficheJoueur("SUD", 450, 50);
         }
+        // Si le joueur était en zone cour (3;4;5) et qu'il se rend vers l'EST
+        if ((ancienneZone == zones[3] || ancienneZone == zones[4] || ancienneZone == zones[5])
+                && commandeLue == "EST") {
+            gui.afficheJoueur("EST", 30, 200);
+        }
         // Si le joueur était en zone cour (3;4;5) et qu'il se rend vers le NORD
         if ((ancienneZone == zones[3] || ancienneZone == zones[4] || ancienneZone == zones[5])
                 && commandeLue == "NORD") {
-            gui.afficheJoueur("OEST", 25, 230);
+            gui.afficheJoueur("OUEST", 480, 210);
         }
         // Si le joueur était en zone réfectoire (6;7;8) et qu'il se rend vers le NORD
         if ((ancienneZone == zones[6] || ancienneZone == zones[7] || ancienneZone == zones[8])
@@ -716,6 +725,26 @@ public class Jeu {
         // Si le joueur était en zone cellule (17;18) et qu'il se rend vers le SUD
         if ((ancienneZone == zones[17] || ancienneZone == zones[18]) && commandeLue == "SUD") {
             gui.afficheJoueur("SUD", 160, 170);
+        }
+        // Si le joueur était en zone couloir (20;21) et qu'il se rend vers l'EST
+        if ((ancienneZone == zones[20] || ancienneZone == zones[21]) && commandeLue == "EST") {
+            gui.afficheJoueur("SUD", 260, 120);
+        }
+        // Si le joueur était en zone couloir (20;21) et qu'il se rend vers l'EST
+        if ((ancienneZone == zones[20] || ancienneZone == zones[21]) && commandeLue == "NORD") {
+            gui.afficheJoueur("SUD", 260, 170);
+        }
+        // Si le joueur était en zone couloir (20;21) et qu'il se rend vers l'OUEST
+        if ((ancienneZone == zones[20] || ancienneZone == zones[21]) && commandeLue == "OUEST") {
+            gui.afficheJoueur("NORD", 260, 340);
+        }
+        // Si le joueur était en zone douches (23;24) et qu'il se rend vers le SUD
+        if ((ancienneZone == zones[23] || ancienneZone == zones[24]) && commandeLue == "SUD") {
+            gui.afficheJoueur("EST", 30, 210);
+        }
+        // Si le joueur était en zone salleDesGardes (26;27) et qu'il se rend vers le OUEST
+        if ((ancienneZone == zones[26] || ancienneZone == zones[27]) && commandeLue == "OUEST") {
+            gui.afficheJoueur("OUEST", 450, 210);
         }
         // Si le joueur était en zone cuisine (29;30) et qu'il se rend vers l'EST
         if ((ancienneZone == zones[29] || ancienneZone == zones[30]) && commandeLue == "EST") {
@@ -735,7 +764,6 @@ public class Jeu {
             gui.afficher();
             gui.afficher("Tapez 'Localiser' pour obtenir les commandes disponibles.\n");
         } else {
-            leSon.jouerAudioNext();
             zoneCourante = nouvelle;
             if (zoneCourante == zones[16] && debutJeu == true) {
                 gui.afficheBarre();
@@ -761,6 +789,7 @@ public class Jeu {
                 gui.refreshLayers();
                 gui.afficheJoueur("NORD", 258, 343); // Changement position joueur
             }
+            leSon.jouerAudioNext();
         }
     }
 

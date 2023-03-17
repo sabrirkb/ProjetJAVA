@@ -42,5 +42,10 @@ public class Zone
     public Zone obtientSortie(String direction) {
     	return sorties.get(direction);
     }
+
+    public String commandesDispo()
+    {
+        return "\nCommandes disponibles : " + sorties();
+    }
 }
 
