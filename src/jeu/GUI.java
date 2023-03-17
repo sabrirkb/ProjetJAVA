@@ -178,7 +178,7 @@ public class GUI implements ActionListener {
         texte.setWrapStyleWord(true);
         texte.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));
         texte.setFont(police.deriveFont(size));
-        texte.setPreferredSize(new Dimension(542, 200));
+        texte.setPreferredSize(new Dimension(542, 190));
 
         JScrollPane listScroller = new JScrollPane(texte);
         listScroller.setAutoscrolls(true);

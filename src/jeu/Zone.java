@@ -45,7 +45,7 @@ public class Zone
 
     public String commandesDispo()
     {
-        return "\nCommandes disponibles : " + sorties();
+        return "Commandes disponibles : " + sorties();
     }
 }
 
