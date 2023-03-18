@@ -97,10 +97,6 @@ public class Audio implements LineListener {
     // Méthode de lecture des sons brefs
     public void jouer(Clip unClip, AudioInputStream unStream)
             throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        // On calcule la longueur en milliscondes du fichier audio
-        long dureeEnMilis = 1000 * unStream.getFrameLength() / (long) unStream.getFormat().getFrameRate();
-        // Si l'audioclip n'est pas déjà ouvert, on en ouvre un nouveau
-        // avec l'audioStream passé en paramètre de la méthode
         if (!unClip.isOpen()) {
             unClip.open(unStream);
             unClip.start();
@@ -109,16 +105,6 @@ public class Audio implements LineListener {
         // et on démarre le clip (le son se joue)
         unClip.setFramePosition(0);
         unClip.start();
-        // On execute un timer qui patiente la durée de l'audio
-        // avant de poursuivre la lecture du code
-        try {
-            Thread.sleep(dureeEnMilis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        // Enfin, on arrête l'audio après la fin du timer
-        // NB: Si le timer précédent ne s'est pas executé, le son ne se lancera pas
-        unClip.stop();
     }
 
     // Méthode de lecture des sons ambiants

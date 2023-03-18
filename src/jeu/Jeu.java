@@ -518,7 +518,7 @@ public class Jeu {
                     gui.afficher("\nJouer\t\t (J) : Reprendre la partie");
                     gui.afficher("\nSauvegarder   (SAVE) : Sauvegarder la partie");
                     gui.afficher("\nQuitter\t\t (Q) : Quitter le jeu");
-                    leSon.jouerAudioMenuON();   // TOUJOURS JOUER LE SON APRES L'AFFICHAGE
+                    leSon.jouerAudioMenuON();    
                 } else {
                     gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
                     gui.afficher(zoneCourante.commandesDispo());
@@ -536,7 +536,7 @@ public class Jeu {
                     gui.afficheImage(zoneCourante.nomImage());
                     afficherLocalisation();
                     pauseMenu = false;
-                    leSon.jouerAudioMenuOFF();  // TOUJOURS JOUER LE SON APRES L'AFFICHAGE
+                    leSon.jouerAudioMenuOFF();   
                 } else {
                     gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
                     gui.afficher(zoneCourante.commandesDispo());
@@ -552,7 +552,6 @@ public class Jeu {
                     try {
                         // SAUVEGARDE DE TOUTES LES VARIABLES DE CHAQUE FICHIER DANS UN REPERTOIRE
                         // [...]
-                        Thread.sleep(3000);
                         gui.clearText();
                         gui.afficher("\nSauvegarde effectuée avec succès, retour au menu pause…");
                         Thread.sleep(3000);
@@ -791,7 +790,7 @@ public class Jeu {
             gui.afficher();
             gui.afficheImage(zoneCourante.nomImage());
             updatePositionJoueur(direction);
-            leSon.jouerAudioPas();   // TOUJOURS JOUER LE SON APRES L'AFFICHAGE
+            leSon.jouerAudioPas();    
         }
     }
 
@@ -914,6 +913,7 @@ public class Jeu {
             // Lecture des sons correspondant aux zones
             if (zoneCourante == zones[14] || zoneCourante == zones[15])
             {
+                Thread.sleep(1000);
                 leSon.jouerAudioDialogue();
             }
         }
