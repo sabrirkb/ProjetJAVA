@@ -6,7 +6,6 @@ public class Zone
     protected String description;
     private String nomImage;
     protected HashMap<String,Zone> sorties;  
-    protected HashMap<String,Zone> actions; 
 
     public Zone(String description, String image) {
         this.description = description;
@@ -34,9 +33,19 @@ public class Zone
     public String descriptionLongue()  {
         return "Vous êtes dans " + description + "\n\nCommandes disponibles : " + sorties();
     }
-
-    private String sorties() {
-        return sorties.keySet().toString();
+    
+    private String sorties()
+    {
+        String result = "";
+        try {
+            for (String key : sorties.keySet())
+            {
+                result += key + " ";
+            }
+        } catch (Exception e) {
+            result = "aucune commande disponible…";
+        }
+        return result;
     }
 
     public Zone obtientSortie(String direction) {

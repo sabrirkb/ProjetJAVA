@@ -12,7 +12,16 @@ public class Cinematique extends Zone
     }
 
     private String actions() {
-        return super.sorties.keySet().toString();
+        String result = "";
+        try {
+            for (String key : sorties.keySet())
+            {
+                result += key + " ";
+            }
+        } catch (Exception e) {
+            result = "aucune commande disponible…";
+        }
+        return result;
     } 
 
 }

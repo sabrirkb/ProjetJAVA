@@ -10,28 +10,29 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Jeu {
 
-    public static GUI gui;
-    private Zone zoneCourante;
-    private Horloge Temps = new Horloge();
-    private List<Objets> Inventaire;
-    private boolean debutJeu = true;
-    private boolean coffreOuvert = false;
-    private boolean celluleOuverte = false;
-    private boolean armeRecuperee = false;
-    private boolean indiceCodetenu = false;
-    private boolean battreMarco = false;
-    private boolean sceneBagarre = false;
-    private boolean quitMenu = false;
-    private boolean pauseMenu = false;
-    private boolean nightTime = false;
-    private boolean alerteNuit = true;
-    private boolean carteTrouvee = false;
-    private Zone[] zones;
-    private Zone ancienneZone;
-    private Zone temporaryPauseZone;
-    private int temporaryPauseHeure;
-    private int temporaryPauseMinutes;
-    private int tentatives = 3; 
+    public static GUI gui;                      
+    private Zone zoneCourante;                  
+    private Horloge Temps = new Horloge();      
+    private List<Objets> Inventaire;            
+    private boolean cinematiqueDeDepart = true; // déclare si la cinématique au début du jeu est active
+    private boolean coffreOuvert = false;       // si le coffre de la salle des garde est ouvert
+    private boolean celluleOuverte = false;     // si la cellule est déverouillée
+    private boolean armeRecuperee = false;      // augmentera les chances de battre Marco
+    private boolean indiceCodetenu = false;     // permettra de savoir qu'il faut être gentil avec Marco
+    private boolean battreMarco = false;        // choix du joueur d'être gentil ou méchant avec Marco
+    private boolean sceneBagarre = false;       // si la scène de bagarre s'est passé ou non au réfectoire
+    private boolean quitMenu = false;           // si le menu quitter est ouvert
+    private boolean pauseMenu = false;          // si le menu pause est ouvert
+    private boolean nightTime = false;          // s'il fait nuit
+    private boolean activerAlerteNuit = true;   // active ou non les alertes précisant les rondes de nuit des gardes
+    private boolean nightAlertOn = false;       // définit si l'alerte ci-dessus est active ou non
+    private boolean carteTrouvee = false;       // si la carte du jeu a été trouvée par le joueur (salle des gardes) -> 1/4 chance de prendre un avertissement (variable aléatoire)
+    private Zone[] zones;                       // tableau comportant les zones / cinématiques du jeu
+    private Zone ancienneZone;                  // conserve la zone précédente
+    private Zone temporaryPauseZone;            // servira à conserver la zone durant le menu pause
+    private int temporaryPauseHeure;            // servira à conserver l'heure durant le menu pause
+    private int temporaryPauseMinutes;          // servira à conserver les minutes durant le menu pause
+    private int tentatives = 3;                 // Nb max d'avertissements -> au bout de 3 -> game over
     private Audio leSon = new Audio();
 
     public Jeu() throws InterruptedException {
@@ -56,7 +57,7 @@ public class Jeu {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (!pauseMenu && !quitMenu && !debutJeu) {
+                if (!pauseMenu && !quitMenu && !cinematiqueDeDepart) {
                     Temps.addTime();
                     checkJourNuit();
                     gui.updateTxtHeure(Temps.getHeure(), Temps.getMinutes(), tentatives);
@@ -76,12 +77,10 @@ public class Jeu {
 
         // CRÉATION D'UN TABLEAU QUI CONTIENT LES ZONES ET CINÉMATIQUES(*) DE NOTRE JEU
         // (*) : une cinématique se définit comme un enchaînement de zones, dont les
-        // messages et/ou
-        // les images varient lorsque le joueur tape les actions [SUIVANT] / [OK]
+        // messages / images varient lorsque le joueur tape les actions [SUIVANT] / [OK]
 
-        zones = new Zone[50]; // Il n'y a pas réellement 50 "zones", on choisit un tableau
-                              // large car les scènes variantes (jour/nuit) et cinématiques
-                              // sont également inclues dans ce tableau.
+        zones = new Zone[150]; // Il n'y a pas réellement 150 "zones", on choisit un tableau large
+                               // pour y inclure des scènes variantes (jour/nuit) et des cinématiques.
 
         // EXEMPLES DE CREATION D'UNE NOUVELLE ZONE
         // zone[x] = new Zone("description de la zone", "src/image.png");
@@ -122,7 +121,11 @@ public class Jeu {
         // zones[2].ajouteSortie(Sortie.SUD, zones[x]); -> idem, mais le joueur s'enfuit
         // la nuit
 
-        zones[0] = new Cinematique("\nBienvenue dans le menu principal.", "/interface/menuPrincipal.png");
+        zones[0] = new Cinematique("\nBienvenue dans le menu principal. \n"
+                                    + "\nTapez 'Nouveau' pour commencer une partie"
+                                    + "\nTapez 'Reprendre' pour charger une sauvegarde"
+                                    + "\nTapez 'Quitter' pour fermer le jeu"
+                                    , "/interface/menuPrincipal.png");
         // zones[0].ajouteAction(Action.NOUVEAU, zones[11]); -> GERER DANS LE SWITCH DES
         // COMMANDES
         // zones[0].ajouteAction(Action.REPRENDRE, zones[10]); -> GERER DANS LE SWITCH
@@ -226,7 +229,7 @@ public class Jeu {
                 // \nAttention: il vous reste "
                 // + this.getTentatives()
                 // + " avertissement(s) avant de vous faire exécuter!", -> gui.afficher() dans
-                // l'event ayant mené à la zone
+                // l'event ayant mené à la zone -> 'OK' = clearTexte + description zone
                 "/interieur/cellule/celluleJour.png");
 
         zones[29] = new Zone("la cuisine (jour).", "/interieur/cuisine/cuisineJour.png");
@@ -321,47 +324,55 @@ public class Jeu {
 
         zones[31].ajouteAction(Action.OK, zones[16]);
 
-        // AFFECTATION DE LA ZONE COURANTE - DEBUT DU JEU -> ZONE COURANTE = CINEMATIQUE
-        // DE DEPART (pour l'instant zones[11])
-        zoneCourante = zones[11];
+        // AFFECTATION DE LA ZONE COURANTE - DEBUT DU JEU -> ZONE COURANTE = MENU PRINCIPAL
+        // DE DEPART (zones[0])
+        zoneCourante = zones[0];
         // Temps.setTime(21, 30); // -> permet de changer l'heure de départ du jeu
 
     }
 
     private void afficherLocalisation() {
 
-        gui.afficher(zoneCourante.descriptionLongue());
-        gui.afficher();
+        if(zoneCourante == zones[0])
+        {
+            gui.afficher(zoneCourante.description);
+        }
+        else
+        {
+            gui.afficher(zoneCourante.descriptionLongue());
+            gui.afficher();
+        }
     }
 
     private void afficherMessageDeBienvenue() {
         gui.afficher("Bienvenue sur la prison de Mors Insula, cher Percival!");
-        gui.afficher();
-        gui.afficher("Tapez '?' pour obtenir de l'aide à tout moment.\n");
+        gui.afficher("\nTapez '?' pour obtenir de l'aide à tout moment.\n");
         gui.afficher();
         gui.afficheImage(zoneCourante.nomImage());
     }
 
-    public void traiterCommande(String commandeLue) throws UnsupportedAudioFileException, InterruptedException, IOException, LineUnavailableException {
+    public void traiterCommande(String commandeLue)
+            throws UnsupportedAudioFileException, InterruptedException, IOException, LineUnavailableException {
         gui.clearText();
         gui.afficher("> " + commandeLue + "\n\n");
         switch (commandeLue.toUpperCase()) {
 
-
-            /* RAJOUTER UNE COMMANDE AFFICHER CARTE 
-                -> Si carteTrouvee == true -> zone[x] correspondant à l'affichage de la map
-                -> else { "Commande non disponible" + liste des commandes } 
-            */
-            case "MAP": case "M" : case "CARTE" : case "C" :
-                if (carteTrouvee)
-                {
+            /*
+             * RAJOUTER UNE COMMANDE AFFICHER CARTE
+             * -> Si carteTrouvee == true -> zone[x] correspondant à l'affichage de la map
+             * -> else { "Commande non disponible" + liste des commandes }
+             */
+            case "MAP":
+            case "M":
+            case "CARTE":
+            case "C":
+                if (carteTrouvee) {
                     // zoneCourante = zone[x]
-                }
-                else
-                {
-                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
+                } else {
+                    gui.afficher("Vous ne possédez pas de carte.\n\n");
                     gui.afficher(zoneCourante.commandesDispo());
                     gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
+                    leSon.jouerAudioError();
                 }
                 break;
 
@@ -401,6 +412,7 @@ public class Jeu {
                 gui.afficher(
                         "Attention! Vous êtes sur le point de quitter le jeu. Assurez-vous d'avoir sauvegardé votre partie!\n");
                 gui.afficher("\nVoulez-vous vraiment quitter ? \n[YES] - [NO]");
+                leSon.jouerAudioError();
                 break;
             case "I":
             case "INVENTAIRE":
@@ -409,11 +421,20 @@ public class Jeu {
                 break;
             case "YES":
                 if (quitMenu) {
-                    terminer();
+                    if (zoneCourante != zones[0]) // Si on ne se trouve pas dans le menu principal
+                    {
+                        zoneCourante = zones[0];
+                        gui.afficheImage(zoneCourante.nomImage());
+                        gui.afficher(zoneCourante.descriptionLongue());
+                        leSon.jouerAudioConfirm();
+                    }
+                    else
+                        terminer();
                 } else {
                     gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
                     gui.afficher(zoneCourante.commandesDispo());
                     gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
+                    leSon.jouerAudioError();
                 }
                 break;
             case "NO":
@@ -434,7 +455,13 @@ public class Jeu {
                 nextScene("SUIVANT");
                 break;
             case "OK":
-                nextScene("OK");
+                if (nightAlertOn || zoneCourante == zones[28])  // Si le joueur tape 'OK' pour effacer l'alerte de nuit
+                {                                               // ou le message d'avertissement,
+                    gui.clearText();                            // on efface la console
+                    zoneCourante.descriptionLongue();           // et on réaffiche la description de la zone ;
+                }
+                else                                            // Sinon,
+                    nextScene("OK");                  // on passe à la scène suivante
                 break;
             case "DORMIR":
                 if ((zoneCourante == zones[16]) || (zoneCourante == zones[17]) || (zoneCourante == zones[18])) {
@@ -443,8 +470,9 @@ public class Jeu {
                 } else {
                     gui.afficher(
                             "Impossible de dormir pour le moment.\n\n");
-                            gui.afficher(zoneCourante.commandesDispo());
-                            gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
+                    leSon.jouerAudioError();
                 }
                 break;
             case "TEMPS":
@@ -455,7 +483,10 @@ public class Jeu {
                 break;
             case "NOUVEAU":
                 if (zoneCourante == zones[0]) {
+                    leSon.jouerAudioConfirm();
                     zoneCourante = zones[11];
+                    gui.afficheImage(zoneCourante.nomImage());
+                    gui.afficher(zoneCourante.descriptionLongue());
                 } else {
                     gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
                     gui.afficher(zoneCourante.commandesDispo());
@@ -470,25 +501,29 @@ public class Jeu {
                     gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
                     gui.afficher(zoneCourante.commandesDispo());
                     gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
+                    leSon.jouerAudioError();
                 }
                 break;
             case "PAUSE":
             case "P":
-                if (!debutJeu) {
+                if (!cinematiqueDeDepart) {
                     pauseMenu = true;
                     gui.cacherBarre();
                     temporaryPauseHeure = Temps.getHeure();
                     temporaryPauseMinutes = Temps.getMinutes();
                     temporaryPauseZone = zoneCourante;
                     // SET LA ZONE COURANTE SUR ZONE <PAUSE> -> à créer
+                    // gui.afficheImage(zoneCourante.nomImage());
                     gui.afficher("Vous êtes dans le menu pause.\n\nListe des commmandes disponibles :\n");
                     gui.afficher("\nJouer\t\t (J) : Reprendre la partie");
                     gui.afficher("\nSauvegarder   (SAVE) : Sauvegarder la partie");
                     gui.afficher("\nQuitter\t\t (Q) : Quitter le jeu");
+                    leSon.jouerAudioMenuON();   // TOUJOURS JOUER LE SON APRES L'AFFICHAGE
                 } else {
                     gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
                     gui.afficher(zoneCourante.commandesDispo());
                     gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
+                    leSon.jouerAudioError();
                 }
                 break;
             case "JOUER":
@@ -498,12 +533,15 @@ public class Jeu {
                     Temps.setHeure(temporaryPauseHeure);
                     Temps.setMinutes(temporaryPauseMinutes);
                     zoneCourante = temporaryPauseZone;
+                    gui.afficheImage(zoneCourante.nomImage());
                     afficherLocalisation();
                     pauseMenu = false;
+                    leSon.jouerAudioMenuOFF();  // TOUJOURS JOUER LE SON APRES L'AFFICHAGE
                 } else {
                     gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
                     gui.afficher(zoneCourante.commandesDispo());
                     gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
+                    leSon.jouerAudioError();
                 }
                 break;
             case "SAUVEGARDER":
@@ -533,14 +571,23 @@ public class Jeu {
                     gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
                     gui.afficher(zoneCourante.commandesDispo());
                     gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
+                    leSon.jouerAudioError();
                 }
                 break;
             default:
-                gui.clearText();
+            if(zoneCourante == zones[0])
+            {
+                gui.afficher("Commande inconnue.\n");
+                gui.afficher(zoneCourante.description);
+                leSon.jouerAudioError();
+            }
+            else
+            {
                 gui.afficher("Commande inconnue.\nTapez '?' pour obtenir de l'aide.\n\n");
                 gui.afficher(zoneCourante.commandesDispo());
                 gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
-
+                leSon.jouerAudioError();
+            }
                 break;
         }
     }
@@ -644,13 +691,14 @@ public class Jeu {
             // L'heure courante est >= 8h et < 22h
 
             nightTime = false;
-            alerteNuit = true;
+            activerAlerteNuit = true; // On programme l'alerte pour le soir
 
             if (zoneCourante == zones[2]) {
                 zoneCourante = zones[1];
                 gui.afficheImage(zoneCourante.nomImage());
             }
-            // Si le joueur se trouve dans la zone [3] (cour jour) et qu'il est plus de 22h, la zone courante passe à zone [4] (cour nuit)
+            // Si le joueur se trouve dans la zone [4] (cour nuit) et qu'il est plus de 8h,
+            // la zone courante passe à zone [3] (cour jour)
             if (zoneCourante == zones[4]) {
                 zoneCourante = zones[3];
                 gui.afficheImage(zoneCourante.nomImage());
@@ -668,27 +716,55 @@ public class Jeu {
             // L'heure courante est >= 22h et < 8h
 
             nightTime = true;
-            if (!debutJeu && alerteNuit) {
+            if (!cinematiqueDeDepart && activerAlerteNuit) {
+                nightAlertOn = true;
                 gui.clearText();
                 gui.afficher("\nLa nuit tombe sur l'île de Mors Insula… ");
                 gui.afficher("Les gardes exigent à tous les détenus de rejoindre leurs cellules respectives!\n");
                 gui.afficher("\nDes rondes de nuit seront effectuées jusqu'à 8 heures du matin. ");
                 gui.afficher("Tout détenu qui sera repéré de nuit en dehors de sa cellule sera sanctionné!\n");
-                alerteNuit = false;
+                activerAlerteNuit = false;
             }
-            // Si le joueur se trouve dans la zone [1] (ext ile jour) et qu'il est plus de 22h, la zone courante passe à zone [2] (ext ile nuit)
+            // Si le joueur se trouve dans la zone [1] (ext ile jour) et qu'il est plus de
+            // 22h, la zone courante passe à zone [2] (ext ile nuit)
             if (zoneCourante == zones[1]) {
                 zoneCourante = zones[2];
                 gui.afficheImage(zoneCourante.nomImage());
             }
-            // Si le joueur se trouve dans la zone [3] (cour jour) et qu'il est plus de 22h, la zone courante passe à zone [4] (cour nuit)
+            // Si le joueur se trouve dans la zone [3] (cour jour) et qu'il est plus de 22h,
+            // la zone courante passe à zone [4] (cour nuit)
             if (zoneCourante == zones[3]) {
                 zoneCourante = zones[4];
                 gui.afficheImage(zoneCourante.nomImage());
             }
-            // Si le joueur se trouve dans la zone [6] (refectoire jour) et qu'il est plus de 22h, la zone courante passe à zone [7] (refectoire nuit)
+            // Si le joueur se trouve dans la zone [6] (refectoire jour) et qu'il est plus
+            // de 22h, la zone courante passe à zone [7] (refectoire nuit)
             if (zoneCourante == zones[6]) {
                 zoneCourante = zones[7];
+                gui.afficheImage(zoneCourante.nomImage());
+            }
+            // Si le joueur se trouve dans la zone [16] (cellule jour) et qu'il est plus de
+            // 22h, la zone courante passe à zone [22] (cellule nuit)
+            if (zoneCourante == zones[16]) {
+                zoneCourante = zones[22];
+                gui.afficheImage(zoneCourante.nomImage());
+            }
+            // Si le joueur se trouve dans la zone [20] (couloir jour) et qu'il est plus de
+            // 22h, la zone courante passe à zone [21] (couloir nuit)
+            if (zoneCourante == zones[20]) {
+                zoneCourante = zones[21];
+                gui.afficheImage(zoneCourante.nomImage());
+            }
+            // Si le joueur se trouve dans la zone [23] (douches jour) et qu'il est plus de
+            // 22h, la zone courante passe à zone [24] (douches nuit)
+            if (zoneCourante == zones[23]) {
+                zoneCourante = zones[24];
+                gui.afficheImage(zoneCourante.nomImage());
+            }
+            // Si le joueur se trouve dans la zone [29] (cuisine jour) et qu'il est plus de
+            // 22h, la zone courante passe à zone [30] (cuisine nuit)
+            if (zoneCourante == zones[29]) {
+                zoneCourante = zones[30];
                 gui.afficheImage(zoneCourante.nomImage());
             }
         }
@@ -707,6 +783,7 @@ public class Jeu {
             gui.afficher("Il n'y a pas de sortie dans la direction : " + direction + ".\n\n");
             gui.afficher(zoneCourante.commandesDispo());
             gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
+            leSon.jouerAudioError();
         } else {
             ancienneZone = zoneCourante;
             zoneCourante = nouvelle;
@@ -714,19 +791,20 @@ public class Jeu {
             gui.afficher();
             gui.afficheImage(zoneCourante.nomImage());
             updatePositionJoueur(direction);
-            leSon.jouerAudioPas();
+            leSon.jouerAudioPas();   // TOUJOURS JOUER LE SON APRES L'AFFICHAGE
         }
     }
 
     // Contient la liste des positions (sprite et coordonnées x,y)
-    // du joueur en fonction de sa provenance, de sa direction, des événements ou des cinématiques
+    // du joueur en fonction de sa provenance, de sa direction, des événements ou
+    // des cinématiques
     private void updatePositionJoueur(String commandeLue) {
 
         // Si le joueur était en zone exterieur_île (1;2) et qu'il se rend vers le NORD
         if ((ancienneZone == zones[1] || ancienneZone == zones[2]) && commandeLue == "NORD") {
-            gui.afficheJoueur("NORD", 258, 325);    // on demande à la GUI de l'afficher
-                                                                    // avec l'image du joueur qui regarde le "NORD",
-                                                                    // en position x:258 y:325 sur l'interface graphique
+            gui.afficheJoueur("NORD", 258, 325); // on demande à la GUI de l'afficher
+                                                 // avec l'image du joueur qui regarde le "NORD",
+                                                 // en position x:258 y:325 sur l'interface graphique
         }
         // Si le joueur était en zone cour (3;4;5) et qu'il se rend vers l'OUEST
         if ((ancienneZone == zones[3] || ancienneZone == zones[4] || ancienneZone == zones[5])
@@ -773,7 +851,8 @@ public class Jeu {
         if ((ancienneZone == zones[23] || ancienneZone == zones[24]) && commandeLue == "SUD") {
             gui.afficheJoueur("EST", 30, 210);
         }
-        // Si le joueur était en zone salleDesGardes (26;27) et qu'il se rend vers le OUEST
+        // Si le joueur était en zone salleDesGardes (26;27) et qu'il se rend vers le
+        // OUEST
         if ((ancienneZone == zones[26] || ancienneZone == zones[27]) && commandeLue == "OUEST") {
             gui.afficheJoueur("OUEST", 450, 210);
         }
@@ -781,25 +860,36 @@ public class Jeu {
         if ((ancienneZone == zones[29] || ancienneZone == zones[30]) && commandeLue == "EST") {
             gui.afficheJoueur("EST", 30, 330);
         }
-        
+
     }
 
-    private void nextScene(String uneAction) throws UnsupportedAudioFileException, InterruptedException, IOException, LineUnavailableException {
+    private void nextScene(String uneAction)
+            throws UnsupportedAudioFileException, InterruptedException, IOException, LineUnavailableException {
+             
+        // Lecture du son de transition
+        if (uneAction == "SUIVANT")
+            {
+                leSon.jouerAudioNext();   
+            }
+        if (uneAction == "OK")
+            {
+                leSon.jouerAudioConfirm();  
+            }
+
+        // Affichage de la nouvelle zone
         Zone nouvelle = zoneCourante.obtientSortie(uneAction);
         if (nouvelle == null) {
             gui.afficher("La commande " + uneAction + " n'est pas disponible.\n\n");
             gui.afficher(zoneCourante.commandesDispo());
             gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
+            leSon.jouerAudioError();
         } else {
             zoneCourante = nouvelle;
-            if (zoneCourante == zones[16] && debutJeu == true) {
+            if (zoneCourante == zones[16] && cinematiqueDeDepart == true) {
                 gui.afficheBarre();
                 afficherMessageDeBienvenue();
-                debutJeu = false;
+                cinematiqueDeDepart = false;
             }
-            gui.afficher(zoneCourante.descriptionLongue());
-            gui.afficher();
-            gui.afficheImage(zoneCourante.nomImage());
             if (zoneCourante == zones[13]) {
                 ancienneZone = zones[12];
                 gui.refreshLayers();
@@ -816,7 +906,16 @@ public class Jeu {
                 gui.refreshLayers();
                 gui.afficheJoueur("SUD", 260, 170); // Changement position joueur
             }
-            leSon.jouerAudioNext();
+            gui.afficher(zoneCourante.descriptionLongue());
+            gui.afficher();
+            gui.afficheImage(zoneCourante.nomImage());
+
+        
+            // Lecture des sons correspondant aux zones
+            if (zoneCourante == zones[14] || zoneCourante == zones[15])
+            {
+                leSon.jouerAudioDialogue();
+            }
         }
     }
 
