@@ -436,6 +436,23 @@ public class Jeu {
                         zoneCourante = zones[0];
                         gui.afficheImage(zoneCourante.nomImage());
                         gui.afficher(zoneCourante.description);
+                        gui.afficheJoueur("NONE", 50, 50);
+                        cinematiqueDeDepart = true;
+                        Temps.setHeure(10);
+                        Temps.setMinutes(30);
+                        coffreOuvert = false;       
+                        celluleOuverte = false;    
+                        armeRecuperee = false;      
+                        indiceCodetenu = false;    
+                        battreMarco = false;        
+                        sceneBagarre = false;       
+                        quitMenu = false;          
+                        pauseMenu = false;         
+                        nightTime = false;          
+                        activerAlerteNuit = true;   
+                        nightAlertOn = false;      
+                        carteTrouvee = false;  
+                        gui.cacherBarre();
                         leSon.jouerAudioConfirm();
                         leSon.jouerAmbiantThemePrincipal();
                         break;
@@ -506,9 +523,9 @@ public class Jeu {
                     gui.afficheImage(zoneCourante.nomImage());
                     gui.afficher(zoneCourante.descriptionLongue());
                 } else {
-                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
                     gui.afficher(zoneCourante.commandesDispo());
-                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
                 }
                 break;
             case "REPRENDRE":
