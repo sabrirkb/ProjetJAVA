@@ -454,6 +454,8 @@ public class Jeu {
                         carteTrouvee = false;  
                         gui.cacherBarre();
                         leSon.jouerAudioConfirm();
+                        leSon.stopAmbianceNuitExterieur();
+                        leSon.stopAmbianceNuitInterieur();
                         leSon.jouerAmbiantThemePrincipal();
                         break;
                     }
