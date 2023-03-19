@@ -59,7 +59,15 @@ public class Jeu {
             public void run() {
                 if (!pauseMenu && !quitMenu && !cinematiqueDeDepart) {
                     Temps.addTime();
-                    checkJourNuit();
+                    try {
+                        checkJourNuit();
+                    } catch (UnsupportedAudioFileException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (LineUnavailableException e) {
+                        e.printStackTrace();
+                    }
                     gui.updateTxtHeure(Temps.getHeure(), Temps.getMinutes(), tentatives);
                 }
             }
@@ -67,10 +75,11 @@ public class Jeu {
     }
 
     // INITIALISATION
-    public void setGUI(GUI g) {
+    public void setGUI(GUI g) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         gui = g;
         afficherLocalisation();
         gui.afficheImage(zoneCourante.nomImage());
+        leSon.jouerAmbiantThemePrincipal();
     }
 
     private void creerCarte() {
@@ -327,7 +336,8 @@ public class Jeu {
         // AFFECTATION DE LA ZONE COURANTE - DEBUT DU JEU -> ZONE COURANTE = MENU PRINCIPAL
         // DE DEPART (zones[0])
         zoneCourante = zones[0];
-        // Temps.setTime(21, 30); // -> permet de changer l'heure de départ du jeu
+        
+        Temps.setTime(21, 30); // -> permet de changer l'heure de départ du jeu
 
     }
 
@@ -369,9 +379,9 @@ public class Jeu {
                 if (carteTrouvee) {
                     // zoneCourante = zone[x]
                 } else {
-                    gui.afficher("Vous ne possédez pas de carte.\n\n");
+                    gui.afficher("Vous ne possédez pas de carte.");
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
                     gui.afficher(zoneCourante.commandesDispo());
-                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
                     leSon.jouerAudioError();
                 }
                 break;
@@ -425,26 +435,33 @@ public class Jeu {
                     {
                         zoneCourante = zones[0];
                         gui.afficheImage(zoneCourante.nomImage());
-                        gui.afficher(zoneCourante.descriptionLongue());
+                        gui.afficher(zoneCourante.description);
                         leSon.jouerAudioConfirm();
+                        leSon.jouerAmbiantThemePrincipal();
+                        break;
                     }
-                    else
+                    if (zoneCourante == zones[0])
+                        leSon.jouerAudioConfirm();
                         terminer();
-                } else {
-                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
+                        break;
+                } if (!quitMenu) {
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
                     gui.afficher(zoneCourante.commandesDispo());
-                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
                     leSon.jouerAudioError();
+                    break;
                 }
                 break;
             case "NO":
                 if (quitMenu) {
+                    leSon.jouerAudioConfirm();
                     quitMenu = false;
                     afficherLocalisation();
                 } else {
-                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
                     gui.afficher(zoneCourante.commandesDispo());
-                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
+                    leSon.jouerAudioError();
                 }
                 break;
             case "COFFRE":
@@ -464,14 +481,14 @@ public class Jeu {
                     nextScene("OK");                  // on passe à la scène suivante
                 break;
             case "DORMIR":
-                if ((zoneCourante == zones[16]) || (zoneCourante == zones[17]) || (zoneCourante == zones[18])) {
+                if ((zoneCourante == zones[16]) || (zoneCourante == zones[17]) || (zoneCourante == zones[18] || zoneCourante == zones[22])) {
                     dormir();
                     gui.afficher("\n" + zoneCourante.descriptionLongue());
                 } else {
                     gui.afficher(
-                            "Impossible de dormir pour le moment.\n\n");
-                    gui.afficher(zoneCourante.commandesDispo());
-                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
+                            "Impossible de dormir pour le moment.");
+                            gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
+                            gui.afficher(zoneCourante.commandesDispo());
                     leSon.jouerAudioError();
                 }
                 break;
@@ -483,6 +500,7 @@ public class Jeu {
                 break;
             case "NOUVEAU":
                 if (zoneCourante == zones[0]) {
+                    leSon.stopAmbianceThemePrincipal();
                     leSon.jouerAudioConfirm();
                     zoneCourante = zones[11];
                     gui.afficheImage(zoneCourante.nomImage());
@@ -498,9 +516,9 @@ public class Jeu {
                     // AFFICHER SELECTIONNEUR DE FICHIER ET LE LIRE / RECUPERER VARIABLES
                     // zoneCourante == zonePause
                 } else {
-                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
                     gui.afficher(zoneCourante.commandesDispo());
-                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
                     leSon.jouerAudioError();
                 }
                 break;
@@ -520,9 +538,9 @@ public class Jeu {
                     gui.afficher("\nQuitter\t\t (Q) : Quitter le jeu");
                     leSon.jouerAudioMenuON();    
                 } else {
-                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
                     gui.afficher(zoneCourante.commandesDispo());
-                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
                     leSon.jouerAudioError();
                 }
                 break;
@@ -538,9 +556,9 @@ public class Jeu {
                     pauseMenu = false;
                     leSon.jouerAudioMenuOFF();   
                 } else {
-                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
                     gui.afficher(zoneCourante.commandesDispo());
-                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
                     leSon.jouerAudioError();
                 }
                 break;
@@ -567,9 +585,9 @@ public class Jeu {
                         traiterCommande("PAUSE");
                     }
                 } else {
-                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n\n");
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
                     gui.afficher(zoneCourante.commandesDispo());
-                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
                     leSon.jouerAudioError();
                 }
                 break;
@@ -582,16 +600,16 @@ public class Jeu {
             }
             else
             {
-                gui.afficher("Commande inconnue.\nTapez '?' pour obtenir de l'aide.\n\n");
+                gui.afficher("Commande inconnue.\nTapez '?' pour obtenir de l'aide.");
+                gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
                 gui.afficher(zoneCourante.commandesDispo());
-                gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
                 leSon.jouerAudioError();
             }
                 break;
         }
     }
 
-    private void ouvrirCoffre() {
+    private void ouvrirCoffre() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         boolean clePossedee = false;
         if (Inventaire != null) {
             for (Objets objet : Inventaire) {
@@ -609,10 +627,11 @@ public class Jeu {
             // Ajouter CLE2 à l'inventaire en fin de cinématique (Inventaire.add(CLE2);)
         } else {
             gui.afficher("Vous n'êtes pas dans la salle des gardes ou ne possédez pas la clé du coffre.");
+            leSon.jouerAudioError();
         }
     }
 
-    private void ouvrirCellule() {
+    private void ouvrirCellule() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         boolean clePossedee = false;
         if (Inventaire != null) {
             for (Objets objet : Inventaire) {
@@ -628,10 +647,11 @@ public class Jeu {
             // zoneActuelle = zones[x]; -> Cellule ouverte (jour ou nuit)
         } else {
             gui.afficher("Vous n'êtes pas dans votre cellule ou ne possédez pas la clé pour vous échapper.");
+            leSon.jouerAudioError();
         }
     }
 
-    public void dormir() {
+    public void dormir() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         if (zoneCourante == zones[16] || zoneCourante == zones[17]
                 || zoneCourante == zones[18] || zoneCourante == zones[19] || zoneCourante == zones[22]) // Si on se
                                                                                                         // trouve dans
@@ -666,6 +686,7 @@ public class Jeu {
         } else // Sinon on n'est pas autorisé à dormir
         {
             gui.afficher("Vous ne pouvez dormir que lorsque vous êtes dans votre cellule.\n");
+            leSon.jouerAudioError();
         }
     }
 
@@ -678,16 +699,21 @@ public class Jeu {
             }
         } else {
             gui.afficher("Aucun objet possédé.\n");
+            leSon.jouerAudioError();
         }
     }
 
     // Vérifie l'heure actuelle et change l'affichage de la zone courante si
     // nécessaire (zone de Jour / zone de Nuit)
-    private void checkJourNuit() {
+    private void checkJourNuit() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         int heureCourante = Temps.getHeure();
         if (heureCourante < 22 && heureCourante >= 8) {
             // [ 8h <= heureCourante < 22 ]
-            // L'heure courante est >= 8h et < 22h
+            // L'heure courante est >= 8h et < 22h (il fait jour)
+
+            // Arrêt des sons ambiants de nuit
+            leSon.stopAmbianceNuitExterieur();
+            leSon.stopAmbianceNuitInterieur();
 
             nightTime = false;
             activerAlerteNuit = true; // On programme l'alerte pour le soir
@@ -712,7 +738,10 @@ public class Jeu {
         }
         if ((heureCourante >= 22 && heureCourante <= 24) || (heureCourante >= 0 && heureCourante < 8)) {
             // [ 22h <= heureCourante <= 24 ] OU [ 0 <= heureCourante < 8]
-            // L'heure courante est >= 22h et < 8h
+            // L'heure courante est >= 22h et < 8h (il fait nuit)
+            
+            // Arrêt des sons ambiant de jour
+            // …
 
             nightTime = true;
             if (!cinematiqueDeDepart && activerAlerteNuit) {
@@ -722,6 +751,7 @@ public class Jeu {
                 gui.afficher("Les gardes exigent à tous les détenus de rejoindre leurs cellules respectives!\n");
                 gui.afficher("\nDes rondes de nuit seront effectuées jusqu'à 8 heures du matin. ");
                 gui.afficher("Tout détenu qui sera repéré de nuit en dehors de sa cellule sera sanctionné!\n");
+                leSon.jouerAudioDialogue();
                 activerAlerteNuit = false;
             }
             // Si le joueur se trouve dans la zone [1] (ext ile jour) et qu'il est plus de
@@ -760,11 +790,30 @@ public class Jeu {
                 zoneCourante = zones[24];
                 gui.afficheImage(zoneCourante.nomImage());
             }
+            // Si le joueur se trouve dans la zone [26] (salleDesGardes jour) et qu'il est plus de
+            // 22h, la zone courante passe à zone [27] (salleDesGardes nuit)
+            if (zoneCourante == zones[26]) {
+                zoneCourante = zones[27];
+                gui.afficheImage(zoneCourante.nomImage());
+            }
             // Si le joueur se trouve dans la zone [29] (cuisine jour) et qu'il est plus de
             // 22h, la zone courante passe à zone [30] (cuisine nuit)
             if (zoneCourante == zones[29]) {
                 zoneCourante = zones[30];
                 gui.afficheImage(zoneCourante.nomImage());
+            }
+
+            // Gestion des son ambiants de nuit
+            if (zoneCourante == zones[2] || zoneCourante == zones[4])
+            {
+                leSon.stopAmbianceNuitInterieur();
+                leSon.jouerAmbiantNuitExterieur();
+            }
+            if (zoneCourante == zones[7] || zoneCourante == zones[22] || zoneCourante == zones[21]
+            || zoneCourante == zones[24]  || zoneCourante == zones[27]  || zoneCourante == zones[30])
+            {
+                leSon.stopAmbianceNuitExterieur();
+                leSon.jouerAmbiantNuitInterieur();
             }
         }
     }
@@ -779,9 +828,9 @@ public class Jeu {
     private void allerEn(String direction) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         Zone nouvelle = zoneCourante.obtientSortie(direction);
         if (nouvelle == null) {
-            gui.afficher("Il n'y a pas de sortie dans la direction : " + direction + ".\n\n");
+            gui.afficher("Il n'y a pas de sortie dans la direction : " + direction + ".");
+            gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
             gui.afficher(zoneCourante.commandesDispo());
-            gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
             leSon.jouerAudioError();
         } else {
             ancienneZone = zoneCourante;
@@ -878,9 +927,9 @@ public class Jeu {
         // Affichage de la nouvelle zone
         Zone nouvelle = zoneCourante.obtientSortie(uneAction);
         if (nouvelle == null) {
-            gui.afficher("La commande " + uneAction + " n'est pas disponible.\n\n");
+            gui.afficher("La commande " + uneAction + " n'est pas disponible.");
+            gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
             gui.afficher(zoneCourante.commandesDispo());
-            gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n");
             leSon.jouerAudioError();
         } else {
             zoneCourante = nouvelle;

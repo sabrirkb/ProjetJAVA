@@ -4,8 +4,11 @@ import java.awt.FontFormatException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 public class Main {
-	public static void main(String[] args) throws InterruptedException, FileNotFoundException, FontFormatException, IOException {
+	public static void main(String[] args) throws InterruptedException, FileNotFoundException, FontFormatException, IOException, UnsupportedAudioFileException, LineUnavailableException {
 		Jeu jeu = new Jeu();
 		GUI gui = new GUI( jeu);
 		jeu.setGUI( gui);

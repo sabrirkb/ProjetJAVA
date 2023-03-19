@@ -24,6 +24,8 @@ public class Audio implements LineListener {
 
     // Streams des sons ambiants (boucles)
     AudioInputStream themePrincipal;
+    AudioInputStream nuitExterieur;
+    AudioInputStream nuitInterieur;
     AudioInputStream ambiantMenu;
 
     // Clips sons brefs
@@ -37,7 +39,10 @@ public class Audio implements LineListener {
     Clip clipError = initClip();
 
     // Clips sons ambiants
+    Clip clipAudioThemePrincipal = initClip();
     Clip clipAudioAmbiantMenu = initClip();
+    Clip clipAudioNuitExterieur = initClip();
+    Clip clipAudioNuitInterieur = initClip();
 
     public Audio() {
         try {
@@ -86,12 +91,15 @@ public class Audio implements LineListener {
                         getClass().getClassLoader().getResourceAsStream("jeu/audio/soundFX/error.wav"));
 
         // Récupération des sons ambiants
-        // themePrincipal = AudioSystem
-        //        .getAudioInputStream(getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/main.wav")); // A CREER                                                                                                           // CREER
+        themePrincipal = AudioSystem
+                .getAudioInputStream(getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/main.wav"));                                                                                                          // CREER
         //ambiantMenu = AudioSystem
-        //        .getAudioInputStream(getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/menu.wav")); // A CREER
-                                                                                                                  
-
+        //        .getAudioInputStream(getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/menu.wav")); // A CREER                                                                                                            
+        nuitExterieur = AudioSystem
+                .getAudioInputStream(getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/nightTimeExterior.wav"));                                                                                                          // CREER
+        nuitInterieur = AudioSystem
+                .getAudioInputStream(getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/nightTimeInterior.wav"));                                                                                                          // CREER
+        
     }
 
     // Méthode de lecture des sons brefs
@@ -115,10 +123,13 @@ public class Audio implements LineListener {
             unClip.open(unStream);
             unClip.start();
         }
-        unClip.setFramePosition(0);
-        unClip.start();
-        unClip.loop(99999); // … sauf qu'on boucle l'audio au lieu de le stopper
-                            // l'audio sera arrêter lors de l'appel de la méthode stopAmbiance()
+        if(!unClip.isRunning())
+        {
+            unClip.setFramePosition(0);
+            unClip.start();
+        }
+        unClip.loop(99999);   // … sauf qu'on boucle l'audio au lieu de le stopper
+                                    // l'audio sera arrêter lors de l'appel de la méthode stopAmbiance()
     }
 
     // Appels sons brefs
@@ -155,7 +166,17 @@ public class Audio implements LineListener {
 
     // Appels sons ambiants
 
-    // ...
+    public void jouerAmbiantThemePrincipal() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        this.ambiance(clipAudioThemePrincipal, themePrincipal);
+    }
+
+    public void jouerAmbiantNuitExterieur() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        this.ambiance(clipAudioNuitExterieur, nuitExterieur);
+    }
+
+    public void jouerAmbiantNuitInterieur() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        this.ambiance(clipAudioNuitInterieur, nuitInterieur);
+    }
 
     // Méthode d'arrêt sons ambiants
     private void stopAmbiance(Clip unClip) {
@@ -163,8 +184,16 @@ public class Audio implements LineListener {
     }
 
     // Exemple d'arrêt d'un son d'ambiance
-    public void stopAmbianceMachin() {
-        // this.stopAmbiance(ClipMachin);
+    public void stopAmbianceThemePrincipal() {
+        this.stopAmbiance(clipAudioThemePrincipal);
+    }
+
+    public void stopAmbianceNuitExterieur() {
+        this.stopAmbiance(clipAudioNuitExterieur);
+    }
+
+    public void stopAmbianceNuitInterieur() {
+        this.stopAmbiance(clipAudioNuitInterieur);
     }
 
     @Override

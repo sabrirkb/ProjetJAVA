@@ -2,6 +2,7 @@ package jeu;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+// import com.apple.eawt.Application;       // Import nécessaire pour Mac (ancienne version -> n'est plus supporté)
 import javax.swing.*;
 
 import java.awt.*;
@@ -17,7 +18,9 @@ public class GUI implements ActionListener {
     private JTextField entree;
     private JTextArea txt_heure;
     private JTextArea texte;
-    private JLayeredPane layers = new JLayeredPane(); // Ajout des plans dans une layeredPane
+    private JLayeredPane layers = new JLayeredPane();           // Ajout des plans dans une layeredPane
+
+    // Application application = Application.getApplication();     // Nécessaire pour set l'icone sur les Mac
 
     // Couches superposées qui composent l'image de notre jeu (calques)
 
@@ -36,6 +39,7 @@ public class GUI implements ActionListener {
     public GUI(Jeu j) throws FileNotFoundException, FontFormatException, IOException {
         jeu = j;
         creerGUI();
+        
     }
 
     public void afficher(String s) {
@@ -148,9 +152,13 @@ public class GUI implements ActionListener {
     }
 
     private void creerGUI() throws FileNotFoundException, FontFormatException, IOException {
+        URL gameIcon = this.getClass().getClassLoader().getResource("jeu/images/icon.png");
+        ImageIcon imgIcon = new ImageIcon(gameIcon);    // Set l'icone sur les PC
+        // Set l'icone sur les Mac
         // TITRE DU JEU (A MODIFIER SI NECESSAIRE)
         fenetre = new JFrame("The Escape of Percival");
         fenetre.setResizable(false);
+        fenetre.setIconImage(imgIcon.getImage());
 
         entree = new JTextField(34);
 
