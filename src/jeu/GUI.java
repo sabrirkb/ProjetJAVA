@@ -156,7 +156,7 @@ public class GUI implements ActionListener {
         ImageIcon imgIcon = new ImageIcon(gameIcon);    // Set l'icone sur les PC
         // Set l'icone sur les Mac
         // TITRE DU JEU (A MODIFIER SI NECESSAIRE)
-        fenetre = new JFrame("The Escape of Percival");
+        fenetre = new JFrame("The Escape of Percival : Mors Insula island");
         fenetre.setResizable(false);
         fenetre.setIconImage(imgIcon.getImage());
 

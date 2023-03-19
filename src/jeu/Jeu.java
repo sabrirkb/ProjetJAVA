@@ -337,7 +337,7 @@ public class Jeu {
         // DE DEPART (zones[0])
         zoneCourante = zones[0];
         
-        Temps.setTime(21, 30); // -> permet de changer l'heure de départ du jeu
+        // Temps.setTime(21, 30); // -> permet de changer l'heure de départ du jeu
 
     }
 
