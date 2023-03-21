@@ -273,6 +273,12 @@ public class GUI implements ActionListener {
 
     public void updateTxtHeure(int heures, int minutes, int tentatives) {
         int lesAvertissement = tentatives - 3;
+
+        if (tentatives > 0)
+        {
+            txt_heure.setForeground(Color.WHITE);
+        }
+
         if (heures >= 10 && minutes < 10) {
             txt_heure.setText("\t| " + heures + " : 0" + minutes + " |\t\tAvertissement(s): " + (0 - (lesAvertissement))
                     + " / 3");
@@ -288,6 +294,21 @@ public class GUI implements ActionListener {
         if (heures >= 10 && minutes >= 10) {
             txt_heure.setText(
                     "\t| " + heures + " : " + minutes + " |\t\tAvertissement(s): " + (0 - (lesAvertissement)) + " / 3");
+        }
+
+        if (tentatives == 2)
+        {
+            txt_heure.setForeground(Color.YELLOW);
+        }
+
+        if (tentatives == 1)
+        {
+            txt_heure.setForeground(Color.ORANGE);
+        }
+
+        if (tentatives <= 0)
+        {
+            txt_heure.setForeground(Color.RED);
         }
     }
 

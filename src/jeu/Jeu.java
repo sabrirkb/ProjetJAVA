@@ -86,6 +86,7 @@ public class Jeu {
                     Temps.addTime();
                     try {
                         checkJourNuit();
+                        checkEvent();
                     } catch (UnsupportedAudioFileException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -367,6 +368,10 @@ public class Jeu {
         zones[29].ajouteSortie(Sortie.EST, zones[6]);
 
         zones[31].ajouteAction(Action.OK, zones[16]);
+
+        zones[34].ajouteAction(Action.OK, zones[35]);
+
+        zones[35].ajouteAction(Action.QUITTER, zones[0]);
 
         // AFFECTATION DE LA ZONE COURANTE - DEBUT DU JEU -> ZONE COURANTE = MENU
         // PRINCIPAL
@@ -905,6 +910,27 @@ public class Jeu {
                 leSon.jouerAmbiantNuitInterieur();
             }
         }
+    }
+
+    // Définit les zones en fonctions de l'heure du jeu, de la zone courante
+    // ainsi qu'en fonction des valeurs des booléens d'événement
+    private void checkEvent() {
+        
+        // EXEMPLE DE DECLENCHEMENT D'UN EVENEMENT
+        // if (zoneCourante == zones[20] && Temps.getHeure() == 12 && Temps.getMinutes() == 30)
+        // {
+        //    tentatives = tentatives -1;
+        // }
+
+        if ( tentatives <= 0 && zoneCourante != zones[34] && zoneCourante != zones[35] && zoneCourante != zones[0] )
+        {
+            gui.clearText();
+            gui.cacherBarre();
+            zoneCourante = zones[34];
+            gui.afficheImage(zoneCourante.nomImage());
+            gui.afficher(zoneCourante.descriptionLongue());
+        }
+
     }
 
     private void afficherAide() {
