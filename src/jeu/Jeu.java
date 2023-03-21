@@ -1,7 +1,9 @@
 package jeu;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -13,7 +15,7 @@ public class Jeu {
     public static GUI gui;
     private Zone zoneCourante;
     private Horloge Temps = new Horloge();
-    private List<Objets> Inventaire;
+    private ArrayList<Objets> Inventaire = new ArrayList<Objets>();
     private boolean cinematiqueDeDepart = true; // déclare si la cinématique au début du jeu est active
     private boolean coffreOuvert = false; // si le coffre de la salle des garde est ouvert
     private boolean celluleOuverte = false; // si la cellule est déverouillée
@@ -23,6 +25,7 @@ public class Jeu {
     private boolean sceneBagarre = false; // si la scène de bagarre s'est passé ou non au réfectoire
     private boolean quitMenu = false; // si le menu quitter est ouvert
     private boolean pauseMenu = false; // si le menu pause est ouvert
+    private boolean isReprendreActive = false; // si le menu reprise de partie est actif
     private boolean nightTime = false; // s'il fait nuit
     private boolean activerAlerteNuit = true; // active ou non les alertes précisant les rondes de nuit des gardes
     private boolean nightAlertOn = false; // définit si l'alerte ci-dessus est active ou non
@@ -36,20 +39,39 @@ public class Jeu {
     private int tentatives = 3; // Nb max d'avertissements -> au bout de 3 -> game over
     private Audio leSon = new Audio();
 
+    ///// VARIABLES SUPPLEMENTAIRES NECESSAIRES AUX SAUVEGARDES /////
+    int posXJoueur;
+    int posYJoueur;
+    URL URLJoueur;
+    ArrayList<Integer> posX_autres = new ArrayList<Integer>();
+    ArrayList<Integer> posY_autres = new ArrayList<Integer>();
+    ArrayList<URL> URL_autres = new ArrayList<URL>();
+    // AJOUTER VARIABLE DE SAVE POUR SON AMBIANT
+    ////////////////////////////////////////////////////////////////
+
+    /****************************************************************************************
+     * ATTENTION : TOUTE NOUVELLE VARIABLE NÉCESSAIRE AU DEROULEMENT DU JEU DOIT
+     * ETRE REMISE
+     * À ZÉRO DANS LA METHODE retourMenuPrincipal(), ET SES VALEURS DOIVENT ETRE
+     * ENREGISTRÉES
+     * DANS LA METHODE sauvegarderPartie(), ET REMPLACÉES DANS LA METHODE
+     * reprendrePartie()
+     * PAR LES VALEURS RECUPERÉES DANS LE FICHIER DE SAUVEGARDE
+     ****************************************************************************************/
+
     public Jeu() throws InterruptedException {
 
-        // --------------------------------
-        // Inclure un menu de départ -> reprendre une sauvegarde / créer une nouvelle
-        // partie
-        // La fonction init(); affichera l'interface du menu principal;
-        // --------------------------------
-        // Si le joueur décide de créer une nouvelle partie, on fera appel à la
-        // fonction newGame() qui executera le code suivant :
-        //
-        creerCarte(); // -> Inclure dans la fonction newGame()
-        gui = null; // -> Inclure dans la fonction newGame()
-        //
-        // --------------------------------
+        /*
+         * --------------------------------
+         * Inclure un menu de départ -> reprendre une sauvegarde / créer une nouvelle
+         * partie
+         * La fonction init(); affichera l'interface du menu principal;
+         */
+        creerCarte();
+        gui = null;
+        /*
+         * --------------------------------
+         */
     }
 
     // DÉMARRE LE TIMER QUI PERMET À L'HORLOGE DU JEU DE TOURNER
@@ -78,6 +100,16 @@ public class Jeu {
     // INITIALISATION
     public void setGUI(GUI g) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         gui = g;
+
+        gui.afficheAutre("NULL", 2, 0, 0);
+        gui.afficheAutre("NULL", 3, 0, 0);
+        gui.afficheAutre("NULL", 4, 0, 0);
+        gui.afficheAutre("NULL", 5, 0, 0);
+        gui.afficheAutre("NULL", 6, 0, 0);
+        gui.afficheAutre("NULL", 7, 0, 0);
+        gui.afficheAutre("NULL", 8, 0, 0);
+        gui.afficheAutre("NULL", 9, 0, 0);
+
         afficherLocalisation();
         gui.afficheImage(zoneCourante.nomImage());
         leSon.jouerAmbiantThemePrincipal();
@@ -273,6 +305,7 @@ public class Jeu {
         // si le joueur prend la sortie 'OUEST'
 
         // AJOUT DES SORTIES ET DES COMMANDES AUX ZONES/CINEMATIQUES DU JEU
+
         zones[1].ajouteSortie(Sortie.NORD, zones[3]);
 
         zones[2].ajouteSortie(Sortie.NORD, zones[4]);
@@ -432,12 +465,13 @@ public class Jeu {
                     if (zoneCourante != zones[0]) // Si on ne se trouve pas dans le menu principal
                     {
                         this.retourMenuPrincipal();
+                        break;
                     }
-                    if (zoneCourante == zones[0])
-                    {
+                    if (zoneCourante == zones[0]) {
                         leSon.jouerAudioConfirm();
                         terminer();
-                    }    
+                        break;
+                    }
                     break;
                 }
                 if (!quitMenu) {
@@ -471,7 +505,7 @@ public class Jeu {
                 if (nightAlertOn || zoneCourante == zones[28]) // Si le joueur tape 'OK' pour effacer l'alerte de nuit
                 { // ou le message d'avertissement,
                     gui.clearText(); // on efface la console
-                    zoneCourante.descriptionLongue(); // et on réaffiche la description de la zone ;
+                    gui.afficher(zoneCourante.descriptionLongue()); // et on réaffiche la description de la zone ;
                 } else // Sinon,
                     nextScene("OK"); // on passe à la scène suivante
                 break;
@@ -509,8 +543,47 @@ public class Jeu {
                 break;
             case "REPRENDRE":
                 if (zoneCourante == zones[0]) {
-                    // AFFICHER SELECTIONNEUR DE FICHIER ET LE LIRE / RECUPERER VARIABLES
-                    // zoneCourante == zonePause
+                    isReprendreActive = true;
+                    gui.afficher(this.getPartiesSauvegardees());
+                    gui.afficher("\n\nCommandes : RETOUR");
+                } else {
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    leSon.jouerAudioError();
+                }
+                break;
+            case "RETOUR":
+                if (zoneCourante == zones[0] && isReprendreActive) {
+                    isReprendreActive = false;
+                    gui.afficher(zoneCourante.description);
+                }
+                if (zoneCourante == zones[0] && !isReprendreActive) {
+                    isReprendreActive = false;
+                    gui.afficher(zoneCourante.description);
+                } else {
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    leSon.jouerAudioError();
+                }
+                break;
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+            case "7":
+            case "8":
+            case "9":
+                if (zoneCourante == zones[0]) {
+                    try {
+                        int indexPartie = Integer.parseInt(commandeLue);
+                        this.reprendrePartie(indexPartie);
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
                     gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
@@ -564,20 +637,20 @@ public class Jeu {
                     // SET LA ZONE COURANTE SUR ZONE <SAUVEGARDE> -> à créer
                     gui.afficher("Sauvegarde en cours…\n");
                     try {
-                        // SAUVEGARDE DE TOUTES LES VARIABLES DE CHAQUE FICHIER DANS UN REPERTOIRE
-                        // [...]
+                        this.sauvegarderPartie();
                         gui.clearText();
                         gui.afficher("\nSauvegarde effectuée avec succès, retour au menu pause…");
-                        Thread.sleep(3000);
                         Temps.setHeure(temporaryPauseHeure);
                         Temps.setMinutes(temporaryPauseMinutes);
+                        // Thread.currentThread().wait(3000);
                         traiterCommande("PAUSE");
                     } catch (Exception e) {
                         gui.clearText();
-                        gui.afficher("\nErreur durant la sauvegarde, retour au menu pause…\n \n" + e.getMessage());
-                        Thread.sleep(3000);
+                        gui.afficher("\nErreur durant la sauvegarde, retour au menu pause…\n"
+                                + "\nMessage d'erreur: " + e.getMessage());
                         Temps.setHeure(temporaryPauseHeure);
                         Temps.setMinutes(temporaryPauseMinutes);
+                        // this.wait(3000);
                         traiterCommande("PAUSE");
                     }
                 } else {
@@ -688,7 +761,7 @@ public class Jeu {
         gui.afficher();
         if (this.Inventaire != null) {
             for (Objets objet : Inventaire) {
-                gui.afficher(objet.name().toString());
+                gui.afficher(objet.name().toString() + " ");
             }
         } else {
             gui.afficher("Aucun objet possédé.\n");
@@ -744,6 +817,7 @@ public class Jeu {
                 gui.afficher("Les gardes exigent à tous les détenus de rejoindre leurs cellules respectives!\n");
                 gui.afficher("\nDes rondes de nuit seront effectuées jusqu'à 8 heures du matin. ");
                 gui.afficher("Tout détenu qui sera repéré de nuit en dehors de sa cellule sera sanctionné!\n");
+                gui.afficher("\n" + zoneCourante.commandesDispo() + " OK");
                 leSon.jouerAudioDialogue();
                 activerAlerteNuit = false;
             }
@@ -950,7 +1024,7 @@ public class Jeu {
 
             // Lecture des sons correspondant aux zones
             if (zoneCourante == zones[14] || zoneCourante == zones[15]) {
-                Thread.sleep(1000);
+                Thread.sleep(0500);
                 leSon.jouerAudioDialogue();
             }
         }
@@ -961,6 +1035,11 @@ public class Jeu {
         gui.afficheImage(zoneCourante.nomImage());
         gui.afficher(zoneCourante.description);
         gui.afficheJoueur("NONE", 50, 50);
+
+        // RESET DE TOUTES LES VARIABLES
+        if (Inventaire != null) {
+            Inventaire.clear();
+        }
         cinematiqueDeDepart = true;
         Temps.setHeure(10);
         Temps.setMinutes(30);
@@ -976,11 +1055,97 @@ public class Jeu {
         activerAlerteNuit = true;
         nightAlertOn = false;
         carteTrouvee = false;
-        gui.cacherBarre();
+        tentatives = 3;
+        gui.cacherBarre(); // On cache la barre du temps
         leSon.jouerAudioConfirm();
+        // Arrêt de tous les sons d'ambiance
         leSon.stopAmbianceNuitExterieur();
         leSon.stopAmbianceNuitInterieur();
-        leSon.jouerAmbiantThemePrincipal();
+        leSon.jouerAmbiantThemePrincipal(); // On joue le son d'ambiance du menu principal
+    }
+
+    private void sauvegarderPartie() throws IOException {
+
+        posXJoueur = gui.getPosXJoueur();
+        posYJoueur = gui.getPosYJoueur();
+        // URLJoueur = gui.getURLJoueur(); -> UNE FOIS QUE LA FONCTION MARCHERA,
+        // REMPLACER LA LIGNE SUIVANTE :
+        URLJoueur = this.getClass().getClassLoader().getResource("jeu/images/sprites/heros/descend.png");
+
+        for (int i = 0; i <= 7; i++) {
+            posX_autres.add(gui.getPosX_autre(i));
+            posY_autres.add(gui.getPosY_autre(i));
+            // URL_autres[i] = gui.getURL_autre(i); -> UNE FOIS QUE LA FONCTION MARCHERA,
+            // REMPLACER LA LIGNE SUIVANTE :
+            URL_autres.add(this.getClass().getClassLoader().getResource("jeu/images/sprites/null.png"));
+        }
+
+        int indexZoneCourante = 0;
+        int i = 0;
+        for (Zone uneZone : zones) {
+            if (zoneCourante == uneZone) {
+                indexZoneCourante = i;
+            }
+            i = i + 1;
+        }
+
+        Save sauvegarde = new Save(Inventaire, cinematiqueDeDepart, temporaryPauseHeure, temporaryPauseMinutes,
+                coffreOuvert, celluleOuverte, armeRecuperee, indiceCodetenu, battreMarco,
+                sceneBagarre, nightTime, activerAlerteNuit, nightAlertOn, carteTrouvee, tentatives,
+                indexZoneCourante, posXJoueur, posYJoueur, URLJoueur, posX_autres, posY_autres, URL_autres);
+
+        sauvegarde.enregistrer();
+    }
+
+    private String getPartiesSauvegardees() {
+        Save sauvegarde = new Save();
+        int nbSaves = 0;
+        File directory = new File("src/jeu/saves/");
+        String retour = "Liste des parties sauvegardées : \n\n";
+        if (directory.listFiles(sauvegarde.getSaveFileFilter()) != null) {
+            for (File f : directory.listFiles(sauvegarde.getSaveFileFilter())) {
+                nbSaves += 1;
+                retour += nbSaves + " ";
+            }
+        }
+        if (nbSaves == 0) {
+            retour = "Aucune partie sauvegardée.";
+        }
+        return retour;
+    }
+
+    private void reprendrePartie(int indexPartie) throws ClassNotFoundException, IOException {
+
+        Save sauvegarde = new Save();
+        try {
+            sauvegarde = sauvegarde.recuperer(indexPartie);
+            Inventaire = sauvegarde.Inventaire; // FAUX : RECUP ENUM OBJETS ET LES REMETTRE DANS INV ?
+            cinematiqueDeDepart = sauvegarde.cinematiqueDeDepart;
+            Temps.setHeure(sauvegarde.heure);
+            Temps.setMinutes(sauvegarde.minutes);
+            coffreOuvert = sauvegarde.coffreOuvert;
+            celluleOuverte = sauvegarde.celluleOuverte;
+            armeRecuperee = sauvegarde.armeRecuperee;
+            indiceCodetenu = sauvegarde.indiceCodetenu;
+            battreMarco = sauvegarde.battreMarco;
+            sceneBagarre = sauvegarde.sceneBagarre;
+            nightTime = sauvegarde.nightTime;
+            activerAlerteNuit = sauvegarde.activerAlerteNuit;
+            nightAlertOn = sauvegarde.nightAlertOn;
+            carteTrouvee = sauvegarde.carteTrouvee;
+            tentatives = sauvegarde.tentatives;
+            zoneCourante = zones[sauvegarde.indexZoneCourante];
+            gui.afficheImage(zoneCourante.nomImage());
+            gui.afficher(zoneCourante.descriptionLongue());
+            gui.afficheBarre();
+            gui.afficheJoueur();
+            gui.afficheJoueur(sauvegarde.directionJoueur, sauvegarde.posXJoueur, sauvegarde.posYJoueur);
+            leSon.stopAmbianceThemePrincipal();
+        } catch (Exception e) {
+            gui.clearText();
+            gui.afficher("\nCette sauvegarde n'existe pas.\n\nCommandes : RETOUR");
+        }
+
     }
 
     private void terminer() {

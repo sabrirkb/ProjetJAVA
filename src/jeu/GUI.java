@@ -18,9 +18,10 @@ public class GUI implements ActionListener {
     private JTextField entree;
     private JTextArea txt_heure;
     private JTextArea texte;
-    private JLayeredPane layers = new JLayeredPane();           // Ajout des plans dans une layeredPane
+    private JLayeredPane layers = new JLayeredPane(); // Ajout des plans dans une layeredPane
 
-    // Application application = Application.getApplication();     // Nécessaire pour set l'icone sur les Mac
+    // Application application = Application.getApplication(); // Nécessaire pour
+    // set l'icone sur les Mac
 
     // Couches superposées qui composent l'image de notre jeu (calques)
 
@@ -39,7 +40,7 @@ public class GUI implements ActionListener {
     public GUI(Jeu j) throws FileNotFoundException, FontFormatException, IOException {
         jeu = j;
         creerGUI();
-        
+
     }
 
     public void afficher(String s) {
@@ -60,7 +61,7 @@ public class GUI implements ActionListener {
 
     // Affiche les autres couches (Objets / Personnages / Gardes)
     public void afficheAutre(String nomAutre, int Plan, int x, int y) {
-        URL imageURL = this.getClass().getClassLoader().getResource("jeu/images/" + nomAutre);
+        URL imageURL = this.getClass().getClassLoader().getResource("jeu/images/sprites/" + nomAutre + ".png");
         if (imageURL != null) {
             switch (Plan) {
                 case 2:
@@ -101,6 +102,14 @@ public class GUI implements ActionListener {
 
     public void afficheJoueur() {
         image10.removeAll();
+    }
+
+    public void afficheJoueur(URL URL, int x, int y) {
+        URL imageURL = URL;
+        if (imageURL != null) {
+            image10.setIcon(new ImageIcon(imageURL));
+            image10.setBounds(x, y, 27, 32);
+        }
     }
 
     public void afficheJoueur(String direction, int x, int y) {
@@ -146,14 +155,13 @@ public class GUI implements ActionListener {
             entree.getCaret().setBlinkRate(0);
     }
 
-    public void afficheBarre()
-    {
+    public void afficheBarre() {
         txt_heure.setForeground(Color.white);
     }
 
     private void creerGUI() throws FileNotFoundException, FontFormatException, IOException {
         URL gameIcon = this.getClass().getClassLoader().getResource("jeu/images/icon.png");
-        ImageIcon imgIcon = new ImageIcon(gameIcon);    // Set l'icone sur les PC
+        ImageIcon imgIcon = new ImageIcon(gameIcon); // Set l'icone sur les PC
         // Set l'icone sur les Mac
         // TITRE DU JEU (A MODIFIER SI NECESSAIRE)
         fenetre = new JFrame("The Escape of Percival : Mors Insula island");
@@ -256,7 +264,8 @@ public class GUI implements ActionListener {
         }
     }
 
-    private void executerCommande() throws UnsupportedAudioFileException, InterruptedException, IOException, LineUnavailableException {
+    private void executerCommande()
+            throws UnsupportedAudioFileException, InterruptedException, IOException, LineUnavailableException {
         String commandeLue = entree.getText();
         entree.setText("");
         jeu.traiterCommande(commandeLue);
@@ -265,16 +274,20 @@ public class GUI implements ActionListener {
     public void updateTxtHeure(int heures, int minutes, int tentatives) {
         int lesAvertissement = tentatives - 3;
         if (heures >= 10 && minutes < 10) {
-            txt_heure.setText("\t| " + heures + " : 0" + minutes + " |\t\tAvertissement(s): " + (0 - (lesAvertissement)) + " / 3" );
+            txt_heure.setText("\t| " + heures + " : 0" + minutes + " |\t\tAvertissement(s): " + (0 - (lesAvertissement))
+                    + " / 3");
         }
         if (heures < 10 && minutes >= 10) {
-            txt_heure.setText("\t| " + "0" + heures + " : " + minutes + " |\t\tAvertissement(s): " + (0 - (lesAvertissement)) + " / 3" );
+            txt_heure.setText("\t| " + "0" + heures + " : " + minutes + " |\t\tAvertissement(s): "
+                    + (0 - (lesAvertissement)) + " / 3");
         }
         if (heures < 10 && minutes < 10) {
-            txt_heure.setText("\t| " + "0" + heures + " : 0" + minutes + " |\t\tAvertissement(s): " + (0 - (lesAvertissement)) + " / 3" );
-        } 
-        if (heures >=10 && minutes >= 10) {
-            txt_heure.setText("\t| " + heures + " : " + minutes + " |\t\tAvertissement(s): " + (0 - (lesAvertissement)) + " / 3" );
+            txt_heure.setText("\t| " + "0" + heures + " : 0" + minutes + " |\t\tAvertissement(s): "
+                    + (0 - (lesAvertissement)) + " / 3");
+        }
+        if (heures >= 10 && minutes >= 10) {
+            txt_heure.setText(
+                    "\t| " + heures + " : " + minutes + " |\t\tAvertissement(s): " + (0 - (lesAvertissement)) + " / 3");
         }
     }
 
@@ -282,7 +295,119 @@ public class GUI implements ActionListener {
         texte.setText("");
     }
 
-	public void cacherBarre() {
+    public void cacherBarre() {
         txt_heure.setForeground(Color.BLACK);
-	}
+    }
+
+    public int getPosXJoueur() {
+        return image10.getX();
+    }
+
+    public int getPosYJoueur() {
+        return image10.getY();
+    }
+
+    public void getURLJoueur() // CHANGER LE VOID EN URL
+    {
+        // URL URLJoueur = new URL("null");
+        Icon joueurIcon = (ImageIcon) image10.getIcon();
+        // URLJoueur = joueurIcon.getUrl(); -> TROUVER L'URL DE L'IMAGE
+        // return URLJoueur;
+    }
+
+    public int getPosX_autre(int i) {
+        int X = 0;
+        if (i == 0) {
+            X = image2.getX();
+        }
+        if (i == 1) {
+            X = image3.getX();
+        }
+        if (i == 2) {
+            X = image4.getX();
+        }
+        if (i == 3) {
+            X = image5.getX();
+        }
+        if (i == 4) {
+            X = image6.getX();
+        }
+        if (i == 5) {
+            X = image7.getX();
+        }
+        if (i == 6) {
+            X = image8.getX();
+        }
+        if (i == 7) {
+            X = image9.getX();
+        }
+        return X;
+    }
+
+    public int getPosY_autre(int i) {
+        int Y = 0;
+        if (i == 0) {
+            Y = image2.getY();
+        }
+        if (i == 1) {
+            Y = image3.getY();
+        }
+        if (i == 2) {
+            Y = image4.getY();
+        }
+        if (i == 3) {
+            Y = image5.getY();
+        }
+        if (i == 4) {
+            Y = image6.getY();
+        }
+        if (i == 5) {
+            Y = image7.getY();
+        }
+        if (i == 6) {
+            Y = image8.getY();
+        }
+        if (i == 7) {
+            Y = image9.getY();
+        }
+        return Y;
+    }
+
+    public void getURL_autre(int i) {
+        // URL URLAutre = new URL("null");
+
+        if (i == 0) {
+            Icon autreIcon = (ImageIcon) image2.getIcon();
+            // URLAutre = autreIcon.getUrl(); -> TROUVER L'URL DE L'IMAGE
+        }
+        if (i == 1) {
+            Icon autreIcon = (ImageIcon) image3.getIcon();
+            // URLAutre = autreIcon.getUrl(); -> TROUVER L'URL DE L'IMAGE
+        }
+        if (i == 2) {
+            Icon autreIcon = (ImageIcon) image4.getIcon();
+            // URLAutre = autreIcon.getUrl(); -> TROUVER L'URL DE L'IMAGE
+        }
+        if (i == 3) {
+            Icon autreIcon = (ImageIcon) image5.getIcon();
+            // URLAutre = autreIcon.getUrl(); -> TROUVER L'URL DE L'IMAGE
+        }
+        if (i == 4) {
+            Icon autreIcon = (ImageIcon) image6.getIcon();
+            // URLAutre = autreIcon.getUrl(); -> TROUVER L'URL DE L'IMAGE
+        }
+        if (i == 5) {
+            Icon autreIcon = (ImageIcon) image7.getIcon();
+            // URLAutre = autreIcon.getUrl(); -> TROUVER L'URL DE L'IMAGE
+        }
+        if (i == 6) {
+            Icon autreIcon = (ImageIcon) image8.getIcon();
+            // URLAutre = autreIcon.getUrl(); -> TROUVER L'URL DE L'IMAGE
+        }
+        if (i == 7) {
+            Icon autreIcon = (ImageIcon) image9.getIcon();
+            // URLAutre = autreIcon.getUrl(); -> TROUVER L'URL DE L'IMAGE
+        }
+        // return URLAutre;
+    }
 }

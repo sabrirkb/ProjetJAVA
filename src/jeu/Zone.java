@@ -1,7 +1,8 @@
 package jeu;
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Zone 
+public class Zone implements Serializable
 {
     protected String description;
     private String nomImage;
