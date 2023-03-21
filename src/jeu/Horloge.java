@@ -76,10 +76,20 @@ public class Horloge {
             this.minutes = 0;
             return "Vous vous réveillez après avoir fait une sieste…\n";
         }
-        else
+        if (this.heure >= 18 && this.heure < 20)
         {
             this.heure = 20; // Heure du repas
             this.minutes = 0;
+            return "Vous vous réveillez après avoir fait une sieste…\n";
+        }
+        if (this.heure >= 20 && this.heure < 22)
+        {
+            this.heure = 22; // Heure du soir
+            this.minutes = 0;
+            return "Vous vous réveillez après avoir fait une sieste…\n";
+        }
+        else
+        {
             return "Vous vous réveillez après avoir fait une sieste…\n";
         }
     }
