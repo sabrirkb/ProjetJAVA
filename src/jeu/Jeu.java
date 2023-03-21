@@ -3,7 +3,12 @@ package jeu;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -1121,12 +1126,17 @@ public class Jeu {
     private String getPartiesSauvegardees() {
         Save sauvegarde = new Save();
         int nbSaves = 0;
+        Date dateSauvegarde;
+        String pattern = "dd/MM/yyyy - HH:mm";
+        SimpleDateFormat formatDate = new SimpleDateFormat(pattern);
         File directory = new File("src/jeu/saves/");
         String retour = "Liste des parties sauvegardées : \n\n";
         if (directory.listFiles(sauvegarde.getSaveFileFilter()) != null) {
             for (File f : directory.listFiles(sauvegarde.getSaveFileFilter())) {
                 nbSaves += 1;
-                retour += nbSaves + " ";
+                dateSauvegarde = new Date(f.lastModified());
+                String laDate = formatDate.format(dateSauvegarde).toString();
+                retour += "< " + nbSaves + " > " + laDate + "\t";
             }
         }
         if (nbSaves == 0) {

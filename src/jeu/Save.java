@@ -108,8 +108,9 @@ public class Save implements Serializable {
         try
         {
             FileInputStream fichierDeSauvegarde = new FileInputStream("src/jeu/saves/" + index + ".dat");
-            ObjectInputStream objectInputStream = new ObjectInputStream(fichierDeSauvegarde);
-            sauvegarde = (Save) objectInputStream.readObject();
+            try (ObjectInputStream objectInputStream = new ObjectInputStream(fichierDeSauvegarde)) {
+                sauvegarde = (Save) objectInputStream.readObject();
+            }
             return sauvegarde;
         }
         catch (Exception e)
