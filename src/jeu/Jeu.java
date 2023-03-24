@@ -106,14 +106,14 @@ public class Jeu {
     public void setGUI(GUI g) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         gui = g;
 
-        gui.afficheAutre("NULL", 2, 0, 0);
-        gui.afficheAutre("NULL", 3, 0, 0);
-        gui.afficheAutre("NULL", 4, 0, 0);
-        gui.afficheAutre("NULL", 5, 0, 0);
-        gui.afficheAutre("NULL", 6, 0, 0);
-        gui.afficheAutre("NULL", 7, 0, 0);
-        gui.afficheAutre("NULL", 8, 0, 0);
-        gui.afficheAutre("NULL", 9, 0, 0);
+       // gui.afficheAutre("NULL", 2, 40, 40);
+       // gui.afficheAutre("NULL", 3, 40, 80);
+       // gui.afficheAutre("NULL", 4, 40, 120);
+       // gui.afficheAutre("NULL", 5, 40, 160);
+       // gui.afficheAutre("NULL", 6, 40, 180);
+       // gui.afficheAutre("NULL", 7, 80, 40);
+       // gui.afficheAutre("NULL", 8, 80, 80);
+       // gui.afficheAutre("NULL", 9, 80, 160);
 
         afficherLocalisation();
         gui.afficheImage(zoneCourante.nomImage());
@@ -427,6 +427,10 @@ public class Jeu {
             case "M":
             case "CARTE":
             case "C":
+            if (nightAlertOn)
+                {
+                    nightAlertOn = false;
+                }
                 if (carteTrouvee) {
                     // zoneCourante = zone[x]
                 } else {
@@ -440,10 +444,18 @@ public class Jeu {
             case "?":
             case "AIDE":
             case "HELP":
+            if (nightAlertOn)
+                {
+                    nightAlertOn = false;
+                }
                 afficherAide();
                 break;
             case "N":
             case "NORD":
+            if (nightAlertOn)
+                {
+                    nightAlertOn = false;
+                }
                 allerEn("NORD");
                 break;
             case "L":
@@ -452,32 +464,51 @@ public class Jeu {
             case "LOCALISER":
             case "LOC":
             case "LOCAL":
+            if (nightAlertOn)
+                {
+                    nightAlertOn = false;
+                }
                 afficherLocalisation();
                 break;
             case "S":
             case "SUD":
+            if (nightAlertOn)
+                {
+                    nightAlertOn = false;
+                }
                 allerEn("SUD");
                 break;
             case "E":
             case "EST":
+            if (nightAlertOn)
+                {
+                    nightAlertOn = false;
+                }
                 allerEn("EST");
                 break;
             case "O":
             case "OUEST":
+            if (nightAlertOn)
+                {
+                    nightAlertOn = false;
+                }
                 allerEn("OUEST");
                 break;
             case "OUVRIR":
-                if (zoneCourante == zones[16])
-                {
+                if (zoneCourante == zones[16]) {
                     this.ouvrirCellule();
                 }
-                //if (zoneCourante == zones[x] && !inventaire.contains(cle1))a
-                //{
-                //    this.ouvrirCoffre();
-                //}
+                // if (zoneCourante == zones[x] && !inventaire.contains(cle1))a
+                // {
+                // this.ouvrirCoffre();
+                // }
             case "Q":
             case "QUITTER":
             case "QUIT":
+            if (nightAlertOn)
+                {
+                    nightAlertOn = false;
+                }
                 quitMenu = true;
                 gui.afficher(
                         "Attention! Vous êtes sur le point de quitter le jeu. Assurez-vous d'avoir sauvegardé votre partie!\n");
@@ -487,9 +518,17 @@ public class Jeu {
             case "I":
             case "INVENTAIRE":
             case "INV":
+            if (nightAlertOn)
+                {
+                    nightAlertOn = false;
+                }
                 checkInventaire();
                 break;
             case "YES":
+            if (nightAlertOn)
+                {
+                    nightAlertOn = false;
+                }
                 if (quitMenu) {
                     if (zoneCourante != zones[0]) // Si on ne se trouve pas dans le menu principal
                     {
@@ -512,6 +551,10 @@ public class Jeu {
                 }
                 break;
             case "NO":
+            if (nightAlertOn)
+                {
+                    nightAlertOn = false;
+                }
                 if (quitMenu) {
                     leSon.jouerAudioConfirm();
                     quitMenu = false;
@@ -524,35 +567,41 @@ public class Jeu {
                 }
                 break;
             case "COFFRE":
+            if (nightAlertOn)
+                {
+                    nightAlertOn = false;
+                }
                 ouvrirCoffre();
                 break;
             case "SUIVANT":
             case "SUIV":
+            if (nightAlertOn)
+                {
+                    nightAlertOn = false;
+                }
                 nextScene("SUIVANT");
                 break;
             case "OK":
-                if (nightAlertOn || zoneCourante == zones[28]) // Si le joueur tape 'OK' pour effacer l'alerte de nuit
-                { // ou le message d'avertissement,
+                if (nightAlertOn)   // Si le joueur tape 'OK' pour effacer l'alerte de nuit
+                {                   
+                    nightAlertOn = false;
                     gui.afficher(zoneCourante.descriptionLongue()); // et on réaffiche la description de la zone ;
                     leSon.jouerAudioConfirm();
                     break;
                 }
-                if (zoneCourante == zones[31]) 
-                {
-                    nextScene("OK");
-                    break;
-                }
-                if (pauseMenu)
-                {
+                if (pauseMenu) {
                     gui.afficher(zoneCourante.descriptionLongue());
-                    leSon.jouerAudioMenuOFF();   
-                    pauseMenu = false;  
-                    break;           
-                }
-                else                              // Sinon,
-                    nextScene("OK");    // on passe à la scène suivante
+                    leSon.jouerAudioMenuOFF();
+                    pauseMenu = false;
+                    break;
+                } else {                            // Sinon,
+                    nextScene("OK"); }    // on passe à la scène suivante
                 break;
             case "DORMIR":
+                if (nightAlertOn)
+                {
+                    nightAlertOn = false;
+                }
                 if ((zoneCourante == zones[16]) || (zoneCourante == zones[17])
                         || (zoneCourante == zones[18] || zoneCourante == zones[22])) {
                     dormir();
@@ -568,6 +617,10 @@ public class Jeu {
             case "TEMPS":
             case "T":
             case "TIME":
+            if (nightAlertOn)
+                {
+                    nightAlertOn = false;
+                }
                 gui.afficher(Temps.getTime());
                 gui.afficher("Tapez '?' pour obtenir de l'aide à tout moment.\n");
                 break;
@@ -589,7 +642,7 @@ public class Jeu {
                     isReprendreActive = true;
                     gui.afficher(this.getPartiesSauvegardees());
                     gui.afficher("\n\nTapez le numéro de la partie à reprendre, ou 'RETOUR' pour revenir"
-                                + " au menu principal.");
+                            + " au menu principal.");
                     leSon.jouerAudioConfirm();
                 } else {
                     gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
@@ -604,9 +657,9 @@ public class Jeu {
                     gui.afficher(zoneCourante.description);
                     leSon.jouerAudioConfirm();
                 }
-                //if (zoneCourante != zones[0] && !isReprendreActive) {
-                //    isReprendreActive = false;
-                //    gui.afficher(zoneCourante.description); }
+                // if (zoneCourante != zones[0] && !isReprendreActive) {
+                // isReprendreActive = false;
+                // gui.afficher(zoneCourante.description); }
                 else {
                     gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
                     gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
@@ -640,6 +693,10 @@ public class Jeu {
                 break;
             case "PAUSE":
             case "P":
+            if (nightAlertOn)
+                {
+                    nightAlertOn = false;
+                }
                 if (!cinematiqueDeDepart) {
                     pauseMenu = true;
                     gui.cacherBarre();
@@ -851,7 +908,7 @@ public class Jeu {
 
             if (zoneCourante == zones[22]) {
                 zoneCourante = zones[18];
-                
+
             }
 
             // if (zoneCourante == zones[4]) // Faire de même pour les autres zones sauf les
@@ -896,10 +953,11 @@ public class Jeu {
             if (zoneCourante == zones[6]) {
                 zoneCourante = zones[7];
             }
-            // Si le joueur se trouve dans la zone [16,17,18,19,22] (cellule jour) et qu'il est plus de
+            // Si le joueur se trouve dans la zone [16,17,18,19,22] (cellule jour) et qu'il
+            // est plus de
             // 22h, la zone courante passe à zone [22] (cellule nuit)
             if (zoneCourante == zones[16] || zoneCourante == zones[17]
-                || zoneCourante == zones[18] || zoneCourante == zones[19]) {
+                    || zoneCourante == zones[18] || zoneCourante == zones[19]) {
                 zoneCourante = zones[22];
             }
             // Si le joueur se trouve dans la zone [20] (couloir jour) et qu'il est plus de
@@ -942,15 +1000,15 @@ public class Jeu {
     // Définit les zones en fonctions de l'heure du jeu, de la zone courante
     // ainsi qu'en fonction des valeurs des booléens d'événement
     private void checkEvent() {
-        
+
         // EXEMPLE DE DECLENCHEMENT D'UN EVENEMENT
-        // if (zoneCourante == zones[20] && Temps.getHeure() == 12 && Temps.getMinutes() == 30)
+        // if (zoneCourante == zones[20] && Temps.getHeure() == 12 && Temps.getMinutes()
+        // == 30)
         // {
-        //    tentatives = tentatives -1;
+        // tentatives = tentatives -1;
         // }
 
-        if ( tentatives <= 0 && zoneCourante != zones[34] && zoneCourante != zones[35] && zoneCourante != zones[0] )
-        {
+        if (tentatives <= 0 && zoneCourante != zones[34] && zoneCourante != zones[35] && zoneCourante != zones[0]) {
             gui.clearText();
             gui.cacherBarre();
             zoneCourante = zones[34];
@@ -975,6 +1033,12 @@ public class Jeu {
             gui.afficher(zoneCourante.commandesDispo());
             leSon.jouerAudioError();
         } else {
+            
+            // Lors du déplacement du joueur, on cache toutes les couches (layers) du GUI (sauf joueur et zone)
+            gui.cacher(2); gui.cacher(3); gui.cacher(4); gui.cacher(5);
+            gui.cacher(6); gui.cacher(7); gui.cacher(8); gui.cacher(9);
+            // Ces couches seront de nouveau instanciées dans la méthode checkEvent si nécessaire
+
             ancienneZone = zoneCourante;
             zoneCourante = nouvelle;
             gui.afficher(zoneCourante.descriptionLongue());
@@ -1078,30 +1142,56 @@ public class Jeu {
                 afficherMessageDeBienvenue();
                 cinematiqueDeDepart = false;
             }
+            if (zoneCourante == zones[12])
+            {
+                gui.afficheAutre("null", 2, 150,150); // préchargement pour la scène suivante
+                gui.afficheAutre("null", 3, 150,150); // préchargement pour la scène suivante
+                gui.afficheAutre("null", 4, 150,150); // préchargement pour la scène suivante
+                gui.afficheAutre("null", 5, 150,150); // préchargement pour la scène suivante
+                gui.afficheAutre("items/bateau/nord", 7, 250,250); // préchargement pour la scène suivante
+                gui.cacher(7); 
+                //gui.afficheAutre("null", 8, 150,150); // préchargement pour la scène suivante
+                //gui.afficheAutre("null", 9, 150,150); // préchargement pour la scène suivante
+            }
             if (zoneCourante == zones[13]) {
-                ancienneZone = zones[12];
-                gui.refreshLayers();
-                gui.afficheJoueur("NORD", 258, 335);
-                updatePositionJoueur("NORD"); // Initialisation du joueur
+                gui.afficheJoueur("NORD", 258, 300);
+                gui.afficheAutre("garde/descend", 2, 225,230); // affiche garde
+                gui.afficheAutre("garde/descend", 3, 325, 230); // affiche garde
+                gui.afficheAutre("garde/monte", 4, 290, 290); // affiche garde
+                gui.afficheAutre("items/bateau/nord", 7, 215, 355); // affiche bateau
+                updatePositionJoueur("NORD");   // Initialisation du joueur
+                gui.refreshLayers();    // Rafraîchit la layeredPane (Classe GUI)
             }
             if (zoneCourante == zones[14]) {
-                ancienneZone = zones[13];
-                gui.refreshLayers();
+                gui.cacher(2); 
+                gui.cacher(3); 
+                gui.afficheAutre("garde/monte", 4, 220,320); // Changement position du garde
+                gui.cacher(5);
+                gui.cacher(7);
                 gui.afficheJoueur("NORD", 250, 330); // Changement position joueur
             }
             if (zoneCourante == zones[15]) {
-                ancienneZone = zones[14];
-                gui.refreshLayers();
                 gui.afficheJoueur("SUD", 260, 170); // Changement position joueur
+                gui.afficheAutre("garde/descend", 2, 225,230);  // affiche garde
+                gui.afficheAutre("garde/descend", 3, 325, 230); // affiche garde
+                gui.afficheAutre("garde/monte", 4, 150,150); // affiche garde
+                gui.afficheAutre("items/porte/porteDroite", 7, 0,0); // affiche porte pnj
+                gui.afficheAutre("items/porte/porteGauche", 8, 250,250); // préchargement pour la scène suivante
+                gui.cacher(8); 
             }
-            if (zoneCourante == zones[31]) {
-                ancienneZone = zones[16];
-                gui.refreshLayers();
+
+            if (zoneCourante == zones[16]) {
                 gui.afficheJoueur("SUD", 260, 170); // Changement position joueur
+                gui.afficheAutre("garde/descend", 2, 225,230);  // affiche garde
+                gui.afficheAutre("garde/descend", 3, 325, 230); // affiche garde
+                gui.afficheAutre("items/porte/porteDroite", 7, 150,150); // affiche porte joueur
+                gui.afficheAutre("items/porte/porteGauche", 8, 150,150); // affiche porte pnj
+                gui.refreshLayers();
             }
-            else { }
+            
+            else {
+            }
             gui.afficher(zoneCourante.descriptionLongue());
-            gui.afficher();
             gui.afficheImage(zoneCourante.nomImage());
 
             // Lecture des sons correspondant aux zones
@@ -1230,7 +1320,7 @@ public class Jeu {
             gui.afficheImage(zoneCourante.nomImage());
             gui.afficher(zoneCourante.descriptionLongue());
             gui.afficheBarre();
-            gui.afficheJoueur();
+            gui.enleveJoueur();
             gui.afficheJoueur(sauvegarde.directionJoueur, sauvegarde.posXJoueur, sauvegarde.posYJoueur);
             leSon.stopAmbianceThemePrincipal();
         } catch (Exception e) {

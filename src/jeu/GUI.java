@@ -66,41 +66,41 @@ public class GUI implements ActionListener {
             switch (Plan) {
                 case 2:
                     image2.setIcon(new ImageIcon(imageURL));
-                    image2.setBounds(x, y, 27, 32);
+                    image2.setBounds(x, y, 50, 50);
                     break;
                 case 3:
                     image3.setIcon(new ImageIcon(imageURL));
-                    image3.setBounds(x, y, 27, 32);
+                    image3.setBounds(x, y, 50, 50);
                     break;
                 case 4:
                     image4.setIcon(new ImageIcon(imageURL));
-                    image4.setBounds(x, y, 27, 32);
+                    image4.setBounds(x, y, 50, 50);
                     break;
                 case 5:
                     image5.setIcon(new ImageIcon(imageURL));
-                    image5.setBounds(x, y, 27, 32);
+                    image5.setBounds(x, y, 50, 50);
                     break;
                 case 6:
                     image6.setIcon(new ImageIcon(imageURL));
-                    image6.setBounds(x, y, 27, 32);
+                    image6.setBounds(x, y, 50, 50);
                     break;
                 case 7:
                     image7.setIcon(new ImageIcon(imageURL));
-                    image7.setBounds(x, y, 27, 32);
+                    image7.setBounds(x, y, 35, 32);
                     break;
                 case 8:
                     image8.setIcon(new ImageIcon(imageURL));
-                    image8.setBounds(x, y, 27, 32);
+                    image8.setBounds(x, y, 32, 64);
                     break;
                 case 9:
                     image9.setIcon(new ImageIcon(imageURL));
-                    image9.setBounds(x, y, 27, 32);
+                    image9.setBounds(x, y, 32, 64);
                     break;
             }
         }
     }
 
-    public void afficheJoueur() {
+    public void enleveJoueur() {
         image10.removeAll();
     }
 
@@ -133,6 +133,51 @@ public class GUI implements ActionListener {
             image10.setIcon(new ImageIcon(imageURL));
             image10.setBounds(x, y, 27, 32);
         }
+    }
+
+    public void cacher(int Plan)
+    {
+        if (Plan == 1)
+        {
+            layers.remove(image1);
+        }
+        if (Plan == 2)
+        {
+            layers.remove(image2);
+        }
+        if (Plan == 3)
+        {
+            layers.remove(image3);
+        }
+        if (Plan == 4)
+        {  
+            layers.remove(image4);
+        }
+        if (Plan == 5)
+        {
+            layers.remove(image5);
+        }
+        if (Plan == 6)
+        {
+            layers.remove(image6);
+        }
+        if (Plan == 7)
+        {
+            layers.remove(image7);
+        }
+        if (Plan == 8)
+        {
+            layers.remove(image8);
+        }
+        if (Plan == 9)
+        {
+            layers.remove(image9);
+        }
+        if (Plan == 10)
+        {
+            layers.remove(image10);
+        }
+        
     }
 
     public void refreshLayers() {
