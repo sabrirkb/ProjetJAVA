@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -318,11 +320,14 @@ public class Jeu {
         zones[3].ajouteSortie(Sortie.EST, zones[26]);
 
         zones[4].ajouteSortie(Sortie.OUEST, zones[7]);
+        zones[4].ajouteSortie(Sortie.EST, zones[27]);
+        zones[4].ajouteSortie(Sortie.NORD, zones[21]);
 
         zones[6].ajouteSortie(Sortie.NORD, zones[3]);
         zones[6].ajouteSortie(Sortie.OUEST, zones[29]);
 
         zones[7].ajouteSortie(Sortie.NORD, zones[4]);
+        zones[7].ajouteSortie(Sortie.OUEST, zones[30]);
 
         zones[8].ajouteSortie(Sortie.NORD, zones[3]);
 
@@ -355,17 +360,25 @@ public class Jeu {
         zones[20].ajouteSortie(Sortie.OUEST, zones[23]);
         zones[20].ajouteSortie(Sortie.NORD, zones[16]);
 
-        zones[21].ajouteSortie(Sortie.SUD, zones[20]);
+        zones[21].ajouteSortie(Sortie.OUEST, zones[24]);
+        zones[21].ajouteSortie(Sortie.EST, zones[4]);
+        zones[21].ajouteSortie(Sortie.NORD, zones[22]);
 
         zones[22].ajouteAction(Action.DORMIR, zones[16]);
 
         zones[23].ajouteSortie(Sortie.SUD, zones[20]);
 
+        zones[24].ajouteSortie(Sortie.SUD, zones[21]);
+
         zones[25].ajouteAction(Action.SUIVANT, zones[31]);
 
         zones[26].ajouteSortie(Sortie.OUEST, zones[3]);
 
+        zones[27].ajouteSortie(Sortie.OUEST, zones[4]);
+
         zones[29].ajouteSortie(Sortie.EST, zones[6]);
+
+        zones[30].ajouteSortie(Sortie.EST, zones[7]);
 
         zones[31].ajouteAction(Action.OK, zones[16]);
 
@@ -453,6 +466,15 @@ public class Jeu {
             case "OUEST":
                 allerEn("OUEST");
                 break;
+            case "OUVRIR":
+                if (zoneCourante == zones[16])
+                {
+                    this.ouvrirCellule();
+                }
+                //if (zoneCourante == zones[x] && !inventaire.contains(cle1))a
+                //{
+                //    this.ouvrirCoffre();
+                //}
             case "Q":
             case "QUITTER":
             case "QUIT":
@@ -513,6 +535,11 @@ public class Jeu {
                 { // ou le message d'avertissement,
                     gui.afficher(zoneCourante.descriptionLongue()); // et on réaffiche la description de la zone ;
                     leSon.jouerAudioConfirm();
+                    break;
+                }
+                if (zoneCourante == zones[31]) 
+                {
+                    nextScene("OK");
                     break;
                 }
                 if (pauseMenu)
@@ -958,7 +985,7 @@ public class Jeu {
         }
     }
 
-    // Contient la liste des positions (sprite et coordonnées x,y)
+    // Contient la liste des positions (sprites et coordonnées x,y)
     // du joueur en fonction de sa provenance, de sa direction, des événements ou
     // des cinématiques
     private void updatePositionJoueur(String commandeLue) {
@@ -1067,6 +1094,12 @@ public class Jeu {
                 gui.refreshLayers();
                 gui.afficheJoueur("SUD", 260, 170); // Changement position joueur
             }
+            if (zoneCourante == zones[31]) {
+                ancienneZone = zones[16];
+                gui.refreshLayers();
+                gui.afficheJoueur("SUD", 260, 170); // Changement position joueur
+            }
+            else { }
             gui.afficher(zoneCourante.descriptionLongue());
             gui.afficher();
             gui.afficheImage(zoneCourante.nomImage());
@@ -1152,17 +1185,22 @@ public class Jeu {
         Date dateSauvegarde;
         String pattern = "dd/MM/yyyy - HH:mm";
         SimpleDateFormat formatDate = new SimpleDateFormat(pattern);
+        List<File> listOfFiles = new ArrayList<File>();
         File directory = new File("src/jeu/saves/");
         String retour = "Liste des parties sauvegardées : \n\n";
         if (directory.listFiles(sauvegarde.getSaveFileFilter()) != null) {
             for (File f : directory.listFiles(sauvegarde.getSaveFileFilter())) {
-                nbSaves += 1;
+                listOfFiles.add(f);
+            }
+            listOfFiles.sort(Comparator.comparingLong(File::lastModified));
+            for (File f : listOfFiles) {
+                nbSaves = nbSaves + 1;
                 dateSauvegarde = new Date(f.lastModified());
                 String laDate = formatDate.format(dateSauvegarde).toString();
                 retour += "< " + nbSaves + " > " + laDate + "\t";
             }
         }
-        if (nbSaves == 0) {
+        if (nbSaves == -1) {
             retour = "Aucune partie sauvegardée.";
         }
         return retour;
