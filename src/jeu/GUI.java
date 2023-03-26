@@ -90,11 +90,11 @@ public class GUI implements ActionListener {
                     break;
                 case 8:
                     image8.setIcon(new ImageIcon(imageURL));
-                    image8.setBounds(x, y, 32, 64);
+                    image8.setBounds(x, y, 40, 70);
                     break;
                 case 9:
                     image9.setIcon(new ImageIcon(imageURL));
-                    image9.setBounds(x, y, 32, 64);
+                    image9.setBounds(x, y, 40, 70);
                     break;
             }
         }

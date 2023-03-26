@@ -641,8 +641,6 @@ public class Jeu {
                 if (zoneCourante == zones[0]) {
                     isReprendreActive = true;
                     gui.afficher(this.getPartiesSauvegardees());
-                    gui.afficher("\n\nTapez le numéro de la partie à reprendre, ou 'RETOUR' pour revenir"
-                            + " au menu principal.");
                     leSon.jouerAudioConfirm();
                 } else {
                     gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
@@ -1150,8 +1148,6 @@ public class Jeu {
                 gui.afficheAutre("null", 5, 150,150); // préchargement pour la scène suivante
                 gui.afficheAutre("items/bateau/nord", 7, 250,250); // préchargement pour la scène suivante
                 gui.cacher(7); 
-                //gui.afficheAutre("null", 8, 150,150); // préchargement pour la scène suivante
-                //gui.afficheAutre("null", 9, 150,150); // préchargement pour la scène suivante
             }
             if (zoneCourante == zones[13]) {
                 gui.afficheJoueur("NORD", 258, 300);
@@ -1165,28 +1161,25 @@ public class Jeu {
             if (zoneCourante == zones[14]) {
                 gui.cacher(2); 
                 gui.cacher(3); 
-                gui.afficheAutre("garde/monte", 4, 220,320); // Changement position du garde
                 gui.cacher(5);
                 gui.cacher(7);
+                gui.afficheAutre("garde/monte", 4, 220,320); // Changement position du garde
                 gui.afficheJoueur("NORD", 250, 330); // Changement position joueur
             }
             if (zoneCourante == zones[15]) {
-                gui.afficheJoueur("SUD", 260, 170); // Changement position joueur
-                gui.afficheAutre("garde/descend", 2, 225,230);  // affiche garde
-                gui.afficheAutre("garde/descend", 3, 325, 230); // affiche garde
-                gui.afficheAutre("garde/monte", 4, 150,150); // affiche garde
-                gui.afficheAutre("items/porte/porteDroite", 7, 0,0); // affiche porte pnj
-                gui.afficheAutre("items/porte/porteGauche", 8, 250,250); // préchargement pour la scène suivante
-                gui.cacher(8); 
-            }
 
-            if (zoneCourante == zones[16]) {
                 gui.afficheJoueur("SUD", 260, 170); // Changement position joueur
-                gui.afficheAutre("garde/descend", 2, 225,230);  // affiche garde
-                gui.afficheAutre("garde/descend", 3, 325, 230); // affiche garde
-                gui.afficheAutre("items/porte/porteDroite", 7, 150,150); // affiche porte joueur
-                gui.afficheAutre("items/porte/porteGauche", 8, 150,150); // affiche porte pnj
-                gui.refreshLayers();
+                gui.afficheAutre("garde/monte", 4, 250,150); // affiche garde
+                gui.afficheAutre("items/porte/porteDroite", 8, 200,200); // affiche porte pnj
+                gui.afficheAutre("items/porte/porteGauche", 9, 300,200); // préchargement scène suivante
+                gui.cacher(9);
+                
+            }
+            if (zoneCourante == zones[16]) {
+                
+                gui.afficheJoueur("SUD", 260, 170); // Changement position joueur
+                gui.afficheAutre("items/porte/porteDroite", 8, 150,150); // affiche porte joueur
+                gui.afficheAutre("items/porte/porteGauche", 9, 150,150); // affiche porte pnj
             }
             
             else {
@@ -1288,10 +1281,14 @@ public class Jeu {
                 dateSauvegarde = new Date(f.lastModified());
                 String laDate = formatDate.format(dateSauvegarde).toString();
                 retour += "< " + nbSaves + " > " + laDate + "\t";
+                
             }
+            retour +=  "\n\nTapez le numéro de la partie à reprendre, ou 'RETOUR' pour revenir"
+                + " au menu principal.";
         }
-        if (nbSaves == -1) {
-            retour = "Aucune partie sauvegardée.";
+        if (nbSaves == 0) {
+            retour = "Aucune partie sauvegardée." 
+            + "\n\nTapez 'RETOUR' pour revenir au menu principal.";
         }
         return retour;
     }
