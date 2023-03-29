@@ -1415,6 +1415,6 @@ public class Jeu {
             public void run() {
                 System.exit(0);
             }
-        }, 3500);
+        }, 2500);
     }
 }
