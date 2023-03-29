@@ -535,7 +535,7 @@ public class Jeu {
                             public void run() {
                                 terminer();
                             }
-                        }, 3500);
+                        }, 1500);
 
                         break;
                     }
@@ -1415,6 +1415,6 @@ public class Jeu {
             public void run() {
                 System.exit(0);
             }
-        }, 2500);
+        }, 5500);
     }
 }
