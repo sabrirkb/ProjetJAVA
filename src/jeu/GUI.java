@@ -323,7 +323,12 @@ public class GUI implements ActionListener {
     }
 
     public void updateTxtHeure(int heures, int minutes, int tentatives) {
-        int lesAvertissement = tentatives - 3;
+        int lesAvertissements = tentatives - 3;
+
+        if (lesAvertissements > 3)
+        {
+            lesAvertissements = 3;
+        }
 
         if (tentatives > 0)
         {
@@ -331,20 +336,20 @@ public class GUI implements ActionListener {
         }
 
         if (heures >= 10 && minutes < 10) {
-            txt_heure.setText("\t| " + heures + " : 0" + minutes + " |\t\tAvertissement(s): " + (0 - (lesAvertissement))
+            txt_heure.setText("\t| " + heures + " : 0" + minutes + " |\t\tAvertissement(s): " + (0 - (lesAvertissements))
                     + " / 3");
         }
         if (heures < 10 && minutes >= 10) {
             txt_heure.setText("\t| " + "0" + heures + " : " + minutes + " |\t\tAvertissement(s): "
-                    + (0 - (lesAvertissement)) + " / 3");
+                    + (0 - (lesAvertissements)) + " / 3");
         }
         if (heures < 10 && minutes < 10) {
             txt_heure.setText("\t| " + "0" + heures + " : 0" + minutes + " |\t\tAvertissement(s): "
-                    + (0 - (lesAvertissement)) + " / 3");
+                    + (0 - (lesAvertissements)) + " / 3");
         }
         if (heures >= 10 && minutes >= 10) {
             txt_heure.setText(
-                    "\t| " + heures + " : " + minutes + " |\t\tAvertissement(s): " + (0 - (lesAvertissement)) + " / 3");
+                    "\t| " + heures + " : " + minutes + " |\t\tAvertissement(s): " + (0 - (lesAvertissements)) + " / 3");
         }
 
         if (tentatives == 2)

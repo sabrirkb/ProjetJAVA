@@ -1170,13 +1170,13 @@ public class Jeu {
          * gui.clearText();
          * gui.afficheImage(zoneCourante.nomImage());
          * gui.afficher(zoneCourante.descriptionLongue());
-         * tentatives = tentatives -1;
+         * tentatives = tentatives -3;
          * }
          */
 
         // Cet évenement renvoie la zone Game Over lorsque le nombre max de tentatives
         // est atteint
-        if (tentatives <= 0 && zoneCourante != zones[34] && zoneCourante != zones[35] && zoneCourante != zones[0]) {
+        if (tentatives < 0 && zoneCourante != zones[34] && zoneCourante != zones[35] && zoneCourante != zones[0]) {
             gui.clearText(); // On clear le texte
             gui.cacherBarre(); // On cache la barre qui contient l'heure et le nb d'avertissements
             zoneCourante = zones[34]; // On change la zone courante à la zone game over
