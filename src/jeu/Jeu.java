@@ -300,10 +300,27 @@ public class Jeu {
         zones[34] = new Cinematique("Percival Lebrave a désobéit de trop nombreuses fois à la garde royale."
                 + " Il a déshonoré le royaume d'Aeternum. Son mauvais comportement le mènera à sa propre perte.\n"
                 + "\nQue ton âme repose en paix, jeune Percival. \nTu vas nous manquer.",
-                "/cinematiques/gameOver.png"); // [OK] -> zones[35]
+                "/cinematiques/gameOver.png"); 
 
         zones[35] = new Cinematique("\nMerci d'avoir joué.\n\n",
-                "/cinematiques/credits.png"); // IMAGE AVEC LES CREDITS -> Delay 5s -> retourMenuPrincipal();
+                "/cinematiques/credits.png"); 
+
+        zones[36] = new Cinematique("Vous sortez de votre cellule pour vous diriger vers le couloir "
+        + "lorsqu'un codétenu vous arrête… \n\nCodétenu : « Hé toi! T'es nouveau? J'ai besoin d'un p'tit service. "
+        + "Vers 18 heures, les gardes passeront pour nous conduire dans les douches…", "/interieur/couloir/couloirJour_indice.png");
+
+        zones[37] = new Cinematique("…René prévoit de donner une leçon à Marco pendant le repas de midi dans "
+        + "le réfectoire. Quand tu croiseras Marco dans les douches, donne lui cette info. Mais ne lui parle pas de moi, "
+        + "t'as bien compris ?", "/interieur/couloir/couloirJour_indice.png");
+
+        zones[38] = new Cinematique("Au fait, avant que j'oublie… Tiens, prends ça. C'est une note sur "
+        + "laquelle j'ai marqué à quelle heure les gardes passent la nuit dans chaque pièce. "
+        + "Surtout, te fais pas chopper… ils sont pas là pour plaisanter, ici! »", "/interieur/couloir/couloirJour_indice.png");
+
+        zones[39] = new Cinematique("Vous prenez la note et la placez dans votre inventaire tandis "
+        + "que le mystérieux codétenu disparaît furtivement.\n\n"
+        + "Tapez 'Inventaire' à tout moment pour consulter votre inventaire.", "/interieur/couloir/couloirJour.png");
+
 
         // zones[3].ajouteSortie(Sortie.OUEST, zones[9]); // Affecte le déclenchement de
         // la cinématique à zones[3]
@@ -383,6 +400,14 @@ public class Jeu {
         zones[30].ajouteSortie(Sortie.EST, zones[7]);
 
         zones[31].ajouteAction(Action.OK, zones[16]);
+
+        zones[36].ajouteAction(Action.SUIVANT, zones[37]);
+
+        zones[37].ajouteAction(Action.OK, zones[38]);
+
+        zones[38].ajouteAction(Action.OK, zones[39]);
+
+        zones[39].ajouteAction(Action.OK, zones[20]);
 
         // AFFECTATION DE LA ZONE COURANTE -> DEBUT DU JEU -> ZONE COURANTE = MENU
         // PRINCIPAL (zones[0])
@@ -1032,6 +1057,20 @@ public class Jeu {
     // ainsi qu'en fonction des valeurs des booléens d'événement
     private void checkEvent() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 
+        if (zoneCourante == zones[20] && !indiceCodetenu)
+        {
+            zoneCourante = zones[36];
+            gui.clearText();
+            gui.afficheImage(zoneCourante.nomImage());
+            gui.afficher(zoneCourante.descriptionLongue());
+        }
+
+        if (zoneCourante == zones[39] && !indiceCodetenu)
+        {
+            Inventaire.add(Objets.NOTE);
+            indiceCodetenu = true;
+        }
+        
         /*
           //EXEMPLE DE DECLENCHEMENT D'UN EVENEMENT 
           if (zoneCourante == zones[20] && Temps.getHeure() == 12 && Temps.getMinutes()
