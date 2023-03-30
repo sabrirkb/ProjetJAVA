@@ -21,6 +21,8 @@ public class Audio implements LineListener {
     AudioInputStream menuOFF;
     AudioInputStream error;
     AudioInputStream mort;
+    AudioInputStream dormir;
+    AudioInputStream porteClaque;
 
     // Streams des sons ambiants (boucles)
     AudioInputStream themePrincipal;
@@ -38,6 +40,8 @@ public class Audio implements LineListener {
     Clip clipMenuOFF = initClip();
     Clip clipError = initClip();
     Clip clipMort = initClip();
+    Clip clipDormir = initClip();
+    Clip clipPorteClaque = initClip();
 
     // Clips sons ambiants
     Clip clipAudioThemePrincipal = initClip();
@@ -84,9 +88,15 @@ public class Audio implements LineListener {
         error = AudioSystem
                 .getAudioInputStream(
                         getClass().getClassLoader().getResourceAsStream("jeu/audio/soundFX/error.wav"));
-                        mort = AudioSystem
-                        .getAudioInputStream(
-                                getClass().getClassLoader().getResourceAsStream("jeu/audio/soundFX/die.wav"));
+        mort = AudioSystem
+                .getAudioInputStream(
+                        getClass().getClassLoader().getResourceAsStream("jeu/audio/soundFX/die.wav"));
+        dormir = AudioSystem
+                .getAudioInputStream(
+                        getClass().getClassLoader().getResourceAsStream("jeu/audio/soundFX/sleep.wav"));
+        porteClaque = AudioSystem
+                .getAudioInputStream(
+                        getClass().getClassLoader().getResourceAsStream("jeu/audio/soundFX/doorSlam.wav"));
 
         // Récupération des sons ambiants
         themePrincipal = AudioSystem
@@ -132,8 +142,6 @@ public class Audio implements LineListener {
                             // l'audio sera arrêter lors de l'appel de la méthode stopAmbiance()
     }
 
-
-
     // Appels sons brefs
 
     public void jouerAudioDialogue() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
@@ -170,7 +178,12 @@ public class Audio implements LineListener {
         this.jouer(clipMort, mort);
     }
 
-
+    public void jouerAudioDormir() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        this.jouer(clipDormir, dormir);
+    }
+    public void joueurAudioPorteClaque() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        this.jouer(clipPorteClaque, porteClaque);
+    }
 
     // Appels sons ambiants
 
@@ -194,13 +207,10 @@ public class Audio implements LineListener {
         this.ambiance(clipAudioTheEnd, theEnd);
     }
 
-
-
     // Méthode d'arrêt sons ambiants
     private void stopAmbiance(Clip unClip) {
         unClip.stop();
     }
-
 
     // Exemple d'arrêt d'un son d'ambiance
     public void stopAmbianceThemePrincipal() {
