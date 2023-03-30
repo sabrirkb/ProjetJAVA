@@ -84,7 +84,8 @@ public class Jeu {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (!pauseMenu && !quitMenu && !cinematiqueDeDepart) {
+                if (!pauseMenu && !quitMenu && !cinematiqueDeDepart
+                && !(zoneCourante == zones[35])) {
                     Temps.addTime();
                     try {
                         checkJourNuit();
@@ -179,19 +180,19 @@ public class Jeu {
         // zones[0].ajouteAction(Action.QUITTER, zones[10]); -> GERER DANS LE SWITCH DES
         // COMMANDES
 
-        zones[1] = new Zone("l'île de Mors Insula (jour).", "/exterieur/ile/ileJournee.png");
+        zones[1] = new Zone("l'île de Mors Insula.", "/exterieur/ile/ileJournee.png");
 
-        zones[2] = new Zone("l'île de Mors Insula (nuit).", "/exterieur/ile/ileNuit.png");
+        zones[2] = new Zone("l'île de Mors Insula.", "/exterieur/ile/ileNuit.png");
 
-        zones[3] = new Zone("cour (jour).", "/exterieur/cour/courJournee.png");
+        zones[3] = new Zone("la cour.", "/exterieur/cour/courJournee.png");
 
-        zones[4] = new Zone("cour (nuit).", "/exterieur/cour/courNuit.png");
+        zones[4] = new Zone("la cour.", "/exterieur/cour/courNuit.png");
 
         zones[5] = new Zone("la cour (heure de promenade).", "/exterieur/cour/courPromenade.png");
 
-        zones[6] = new Zone("le réfectoire (jour).", "/interieur/refectoire/refectoireJournee.png");
+        zones[6] = new Zone("le réfectoire.", "/interieur/refectoire/refectoireJournee.png");
 
-        zones[7] = new Zone("le réfectoire (nuit).", "/interieur/refectoire/refectoireNuit.png");
+        zones[7] = new Zone("le réfectoire.", "/interieur/refectoire/refectoireNuit.png");
 
         zones[8] = new Zone("le réfectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
 
@@ -230,7 +231,7 @@ public class Jeu {
                 + "T'en fais pas, on reviendra s'occuper de toi bientôt. »", "/interieur/cellule/celluleJour.png");
         /////////////////////////////////////////////////////
 
-        zones[16] = new Zone("votre cellule (jour). Vous devez attendre que les gardes vous autorisent à sortir…",
+        zones[16] = new Zone("votre cellule. Vous devez attendre que les gardes vous autorisent à sortir…",
                 "/interieur/cellule/celluleJour.png"); // Zone cellule -> ajouter porte fermée (jour)
 
         zones[17] = new Zone(
@@ -245,17 +246,17 @@ public class Jeu {
                 "Vous êtes dans votre cellule. C'est l'heure de la douche. Vous êtes escorté par les gardes jusque dans les douches.",
                 "/interieur/cellule/celluleJour.png"); // Zone cellule -> porte ouverte
 
-        zones[20] = new Zone("le couloir (jour).", "/interieur/couloir/couloirJour.png");
+        zones[20] = new Zone("le couloir.", "/interieur/couloir/couloirJour.png");
 
-        zones[21] = new Zone("le couloir (nuit).", "/interieur/couloir/couloirNuit.png");
+        zones[21] = new Zone("le couloir.", "/interieur/couloir/couloirNuit.png");
 
-        zones[22] = new Zone("votre cellule (nuit). Vous devez attendre que les gardes vous autorisent à sortir…",
+        zones[22] = new Zone("votre cellule. Vous devez attendre que les gardes vous autorisent à sortir…",
                 "/interieur/cellule/celluleNuit.png"); // Zone cellule -> ajouter porte fermée (nuit)
 
-        zones[23] = new Zone("les douches (jour).",
+        zones[23] = new Zone("les douches.",
                 "/interieur/douches/douchesJour.png");
 
-        zones[24] = new Zone("les douches (nuit).",
+        zones[24] = new Zone("les douches.",
                 "/interieur/douches/douchesNuit.png");
 
         zones[25] = new Cinematique(
@@ -263,11 +264,11 @@ public class Jeu {
                 "/interieur/douches/heureDeLaDouche.png");
 
         zones[26] = new Zone(
-                "la salle des gardes (jour). Vous devriez sortir d'ici avant que quelqu'un ne vous voit!",
+                "la salle des gardes. Vous devriez sortir d'ici avant que quelqu'un ne vous voit!",
                 "/interieur/salleDesGardes/salleGardesJour.png");
 
         zones[27] = new Zone(
-                "la salle des gardes (nuit). Vous devriez sortir d'ici avant de réveiller les gardes!",
+                "la salle des gardes. Vous devriez sortir d'ici avant de réveiller les gardes!",
                 "/interieur/salleDesGardes/salleGardesNuit.png");
 
         zones[28] = new Cinematique("Vous avez été repéré par la garde royale! Ces derniers vous reconduisent de force"
@@ -276,11 +277,11 @@ public class Jeu {
                 // + this.getTentatives()
                 // + " avertissement(s) avant de vous faire exécuter!", -> gui.afficher() dans
                 // l'event ayant mené à la zone -> 'OK' = clearTexte + description zone
-                "/interieur/cellule/celluleJour.png");
+                "/cinematiques/avertissement.png");
 
-        zones[29] = new Zone("la cuisine (jour).", "/interieur/cuisine/cuisineJour.png");
+        zones[29] = new Zone("la cuisine.", "/interieur/cuisine/cuisineJour.png");
 
-        zones[30] = new Zone("la cuisine (nuit).", "/interieur/cuisine/cuisineNuit.png");
+        zones[30] = new Zone("la cuisine.", "/interieur/cuisine/cuisineNuit.png");
 
         zones[31] = new Cinematique(
                 "Vous terminez de vous laver et êtes reconduit par les gardes dans vos cellules respectives.",
@@ -374,6 +375,8 @@ public class Jeu {
         zones[26].ajouteSortie(Sortie.OUEST, zones[3]);
 
         zones[27].ajouteSortie(Sortie.OUEST, zones[4]);
+
+        zones[28].ajouteAction(Action.OK, zones[16]);
 
         zones[29].ajouteSortie(Sortie.EST, zones[6]);
 
@@ -593,7 +596,7 @@ public class Jeu {
                 }
                 if (zoneCourante == zones[34]) {
                     zoneCourante = zones[35];
-                    gui.cacher(10);
+                    gui.afficheJoueur("NONE", 150, 150);
                     gui.cacherBarre();
                     gui.clearText();
                     gui.afficheImage(zoneCourante.nomImage());
@@ -755,11 +758,11 @@ public class Jeu {
             case "SAUVEGARDER":
             case "SAVE":
                 if (pauseMenu || quitMenu) {
+                    gui.clearText();
                     // SET LA ZONE COURANTE SUR ZONE <SAUVEGARDE> -> à créer
                     gui.afficher("Sauvegarde en cours…\n");
                     try {
                         this.sauvegarderPartie();
-                        gui.clearText();
                         gui.afficher("\nSauvegarde effectuée avec succès, retour au menu pause…");
                         Temps.setHeure(temporaryPauseHeure);
                         Temps.setMinutes(temporaryPauseMinutes);
@@ -776,7 +779,7 @@ public class Jeu {
                                     e.printStackTrace();
                                 }
                             }
-                        }, 3500);
+                        }, 1500);
                     } catch (Exception e) {
                         gui.clearText();
                         gui.afficher("\nErreur durant la sauvegarde, retour au menu pause…\n"
@@ -1030,11 +1033,16 @@ public class Jeu {
     private void checkEvent() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 
         /*
-          EXEMPLE DE DECLENCHEMENT D'UN EVENEMENT 
+          //EXEMPLE DE DECLENCHEMENT D'UN EVENEMENT 
           if (zoneCourante == zones[20] && Temps.getHeure() == 12 && Temps.getMinutes()
-          == 30)
+          >= 30)
           {
-            tentatives = tentatives -3;
+            zoneCourante = zones[28];
+            gui.afficheJoueur("NONE", 50, 50);
+            gui.clearText();
+            gui.afficheImage(zoneCourante.nomImage());
+            gui.afficher(zoneCourante.descriptionLongue());
+            tentatives = tentatives -1;
           }
         */
 
@@ -1049,12 +1057,12 @@ public class Jeu {
 
         //
         if (zoneCourante == zones[20] && !indiceCodetenu) {
-            gui.clearText();
+            // gui.clearText();
             // zoneCourante = zones[x] -> Créer la zone où le joueur parle avec le codétenu
-            // (indice Gardes)
-            gui.afficheImage(zoneCourante.nomImage());
-            gui.afficher(zoneCourante.descriptionLongue());
-            indiceCodetenu = false;
+            // (indice Gardes) -> note dans l'inventaire indiquant l'heure de passage des gardes
+            // gui.afficheImage(zoneCourante.nomImage());
+            // gui.afficher(zoneCourante.descriptionLongue());
+            // indiceCodetenu = true;
         }
 
     }
@@ -1077,7 +1085,7 @@ public class Jeu {
                         e.printStackTrace();
                     }
                 }
-            }, 2500);
+            }, 1500);
     }
 
     private void afficherAide() {

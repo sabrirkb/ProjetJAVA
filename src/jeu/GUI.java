@@ -135,6 +135,12 @@ public class GUI implements ActionListener {
         }
     }
 
+    public void reafficherJoueur()
+    {
+        layers.remove(image10);
+        layers.add(image10);
+    }
+
     public void cacher(int Plan)
     {
         if (Plan == 1)
