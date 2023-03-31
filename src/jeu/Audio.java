@@ -29,6 +29,8 @@ public class Audio implements LineListener {
     AudioInputStream nuitExterieur;
     AudioInputStream nuitInterieur;
     AudioInputStream theEnd;
+    AudioInputStream douches;
+    AudioInputStream interieurVide;
 
     // Clips sons brefs
     Clip clipNext = initClip();
@@ -48,6 +50,8 @@ public class Audio implements LineListener {
     Clip clipAudioNuitExterieur = initClip();
     Clip clipAudioNuitInterieur = initClip();
     Clip clipAudioTheEnd = initClip();
+    Clip clipAudioDouches = initClip();
+    Clip clipAudioInterieurVide = initClip();
 
     public Audio() {
         try {
@@ -110,6 +114,12 @@ public class Audio implements LineListener {
         theEnd = AudioSystem
                 .getAudioInputStream(
                         getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/end.wav"));
+        douches = AudioSystem
+                .getAudioInputStream(
+                        getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/shower.wav"));
+        interieurVide = AudioSystem
+                .getAudioInputStream(
+                        getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/cell.wav"));
 
     }
 
@@ -138,8 +148,8 @@ public class Audio implements LineListener {
             unClip.setFramePosition(0);
             unClip.start();
         }
-        unClip.loop(99999); // … sauf qu'on boucle l'audio au lieu de le stopper
-                            // l'audio sera arrêter lors de l'appel de la méthode stopAmbiance()
+        unClip.loop(99999); // … sauf qu'on boucle l'audio indéfiniment au lieu de le stopper,
+                            // l'audio sera arrêté lors de l'appel de la méthode stopAmbiance()
     }
 
     // Appels sons brefs
@@ -181,6 +191,7 @@ public class Audio implements LineListener {
     public void jouerAudioDormir() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         this.jouer(clipDormir, dormir);
     }
+
     public void joueurAudioPorteClaque() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         this.jouer(clipPorteClaque, porteClaque);
     }
@@ -207,6 +218,15 @@ public class Audio implements LineListener {
         this.ambiance(clipAudioTheEnd, theEnd);
     }
 
+    public void jouerAmbiantDouches()
+            throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        this.ambiance(clipAudioDouches, douches);
+    }
+
+    public void jouerAmbiantInterieurVide() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        this.ambiance(clipAudioInterieurVide, interieurVide);
+    }
+
     // Méthode d'arrêt sons ambiants
     private void stopAmbiance(Clip unClip) {
         unClip.stop();
@@ -227,6 +247,14 @@ public class Audio implements LineListener {
 
     public void stopAmbianceTheEnd() {
         this.stopAmbiance(clipAudioTheEnd);
+    }
+
+    public void stopAmbianceDouches() {
+        this.stopAmbiance(clipAudioDouches);
+    }
+
+    public void stopAmbianceInterieurVide() {
+        this.stopAmbiance(clipAudioInterieurVide);
     }
 
     @Override

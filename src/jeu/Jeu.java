@@ -118,6 +118,7 @@ public class Jeu {
 
         afficherLocalisation();
         gui.afficheImage(zoneCourante.nomImage());
+        this.stopSonsAmbiants();
         leSon.jouerAmbiantThemePrincipal();
     }
 
@@ -622,6 +623,10 @@ public class Jeu {
                 }
             case "OK":
 
+                if (zoneCourante == zones[31]) {
+                    leSon.stopAmbianceDouches();
+                }
+
                 if (nightAlertOn) // Si le joueur tape 'OK' pour effacer l'alerte de nuit
                 {
                     nightAlertOn = false;
@@ -689,6 +694,21 @@ public class Jeu {
                     leSon.jouerAudioError();
                 }
                 break;
+
+            case "NOTE":
+                if (indiceCodetenu) {
+                    // zoneCourante = zones[] -> A CREER : IMAGE PAPIER MANUSCRIT -> HEURE GARDES DE
+                    // NUIT
+                    // gui.afficher("\n" + zoneCourante.descriptionLongue());
+                    // gui.afficher("Commandes disponibles : OK");
+                } else {
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    leSon.jouerAudioError();
+                }
+                break;
+
             case "TEMPS":
             case "T":
             case "TIME":
@@ -809,28 +829,37 @@ public class Jeu {
             case "SAUVEGARDER":
             case "SAVE":
                 if (pauseMenu || quitMenu) {
-                    gui.clearText();
-                    // SET LA ZONE COURANTE SUR ZONE <SAUVEGARDE> -> à créer
-                    gui.afficher("Sauvegarde en cours…\n");
+                    gui.afficher("Sauvegarde en cours. Veuillez patienter…\n");
                     try {
-                        this.sauvegarderPartie();
-                        gui.afficher("\nSauvegarde effectuée avec succès, retour au menu pause…");
-                        Temps.setHeure(temporaryPauseHeure);
-                        Temps.setMinutes(temporaryPauseMinutes);
-
-                        Timer chrono = new Timer();
-                        chrono.schedule(new TimerTask() {
+                        Timer chrono2 = new Timer();
+                        chrono2.schedule(new TimerTask() {
                             @Override
                             public void run() {
                                 try {
-                                    leSon.jouerAudioConfirm();
-                                    traiterCommande("PAUSE");
-                                } catch (UnsupportedAudioFileException | IOException | LineUnavailableException
-                                        | InterruptedException e) {
+                                    sauvegarderPartie();
+                                    gui.afficher("\nSauvegarde effectuée avec succès.\nRetour au menu pause…");
+                                    Temps.setHeure(temporaryPauseHeure);
+                                    Temps.setMinutes(temporaryPauseMinutes);
+
+                                    Timer chrono2 = new Timer();
+                                    chrono2.schedule(new TimerTask() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                leSon.jouerAudioConfirm();
+                                                traiterCommande("PAUSE");
+                                            } catch (UnsupportedAudioFileException | IOException
+                                                    | LineUnavailableException
+                                                    | InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }, 5000);
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
-                        }, 1500);
+                        }, 3000);
                     } catch (Exception e) {
                         gui.clearText();
                         gui.afficher("\nErreur durant la sauvegarde, retour au menu pause…\n"
@@ -915,30 +944,37 @@ public class Jeu {
             if (Temps.getHeure() == 8) // Heure du repas (petit-déjeuner)
             {
                 zoneCourante = zones[18];
+                leSon.jouerAmbiantInterieurVide();
             }
             if (Temps.getHeure() == 10) // Heure de la promenade (matin)
             {
                 zoneCourante = zones[17];
+                leSon.jouerAmbiantInterieurVide();
             }
             if (Temps.getHeure() == 12) // Heure du repas (déjeuner)
             {
                 zoneCourante = zones[18];
+                leSon.jouerAmbiantInterieurVide();
             }
             if (Temps.getHeure() == 15) // Heure de la promenade (soir)
             {
                 zoneCourante = zones[17];
+                leSon.jouerAmbiantInterieurVide();
             }
             if (Temps.getHeure() == 18) // Heure de la douche
             {
                 zoneCourante = zones[19];
+                leSon.jouerAmbiantInterieurVide();
             }
             if (Temps.getHeure() == 20) // Heure du repas (dîner)
             {
                 zoneCourante = zones[18];
+                leSon.jouerAmbiantInterieurVide();
             }
             if (Temps.getHeure() == 22) // Heure du repas (dîner)
             {
                 zoneCourante = zones[22];
+                leSon.jouerAmbiantInterieurVide();
             }
             gui.afficher(Message);
         } else // Sinon on n'est pas autorisé à dormir
@@ -979,6 +1015,9 @@ public class Jeu {
             nightTime = false;
             activerAlerteNuit = true; // On programme l'alerte pour le soir
 
+            // Si le joueur se trouve dans la zone [2] (exterieur ile nuit) et qu'il est
+            // plus de 8h,
+            // la zone courante passe à zone [3] (exterieur ile jour)
             if (zoneCourante == zones[2]) {
                 zoneCourante = zones[1];
             }
@@ -988,16 +1027,43 @@ public class Jeu {
                 zoneCourante = zones[3];
             }
 
+            // Si le joueur se trouve dans la zone [7] (refectoire nuit) et qu'il est plus
+            // de 8h, la zone courante passe à zone [6] (refectoire jour)
+            if (zoneCourante == zones[7]) {
+                zoneCourante = zones[6];
+            }
+            // Si le joueur se trouve dans la zone [22] (cellule nuit) et qu'il
+            // est plus de
+            // 8h, la zone courante passe à zone [16] (cellule jour)
             if (zoneCourante == zones[22]) {
-                zoneCourante = zones[18];
+                zoneCourante = zones[16];
+                leSon.jouerAmbiantInterieurVide();
+            }
+            // Si le joueur se trouve dans la zone [21] (couloir nuit) et qu'il est plus de
+            // 8h, la zone courante passe à zone [20] (couloir jour)
+            if (zoneCourante == zones[21]) {
+                zoneCourante = zones[20];
+                leSon.jouerAmbiantInterieurVide();
+            }
+            // Si le joueur se trouve dans la zone [24] (douches nuit) et qu'il est plus de
+            // 22h, la zone courante passe à zone [23] (douches jour)
+            if (zoneCourante == zones[24]) {
+                zoneCourante = zones[23];
+                leSon.jouerAmbiantInterieurVide();
+            }
+            // Si le joueur se trouve dans la zone [27] (salleDesGardes nuit) et qu'il est
+            // plus de
+            // 22h, la zone courante passe à zone [26] (salleDesGardes jour)
+            if (zoneCourante == zones[27]) {
+                zoneCourante = zones[26];
+                leSon.jouerAmbiantInterieurVide();
+            }
+            // Si le joueur se trouve dans la zone [30] (cuisine nuit) et qu'il est plus de
+            // 22h, la zone courante passe à zone [29] (cuisine jour)
+            if (zoneCourante == zones[30]) {
+                zoneCourante = zones[29];
             }
 
-            // if (zoneCourante == zones[4]) // Faire de même pour les autres zones sauf les
-            // zones
-            // { // de cinématiques et d'événements (repas, bagarre, etc.)
-            // zoneCourante = zones[3];
-            // }
-            // etc
             gui.afficheImage(zoneCourante.nomImage());
         }
         if ((heureCourante >= 22 && heureCourante <= 24) || (heureCourante >= 0 && heureCourante < 8)) {
@@ -1067,12 +1133,12 @@ public class Jeu {
 
             // Gestion des son ambiants de nuit
             if (zoneCourante == zones[2] || zoneCourante == zones[4]) {
-                leSon.stopAmbianceNuitInterieur();
+                // Le son -> stop ambiance exterieur jour (à créer)
                 leSon.jouerAmbiantNuitExterieur();
             }
             if (zoneCourante == zones[7] || zoneCourante == zones[22] || zoneCourante == zones[21]
                     || zoneCourante == zones[24] || zoneCourante == zones[27] || zoneCourante == zones[30]) {
-                leSon.stopAmbianceNuitExterieur();
+                leSon.stopAmbianceInterieurVide();
                 leSon.jouerAmbiantNuitInterieur();
             }
         }
@@ -1083,11 +1149,13 @@ public class Jeu {
     private void checkEvent() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 
         if (zoneCourante == zones[25]) {
+            leSon.jouerAmbiantDouches();
             gui.afficheJoueur("NORD", 260, 340);
-            // leSon.jouerAmbiantDouches(); -> à créer
         }
 
         if (zoneCourante == zones[16]) {
+
+            leSon.jouerAmbiantInterieurVide();
             if (Temps.getHeure() == 8 && Temps.getMinutes() == 0) // Heure du repas (petit-déjeuner)
             {
                 zoneCourante = zones[18];
@@ -1141,6 +1209,7 @@ public class Jeu {
 
         if (Temps.getHeure() == 18 && Temps.getMinutes() == 0 && !(zoneCourante == zones[19])) // Heure de la douche
         {
+            stopSonsAmbiants();
             zoneCourante = zones[40];
             gui.clearText();
             gui.afficher("\n\n");
@@ -1149,6 +1218,7 @@ public class Jeu {
 
         if (zoneCourante == zones[20] && !indiceCodetenu) {
             zoneCourante = zones[36];
+            leSon.jouerAmbiantInterieurVide();
             gui.clearText();
             gui.afficher("\n\n");
             gui.afficheImage(zoneCourante.nomImage());
@@ -1158,6 +1228,10 @@ public class Jeu {
         if (zoneCourante == zones[39] && !indiceCodetenu) {
             Inventaire.add(Objets.NOTE);
             indiceCodetenu = true;
+        }
+
+        if (zoneCourante == zones[20]) {
+            leSon.jouerAmbiantInterieurVide();
         }
 
         /*
@@ -1183,17 +1257,16 @@ public class Jeu {
             this.afficherSceneMort();
         }
 
-        //
-        if (zoneCourante == zones[20] && !indiceCodetenu) {
-            // gui.clearText();
-            // zoneCourante = zones[x] -> Créer la zone où le joueur parle avec le codétenu
-            // (indice Gardes) -> note dans l'inventaire indiquant l'heure de passage des
-            // gardes
-            // gui.afficheImage(zoneCourante.nomImage());
-            // gui.afficher(zoneCourante.descriptionLongue());
-            // indiceCodetenu = true;
-        }
+    }
 
+    private void stopSonsAmbiants() { // FAIRE ATTENTION A CE QUE CETTE METHODE NE SOIT PAS APPELEE PLUSIEURS FOIS
+                                      // DANS LES BOUCLES
+        leSon.stopAmbianceDouches();
+        leSon.stopAmbianceNuitExterieur();
+        leSon.stopAmbianceNuitInterieur();
+        leSon.stopAmbianceTheEnd();
+        leSon.stopAmbianceThemePrincipal();
+        leSon.stopAmbianceInterieurVide();
     }
 
     private void afficherSceneMort() {
@@ -1207,6 +1280,7 @@ public class Jeu {
                 gui.afficher(zoneCourante.description); // On affiche la description de la zone
                 gui.afficher("\n\nCommandes disponibles : OK");
                 try {
+                    stopSonsAmbiants();
                     leSon.jouerAudioMort();
                     leSon.jouerAmbiantEnd();
                 } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
@@ -1245,6 +1319,7 @@ public class Jeu {
             // Ces couches seront de nouveau instanciées dans la méthode checkEvent si
             // nécessaire
 
+            stopSonsAmbiants();
             ancienneZone = zoneCourante;
             zoneCourante = nouvelle;
             gui.afficher(zoneCourante.descriptionLongue());
@@ -1439,9 +1514,7 @@ public class Jeu {
         gui.cacherBarre(); // On cache la barre du temps
         leSon.jouerAudioConfirm();
         // Arrêt de tous les sons d'ambiance du jeu
-        leSon.stopAmbianceNuitExterieur();
-        leSon.stopAmbianceNuitInterieur();
-        leSon.stopAmbianceTheEnd();
+        this.stopSonsAmbiants();
         leSon.jouerAmbiantThemePrincipal(); // On joue le son d'ambiance du menu principal
     }
 
@@ -1549,7 +1622,7 @@ public class Jeu {
     }
 
     private void terminer() {
-        gui.afficher("Le jeu va maintenant se fermer...\nAu revoir!");
+        gui.afficher("Le jeu va maintenant se fermer…\nAu revoir!");
         gui.enable(false);
         Timer chrono = new Timer();
         chrono.schedule(new TimerTask() {
