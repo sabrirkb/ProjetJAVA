@@ -23,6 +23,9 @@ public class Audio implements LineListener {
     AudioInputStream mort;
     AudioInputStream dormir;
     AudioInputStream porteClaque;
+    AudioInputStream porteOuverte;
+    AudioInputStream achievement;
+    AudioInputStream menuSuccess;
 
     // Streams des sons ambiants (boucles)
     AudioInputStream themePrincipal;
@@ -44,6 +47,9 @@ public class Audio implements LineListener {
     Clip clipMort = initClip();
     Clip clipDormir = initClip();
     Clip clipPorteClaque = initClip();
+    Clip clipPorteOuverte = initClip();
+    Clip clipAchievement = initClip();
+    Clip clipMenuSuccess = initClip();
 
     // Clips sons ambiants
     Clip clipAudioThemePrincipal = initClip();
@@ -101,6 +107,15 @@ public class Audio implements LineListener {
         porteClaque = AudioSystem
                 .getAudioInputStream(
                         getClass().getClassLoader().getResourceAsStream("jeu/audio/soundFX/doorSlam.wav"));
+                        porteOuverte = AudioSystem
+                .getAudioInputStream(
+                        getClass().getClassLoader().getResourceAsStream("jeu/audio/soundFX/doorOpen.wav"));
+                        achievement = AudioSystem
+                .getAudioInputStream(
+                        getClass().getClassLoader().getResourceAsStream("jeu/audio/soundFX/achievement.wav"));
+                        menuSuccess = AudioSystem
+                .getAudioInputStream(
+                        getClass().getClassLoader().getResourceAsStream("jeu/audio/soundFX/success.wav"));
 
         // Récupération des sons ambiants
         themePrincipal = AudioSystem
@@ -192,8 +207,20 @@ public class Audio implements LineListener {
         this.jouer(clipDormir, dormir);
     }
 
-    public void joueurAudioPorteClaque() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    public void jouerAudioPorteClaque() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         this.jouer(clipPorteClaque, porteClaque);
+    }
+
+    public void joueurAudioPorteOuverte() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        this.jouer(clipPorteOuverte, porteOuverte);
+    }
+
+    public void jouerAudioAchievement() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        this.jouer(clipAchievement, achievement);
+    }
+
+    public void jouerAudioMenuSuccess() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        this.jouer(clipMenuSuccess, menuSuccess);
     }
 
     // Appels sons ambiants
