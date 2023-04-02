@@ -1235,9 +1235,12 @@ public class Jeu {
             gui.afficheJoueur("NORD", 260, 340);
         }
 
-        if (zoneCourante == zones[16]) {
+        if (zoneCourante == zones[16] || zoneCourante == zones[18]
+                || zoneCourante == zones[17] || zoneCourante == zones[22]) {
 
-            leSon.jouerAmbiantInterieurVide();
+            if (zoneCourante != zones[22]) {    // On joue le son d'ambiance de la journée SAUF si
+                leSon.jouerAmbiantInterieurVide();  // la zone courante correspond à la cellule de nuit
+            }
             if (Temps.getHeure() == 8 && Temps.getMinutes() == 0) // Heure du repas (petit-déjeuner)
             {
                 zoneCourante = zones[18];
@@ -1289,9 +1292,7 @@ public class Jeu {
             if (Temps.getHeure() == 22 && Temps.getMinutes() == 0) // Heure de dormir (nuit)
             {
                 zoneCourante = zones[22];
-                gui.clearText();
-                gui.afficher("\n\n");
-                gui.afficher(zoneCourante.descriptionLongue());
+                // On affiche pas la description de la zone puisque l'alerte de nuit se lance
                 leSon.jouerAudioPorteClaque();
             }
         }
