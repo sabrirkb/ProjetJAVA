@@ -206,7 +206,7 @@ public class Jeu {
                 + "protagonistes et les conduisent dans leurs cellules respectives.",
                 "/interieur/refectoire/refectoireRepas.png");
 
-        zones[10] = new Cinematique("Le repas suit son cours lorsqu'un détenu vous murmure :"
+        zones[10] = new Cinematique("\nLe repas suit son cours lorsqu'un détenu vous murmure :\n"
                 + "\n« J'ai vu un garde oublier l'une de ses clés sur le plan de travail de la cuisine."
                 + " Je m'en occuperais volontiers, mais je suis trop vieux pour tenter une évasion… »",
                 "/interieur/refectoire/refectoireRepas.png");
@@ -419,7 +419,7 @@ public class Jeu {
                 "/cinematiques/gameOver.png");
 
         zones[64] = new Cinematique(
-                "Vous arrivez dans la cuisine. Sur le plan de travail, vous apercevez un objet qui ressemble à une clé.\n"
+                "\nVous arrivez dans la cuisine. Sur le plan de travail, vous apercevez un objet qui ressemble à une clé.\n"
                         + "\nCurieux, vous décidez de prendre la clé et de la placer dans votre inventaire.",
                 "/cinematiques/gameOver.png");
 
@@ -545,6 +545,8 @@ public class Jeu {
         zones[60].ajouteAction(Action.SUIVANT, zones[61]);
 
         zones[61].ajouteAction(Action.OK, zones[35]);
+
+        zones[64].ajouteAction(Action.OK, zones[29]);
 
         // AFFECTATION DE LA ZONE COURANTE -> DEBUT DU JEU -> ZONE COURANTE = MENU
         // PRINCIPAL (zones[0])
@@ -1598,10 +1600,19 @@ public class Jeu {
         if (zoneCourante == zones[8] && sceneBagarre && !indice2Codetenu) {
             indice2Codetenu = true;
             zoneCourante = zones[10];
+            gui.clearText();
+            gui.afficheImage(zoneCourante.nomImage());
+            gui.afficher(zoneCourante.descriptionLongue());
         }
-
-        if (zoneCourante == zones[29] && sceneBagarre) {
-            zoneCourante = zones[62];
+        
+        if ((zoneCourante == zones[29] || zoneCourante == zones[30]) && indice2Codetenu && sceneBagarre && !(Inventaire.contains(Objets.CLE1))) {
+            zoneCourante = zones[64];
+            indice2Codetenu = false;
+            gui.clearText();
+            gui.afficheImage(zoneCourante.nomImage());
+            gui.afficher(zoneCourante.descriptionLongue());
+            Inventaire.add(Objets.CLE1);
+            leSon.jouerAudioAchievement();
         }
 
         /*
@@ -1657,19 +1668,19 @@ public class Jeu {
         zoneCourante = zones[62];
         String descriptionScene = zoneCourante.description;
 
-        if (random <= 25) {
+        if (random <= 30) {
             descriptionScene += "Vous envoyez un violent coup de tête à Marco.\n" + zones[54].description;
             PV_Marco = PV_Marco - 15; // ATTAQUE TRÈS FORTE : -15 PV POUR MARCO
         }
-        if (random > 25 && random <= 50) {
+        if (random > 30 && random <= 65) {
             descriptionScene += "Vous envoyez un rapide coup de poing dans la tête de Marco.\n" + zones[54].description;
             PV_Marco = PV_Marco - 10; // ATTAQUE FORTE : -10 PV POUR MARCO
         }
-        if (random > 50 && random <= 75) {
+        if (random > 65 && random <= 85) {
             descriptionScene += "Vous donnez un vif coup de genoux dans le ventre de Marco.\n" + zones[56].description;
             PV_Marco = PV_Marco - 5; // ATTAQUE MOYENNE : -5 PV POUR MARCO
         }
-        if (random > 75) {
+        if (random > 85) {
             descriptionScene += "Vous donnez un coup de pied dans l'entre-jambe de Marco.\n" + zones[63].description;
             // MARCO ESQUIVE L'ATTAQUE : PAS DE RETRAIT DE PV POUR MARCO
         }
@@ -1738,12 +1749,12 @@ public class Jeu {
         zoneCourante = zones[53];
         String descriptionScene = zoneCourante.description;
 
-        if (random <= 33) {
+        if (random <= 77) {
             descriptionScene += "\n" + zones[56].description;
             PV_Marco = PV_Marco - 10;
             // ATTAQUE FORTE : -10 PV POUR MARCO
         }
-        if (random > 33) {
+        if (random > 77) {
             descriptionScene += "\n" + zones[54].description;
             PV_Marco = PV_Marco - 20;
             // ATTAQUE TRES FORTE : -20 PV POUR MARCO
