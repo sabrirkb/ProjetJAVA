@@ -26,7 +26,11 @@ public class Jeu {
     private boolean armeRecuperee = false; // augmentera les chances de battre Marco
     private boolean indiceCodetenu = false; // permettra de savoir qu'il faut être gentil avec Marco
     private boolean battreMarco = false; // choix du joueur d'être gentil ou méchant avec Marco
-    private boolean sceneBagarre = false; // si la scène de bagarre s'est passé ou non au réfectoire
+    private boolean sceneBagarre = false; // si la scène de bagarre du réfectoire s'est déclenchée
+    private int PV_Marco = 100; // Points de vie de départ de Marco en cas de bagarre avec le Joueur
+    private int PV_Joueur = 100; // Points de vie de départ du joueur en cas de bagarre avec Marco
+    private boolean bagarreFinie = false; // si la scène de bagarre est terminée ou non
+    private boolean indice2Codetenu = false;
     private boolean quitMenu = false; // si le menu quitter est ouvert
     private boolean pauseMenu = false; // si le menu pause est ouvert
     private boolean mapMenu = false; // si la carte est ouverte
@@ -70,20 +74,13 @@ public class Jeu {
 
     public Jeu() throws InterruptedException {
 
-        /*
-         * --------------------------------
-         * Inclure un menu de départ -> reprendre une sauvegarde / créer une nouvelle
-         * partie
-         * La fonction init(); affichera l'interface du menu principal;
-         */
         creerCarte();
         gui = null;
-        /*
-         * --------------------------------
-         */
+
     }
 
-    // DÉMARRE LE TIMER QUI PERMET À L'HORLOGE DU JEU DE TOURNER
+    // DÉMARRE LE TIMER QUI PERMET À L'HORLOGE DU JEU DE TOURNER ET APPELLE LES
+    // EVENEMENTS
     public void StartTime() throws InterruptedException {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -194,17 +191,17 @@ public class Jeu {
 
         zones[4] = new Zone("la cour.", "/exterieur/cour/courNuit.png");
 
-        zones[5] = new Zone("la cour (heure de promenade).", "/exterieur/cour/courPromenade.png");
+        zones[5] = new Zone("la cour.", "/exterieur/cour/courPromenade.png");
 
         zones[6] = new Zone("le réfectoire.", "/interieur/refectoire/refectoireJournee.png");
 
         zones[7] = new Zone("le réfectoire.", "/interieur/refectoire/refectoireNuit.png");
 
-        zones[8] = new Zone("le réfectoire (heure du repas).", "/interieur/refectoire/refectoireRepas.png");
+        zones[8] = new Zone("le réfectoire.", "/interieur/refectoire/refectoireRepas.png");
 
         // EXEMPLE D'UNE CINEMATIQUE
         // La cinématique débute lorsque le joueur arrive jusque la zone [9] :
-        zones[9] = new Cinematique("Vous êtes dans le réfectoire.\nUne bagarre vient d'éclater entre Bart "
+        zones[9] = new Cinematique("Vous êtes dans le réfectoire.\n\nUne bagarre vient d'éclater entre Bart "
                 + "et Marco… Après quelques minutes, les gardes viennent séparer les deux "
                 + "protagonistes et les conduisent dans leurs cellules respectives.",
                 "/interieur/refectoire/refectoireRepas.png");
@@ -277,10 +274,12 @@ public class Jeu {
                 "la salle des gardes. Vous devriez sortir d'ici avant de réveiller les gardes!",
                 "/interieur/salleDesGardes/salleGardesNuit.png");
 
-        zones[28] = new Cinematique("Vous avez été repéré par la garde royale! Ces derniers vous reconduisent de force"
-                + " dans votre cellule après vous avoir donné un avertissement…\n" + "\nAttention: il vous reste "
-                // + this.getTentatives()
-                + " avertissement(s) avant de vous faire exécuter!",
+        zones[28] = new Cinematique(
+                "\nVous avez été repéré par la garde royale! Ces derniers vous reconduisent de force"
+                        + " dans votre cellule après vous avoir donné un avertissement…\n"
+                        + "\nAttention: il vous reste "
+                        // + this.getTentatives()
+                        + " avertissement(s) avant de vous faire exécuter!",
                 "/cinematiques/avertissement.png");
 
         zones[29] = new Zone("la cuisine.", "/interieur/cuisine/cuisineJour.png");
@@ -292,13 +291,14 @@ public class Jeu {
                 "/interieur/douches/heureDeLaDouche.png");
 
         zones[32] = new Cinematique(
-                "Vous arrivez dans les douches. Vous vous dirigez vers l'un des seaux disponibles et commencez à vous laver,"
+                "\nVous arrivez dans les douches. Vous vous dirigez vers l'un des seaux disponibles et commencez à vous laver,"
                         + "\nlorsqu'un mystérieux personnage se dirige vers vous…",
                 "/interieur/douches/heureDeLaDouche.png");
 
         zones[33] = new Cinematique(
                 "Marco : « Hé le nouveau… La forme? Moi, c'est Marco. J'espère qu'on va bien s'entendre toi et moi, "
-                        + "sinon tu vas vraiment regretter ton séjour sur cette île, haha! »",
+                        + "sinon tu vas vraiment regretter ton séjour sur cette île, haha! »\n"
+                        + "\nIntimidé, vous hésitez entre informer Marco sur le guet–apens ou ne rien faire…",
                 "/interieur/douches/heureDeLaDouche.png");
 
         zones[34] = new Cinematique("Percival Lebrave a désobéit de trop nombreuses fois à la garde royale."
@@ -335,7 +335,93 @@ public class Jeu {
 
         zones[42] = new Cinematique("\nVous arrivez dans la salle des gardes. Sur la table, vous trouvez une carte "
                 + "de la prison. Vous la récupérez rapidement et la placez dans votre inventaire.\n\nTapez 'Carte' à tout moment pour ouvrir la carte.",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // MODIFIER -> IMAGE SALLE GARDES AVEC MAP SUR TABLE
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER -> IMAGE SALLE GARDES AVEC MAP SUR
+                                                                  // TABLE
+
+        zones[43] = new Cinematique("Marco : « Bah alors, t'as perdu la parole, petit vaurien ? "
+                + "Haha! C'est ça, baisse les yeux quand j'te cause! Tu sais quoi? Rendez-vous ce soir au réfectoire, "
+                + "qu'on puisse célébrer ton arrivée, si tu vois c'que j'veux dire… trouillard! »",
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+
+        zones[44] = new Cinematique("Marco vous donne une petite tape sur l'épaule avant de faire "
+                + "demi-tour et de sortir des douches…",
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+
+        zones[45] = new Cinematique("Vous dites à Marco qu'il est attendu au réfectoire par René pour "
+                + "une rixe sans précédent.\n\nMarco : « Attends… t'es sûr de toi là? J'te préviens, si jamais tu oses "
+                + "mentir au gran' Marco, c'est toi qu'on aura au menu ce soir! »",
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+
+        zones[46] = new Cinematique("Marco : « J'espère que t'as bien saisi l'info, petit vaurien. »"
+                + "\n\nVous acquiescez timidement, tandis que Marco fait demi-tour et sort des douches…",
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+
+        zones[47] = new Cinematique("Pour votre première journée sur l'île, les gardes vous escortent jusque dans le "
+                + "réfectoire de la prison…",
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+
+        zones[48] = new Cinematique(
+                "Vous avancez vers l'une des tables, lorsque Marco, défiguré, surgit devant vous…\n\n"
+                        + "Marco : « Alors, moucheron… tu m'as oublié? Viens par là, que j'te montre à toi aussi qui est le patron de cette taule! »"
+                        + "\n\nUn combat éclate entre vous et Marco…",
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+
+        zones[49] = new Cinematique("Marco vous colle une giffle.",
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+
+        zones[50] = new Cinematique("\nQuelle tactique doit utiliser Percival ?\n",
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+
+        zones[62] = new Cinematique("",
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+
+        zones[63] = new Cinematique("Marco esquive votre coup.",
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+
+        zones[51] = new Cinematique("Vous esquivez le prochain coup et reprenez des forces…",
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+
+        zones[52] = new Cinematique("\nMarco dégaine un rasoir et le plante dans votre avant-bras.",
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+
+        zones[53] = new Cinematique("\nVous sortez votre couteau et essayez de blesser Marco.",
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+
+        zones[54] = new Cinematique("Votre coup est très efficace.",
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+
+        zones[55] = new Cinematique("\nMarco vous assène un gros coup de poing dans le ventre.",
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+
+        zones[56] = new Cinematique("Votre coup blesse légèrement Marco.",
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+
+        zones[57] = new Cinematique("\nLe prochain coup de Marco vous blesse légèrement.",
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+
+        zones[58] = new Cinematique("\nMarco tombe au sol, ensanglanté…\n\nLes gardes arrivent rapidement et "
+                + "conduisent Marco jusque dans leur salle afin de le soigner. Suite à ce combat, les gardes vous"
+                + " adressent un avertissement.",
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+
+        zones[59] = new Cinematique(
+                "\nVous tombez au sol, ensanglanté…\n\nLes gardes arrivent rapidement pour vous séparer. "
+                        + "Vous luttez tant bien que mal pour rester éveillé, mais vous vous sentez de plus en plus faible…",
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+
+        zones[60] = new Cinematique(
+                "Malgré ses efforts, Percival ne parviendra pas à se remettre d'aplomb.",
+                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+
+        zones[61] = new Cinematique("Percival Lebrave décédera des suites du combat avec Marco."
+                + " La garde royale viendront enterrer son corps dans la forêt de Mors Insula.\n"
+                + "\nQue ton âme repose en paix, jeune Percival. \nTu vas nous manquer.",
+                "/cinematiques/gameOver.png");
+
+        zones[64] = new Cinematique(
+                "Vous arrivez dans la cuisine. Sur le plan de travail, vous apercevez un objet qui ressemble à une clé.\n"
+                        + "\nCurieux, vous décidez de prendre la clé et de la placer dans votre inventaire.",
+                "/cinematiques/gameOver.png");
 
         // zones[3].ajouteSortie(Sortie.OUEST, zones[9]); // Affecte le déclenchement de
         // la cinématique à zones[3]
@@ -362,6 +448,7 @@ public class Jeu {
         zones[7].ajouteSortie(Sortie.OUEST, zones[30]);
 
         zones[8].ajouteSortie(Sortie.NORD, zones[3]);
+        zones[8].ajouteSortie(Sortie.OUEST, zones[29]);
 
         zones[9].ajouteAction(Action.SUIVANT, zones[10]); // Ajoute la scène zones[10] à la scène zones[9] (toujours
         // créer les scènes AVANT de les lier)
@@ -416,6 +503,11 @@ public class Jeu {
 
         zones[31].ajouteAction(Action.OK, zones[16]);
 
+        zones[32].ajouteAction(Action.SUIVANT, zones[33]);
+
+        zones[33].ajouteAction(Action.INFORMER, zones[45]);
+        zones[33].ajouteAction(Action.RIEN, zones[43]);
+
         zones[36].ajouteAction(Action.SUIVANT, zones[37]);
 
         zones[37].ajouteAction(Action.SUIVANT, zones[38]);
@@ -427,6 +519,32 @@ public class Jeu {
         zones[40].ajouteAction(Action.SUIVANT, zones[25]);
 
         zones[42].ajouteAction(Action.OK, zones[26]);
+
+        zones[43].ajouteAction(Action.SUIVANT, zones[44]);
+
+        zones[44].ajouteAction(Action.OK, zones[31]);
+
+        zones[45].ajouteAction(Action.SUIVANT, zones[46]);
+
+        zones[46].ajouteAction(Action.OK, zones[31]);
+
+        zones[47].ajouteAction(Action.SUIVANT, zones[8]);
+
+        zones[48].ajouteAction(Action.SUIVANT, zones[49]);
+
+        zones[49].ajouteAction(Action.SUIVANT, zones[50]);
+
+        zones[50].ajouteAction(Action.ATTAQUE, zones[50]);
+        zones[50].ajouteAction(Action.DEFENSE, zones[50]);
+        zones[50].ajouteAction(Action.ARME, zones[50]);
+
+        zones[58].ajouteAction(Action.OK, zones[8]);
+
+        zones[59].ajouteAction(Action.SUIVANT, zones[60]);
+
+        zones[60].ajouteAction(Action.SUIVANT, zones[61]);
+
+        zones[61].ajouteAction(Action.OK, zones[35]);
 
         // AFFECTATION DE LA ZONE COURANTE -> DEBUT DU JEU -> ZONE COURANTE = MENU
         // PRINCIPAL (zones[0])
@@ -461,6 +579,51 @@ public class Jeu {
         gui.clearText();
         gui.afficher("> " + commandeLue + "\n\n");
         switch (commandeLue.toUpperCase()) {
+
+            case "ATTAQUE":
+                if (sceneBagarre && zoneCourante == zones[50]) {
+                    effectuerAttaque();
+                    leSon.jouerAudioConfirm();
+                    break;
+                } else {
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    leSon.jouerAudioError();
+                    break;
+                }
+
+            case "DEFENSE":
+                if (sceneBagarre && zoneCourante == zones[50]) {
+                    effectuerDefense();
+                    leSon.jouerAudioConfirm();
+                    break;
+                } else {
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    leSon.jouerAudioError();
+                    break;
+                }
+
+            case "ARME":
+                if (sceneBagarre && armeRecuperee && zoneCourante == zones[50]) {
+                    effectuerArme();
+                    leSon.jouerAudioConfirm();
+                    break;
+                } else if (sceneBagarre && !armeRecuperee && zoneCourante == zones[50]) {
+                    gui.afficher("\nVous ne possédez pas d'arme pour attaquer Marco.");
+                    gui.afficher("\n\nQuelle tactique doit utiliser Percival ?\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    leSon.jouerAudioError();
+                    break;
+                } else {
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    leSon.jouerAudioError();
+                    break;
+                }
 
             case "MAP":
             case "M":
@@ -545,6 +708,7 @@ public class Jeu {
                 // {
                 // this.ouvrirCoffre();
                 // }
+                break;
             case "Q":
             case "QUITTER":
             case "QUIT":
@@ -639,12 +803,54 @@ public class Jeu {
                     leSon.jouerAudioError();
                     break;
                 }
+
+            case "INFORMER":
+            case "INFO":
+                if (zoneCourante.getClass() == Cinematique.class && zoneCourante.sorties.containsKey("INFORMER")) {
+                    if (nightAlertOn) {
+                        nightAlertOn = false;
+                    }
+                    nextScene("INFORMER");
+                    break;
+                } else {
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    leSon.jouerAudioError();
+                    break;
+                }
+
+            case "RIEN":
+                if (zoneCourante.getClass() == Cinematique.class && zoneCourante.sorties.containsKey("RIEN")) {
+                    if (nightAlertOn) {
+                        nightAlertOn = false;
+                    }
+                    nextScene("RIEN");
+                    break;
+                } else {
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    leSon.jouerAudioError();
+                    break;
+                }
+
             case "OK":
 
-                cinematiqueActive = false;
+                if (!sceneBagarre) {
+                    cinematiqueActive = false;
+                }
+
+                if (zoneCourante == zones[10]) {
+                    cinematiqueActive = false;
+                }
 
                 if (zoneCourante == zones[31]) {
                     leSon.stopAmbianceDouches();
+                }
+
+                if (zoneCourante == zones[44]) {
+                    battreMarco = true;
                 }
 
                 if (nightAlertOn) // Si le joueur tape 'OK' pour effacer l'alerte de nuit
@@ -660,7 +866,7 @@ public class Jeu {
                     pauseMenu = false;
                     break;
                 }
-                if (zoneCourante == zones[34]) {
+                if (zoneCourante == zones[34] || zoneCourante == zones[61]) {
                     zoneCourante = zones[35];
                     gui.afficheJoueur("NONE", 150, 150);
                     gui.cacherBarre();
@@ -1058,10 +1264,6 @@ public class Jeu {
                 leSon.jouerAmbiantInterieurVide();
             }
             gui.afficher(Message);
-        } else // Sinon on n'est pas autorisé à dormir
-        {
-            gui.afficher("Vous ne pouvez dormir que lorsque vous êtes dans votre cellule.\n");
-            leSon.jouerAudioError();
         }
     }
 
@@ -1238,8 +1440,8 @@ public class Jeu {
         if (zoneCourante == zones[16] || zoneCourante == zones[18]
                 || zoneCourante == zones[17] || zoneCourante == zones[22]) {
 
-            if (zoneCourante != zones[22]) {    // On joue le son d'ambiance de la journée SAUF si
-                leSon.jouerAmbiantInterieurVide();  // la zone courante correspond à la cellule de nuit
+            if (zoneCourante != zones[22]) { // On joue le son d'ambiance de la journée SAUF si
+                leSon.jouerAmbiantInterieurVide(); // la zone courante correspond à la cellule de nuit
             }
             if (Temps.getHeure() == 8 && Temps.getMinutes() == 0) // Heure du repas (petit-déjeuner)
             {
@@ -1292,7 +1494,7 @@ public class Jeu {
             if (Temps.getHeure() == 22 && Temps.getMinutes() == 0) // Heure de dormir (nuit)
             {
                 zoneCourante = zones[22];
-                // On affiche pas la description de la zone puisque l'alerte de nuit se lance
+                // On n'affiche pas la description de la zone puisque l'alerte de nuit se lance
                 leSon.jouerAudioPorteClaque();
             }
         }
@@ -1331,8 +1533,75 @@ public class Jeu {
             carteTrouvee = true;
         }
 
+        if (zoneCourante == zones[25] && !battreMarco && !sceneBagarre) {
+            Timer chrono = new Timer();
+            chrono.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    cinematiqueActive = true;
+                    zoneCourante = zones[32];
+                    gui.clearText();
+                    gui.afficheImage(zoneCourante.nomImage());
+                    gui.afficher(zoneCourante.descriptionLongue());
+                    try {
+                        leSon.jouerAudioDialogue();
+                    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, 050);
+
+        }
+
+        if (Temps.getHeure() == 20 && Temps.getMinutes() == 1 && !sceneBagarre) // Événement -> premier repas (force à
+                                                                                // aller au réfectoire)
+        {
+            stopSonsAmbiants();
+            zoneCourante = zones[47];
+            gui.clearText();
+            gui.afficher("\n\n");
+            gui.afficher(zoneCourante.descriptionLongue());
+        }
+
         if (zoneCourante == zones[20]) {
             leSon.jouerAmbiantInterieurVide();
+        }
+
+        if (zoneCourante == zones[8] && !sceneBagarre) {
+            cinematiqueActive = true;
+            if (battreMarco) {
+                sceneBagarre = true;
+                zoneCourante = zones[48];
+                gui.clearText();
+                gui.afficher("\n\n");
+                gui.afficher(zoneCourante.descriptionLongue());
+            }
+            if (!battreMarco) {
+                sceneBagarre = true;
+                zoneCourante = zones[9];
+                gui.clearText();
+                gui.afficher("\n\n");
+                gui.afficher(zoneCourante.descriptionLongue());
+            }
+        }
+
+        if (zoneCourante == zones[58] && !bagarreFinie) { // RAJOUTER VAR
+            tentatives = tentatives - 1;
+            bagarreFinie = true;
+        }
+
+        if (zoneCourante == zones[61] && bagarreFinie && !cinematiqueActive) { // RAJOUTER VAR
+            cinematiqueActive = true;
+            this.afficherSceneMort();
+        }
+
+        if (zoneCourante == zones[8] && sceneBagarre && !indice2Codetenu) {
+            indice2Codetenu = true;
+            zoneCourante = zones[10];
+        }
+
+        if (zoneCourante == zones[29] && sceneBagarre) {
+            zoneCourante = zones[62];
         }
 
         /*
@@ -1345,7 +1614,7 @@ public class Jeu {
          * gui.clearText();
          * gui.afficheImage(zoneCourante.nomImage());
          * gui.afficher(zoneCourante.descriptionLongue());
-         * tentatives = tentatives -3;
+         * tentatives = tentatives -1;
          * }
          */
 
@@ -1359,6 +1628,210 @@ public class Jeu {
             this.afficherSceneMort();
         }
 
+    }
+
+    private void checkFinBagarre() {
+        if (PV_Marco <= 0 && !bagarreFinie) {
+            bagarreFinie = false;
+            zoneCourante = zones[58];
+            cinematiqueActive = false;
+            gui.clearText();
+            gui.afficheImage(zoneCourante.nomImage());
+            gui.afficher(zoneCourante.descriptionLongue());
+        }
+
+        if (PV_Joueur <= 0 && !bagarreFinie) {
+            bagarreFinie = true;
+            zoneCourante = zones[59];
+            cinematiqueActive = false;
+            gui.clearText();
+            gui.afficheImage(zoneCourante.nomImage());
+            gui.afficher(zoneCourante.descriptionLongue());
+        }
+    }
+
+    private void effectuerAttaque() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+
+        int random = (int) (Math.random() * 100);
+
+        zoneCourante = zones[62];
+        String descriptionScene = zoneCourante.description;
+
+        if (random <= 25) {
+            descriptionScene += "Vous envoyez un violent coup de tête à Marco.\n" + zones[54].description;
+            PV_Marco = PV_Marco - 15; // ATTAQUE TRÈS FORTE : -15 PV POUR MARCO
+        }
+        if (random > 25 && random <= 50) {
+            descriptionScene += "Vous envoyez un rapide coup de poing dans la tête de Marco.\n" + zones[54].description;
+            PV_Marco = PV_Marco - 10; // ATTAQUE FORTE : -10 PV POUR MARCO
+        }
+        if (random > 50 && random <= 75) {
+            descriptionScene += "Vous donnez un vif coup de genoux dans le ventre de Marco.\n" + zones[56].description;
+            PV_Marco = PV_Marco - 5; // ATTAQUE MOYENNE : -5 PV POUR MARCO
+        }
+        if (random > 75) {
+            descriptionScene += "Vous donnez un coup de pied dans l'entre-jambe de Marco.\n" + zones[63].description;
+            // MARCO ESQUIVE L'ATTAQUE : PAS DE RETRAIT DE PV POUR MARCO
+        }
+
+        gui.clearText();
+        gui.afficher("Marco : " + PV_Marco + " PV\t\t\tPercival : " + PV_Joueur + " PV\n\n\n");
+        gui.afficheImage(zoneCourante.nomImage());
+        gui.afficher(descriptionScene);
+
+        if (PV_Joueur > 0 && PV_Marco > 0) {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        effectuerMarco();
+                    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, 3500);
+        }
+
+        checkFinBagarre();
+    }
+
+    private void effectuerDefense() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+
+        int random = (int) (Math.random() * 100);
+
+        if (random <= 50) {
+            zoneCourante = zones[51];
+            PV_Joueur = PV_Joueur + 5;
+        }
+        if (random > 50) {
+            zoneCourante = zones[57];
+            PV_Joueur = PV_Joueur - 2;
+        }
+
+        gui.clearText();
+        gui.afficher("Marco : " + PV_Marco + " PV\t\t\tPercival : " + PV_Joueur + " PV\n\n\n");
+        gui.afficheImage(zoneCourante.nomImage());
+        gui.afficher(zoneCourante.description);
+
+        if (PV_Joueur > 0 && PV_Marco > 0) {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        effectuerMarco();
+                    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, 3500);
+        }
+
+        checkFinBagarre();
+    }
+
+    private void effectuerArme() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+
+        int random = (int) (Math.random() * 100);
+
+        zoneCourante = zones[53];
+        String descriptionScene = zoneCourante.description;
+
+        if (random <= 33) {
+            descriptionScene += "\n" + zones[56].description;
+            PV_Marco = PV_Marco - 10;
+            // ATTAQUE FORTE : -10 PV POUR MARCO
+        }
+        if (random > 33) {
+            descriptionScene += "\n" + zones[54].description;
+            PV_Marco = PV_Marco - 20;
+            // ATTAQUE TRES FORTE : -20 PV POUR MARCO
+        }
+
+        gui.clearText();
+        gui.afficher("Marco : " + PV_Marco + " PV\t\t\tPercival : " + PV_Joueur + " PV\n\n\n");
+        gui.afficheImage(zoneCourante.nomImage());
+        gui.afficher(descriptionScene);
+
+        Timer timer = new Timer();
+        if (PV_Joueur > 0 && PV_Marco > 0) {
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        effectuerMarco();
+                    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, 3500);
+        }
+
+        checkFinBagarre();
+    }
+
+    private void effectuerMarco() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+
+        int random = (int) (Math.random() * 100);
+        if (random <= 80) {
+            MarcoAttaque();
+        }
+        if (random > 80) {
+            MarcoArme();
+        }
+        gui.clearText();
+        gui.afficher("Marco : " + PV_Marco + " PV\t\t\tPercival : " + PV_Joueur + " PV\n\n\n");
+        gui.afficheImage(zoneCourante.nomImage());
+        gui.afficher(zoneCourante.description);
+
+        if (PV_Marco > 0 && PV_Joueur > 0) {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    zoneCourante = zones[50];
+                    gui.clearText();
+                    gui.afficher("Marco : " + PV_Marco + " PV\t\t\tPercival : " + PV_Joueur + " PV\n\n\n");
+                    gui.afficheImage(zoneCourante.nomImage());
+                    gui.afficher(zoneCourante.descriptionLongue());
+                    try {
+                        leSon.jouerAudioDialogue();
+                    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, 3500);
+        }
+
+        checkFinBagarre();
+    }
+
+    private void MarcoAttaque() {
+        int random = (int) (Math.random() * 100);
+
+        if (random <= 50) {
+            zoneCourante = zones[55];
+            PV_Joueur = PV_Joueur - 10; // ATTAQUE FORTE : -10 PV POUR JOUEUR
+        }
+        if (random > 50) {
+            zoneCourante = zones[49];
+            PV_Joueur = PV_Joueur - 5; // ATTAQUE MOYENNE : -5 PV POUR JOUEUR
+        }
+    }
+
+    private void MarcoArme() {
+        int random = (int) (Math.random() * 100);
+
+        zoneCourante = zones[52];
+        if (random <= 33) {
+            PV_Joueur = PV_Joueur - 10;
+            // ATTAQUE FORTE : -10 PV POUR JOUEUR
+        }
+        if (random > 33) {
+            PV_Joueur = PV_Joueur - 20;
+            // ATTAQUE TRES FORTE : -20 PV POUR JOUEUR
+        }
     }
 
     private void stopSonsAmbiants() { // FAIRE ATTENTION A CE QUE CETTE METHODE NE SOIT PAS APPELEE PLUSIEURS FOIS
@@ -1607,6 +2080,9 @@ public class Jeu {
         indiceCodetenu = false;
         battreMarco = false;
         sceneBagarre = false;
+        PV_Marco = 100;
+        PV_Joueur = 100;
+        bagarreFinie = false;
         quitMenu = false;
         pauseMenu = false;
         nightTime = false;
@@ -1625,8 +2101,6 @@ public class Jeu {
 
         posXJoueur = gui.getPosXJoueur();
         posYJoueur = gui.getPosYJoueur();
-        // URLJoueur = gui.getURLJoueur(); -> UNE FOIS QUE LA FONCTION MARCHERA,
-        // REMPLACER LA LIGNE SUIVANTE :
         URLJoueur = this.getClass().getClassLoader().getResource("jeu/images/sprites/heros/descend.png");
 
         // LA SOLUTION CI-DESSOUS EST ABANDONNÉE => LES AUTRES PNJ/ITEMS SONT
@@ -1659,6 +2133,7 @@ public class Jeu {
         sauvegarde.enregistrer();
     }
 
+    @SuppressWarnings("unused") // supprime le warn "unused" dans la console : "variable 'f' non-utilisée"
     private int getNbSauvegardes() {
         Save sauvegarde = new Save();
         int retour = 0;
@@ -1705,7 +2180,7 @@ public class Jeu {
         Save sauvegarde = new Save();
         try {
             sauvegarde = sauvegarde.recuperer(indexPartie);
-            Inventaire = sauvegarde.Inventaire; // FAUX : RECUP ENUM OBJETS ET LES REMETTRE DANS INV ?
+            Inventaire = sauvegarde.Inventaire;
             cinematiqueDeDepart = sauvegarde.cinematiqueDeDepart;
             Temps.setHeure(sauvegarde.heure);
             Temps.setMinutes(sauvegarde.minutes);
