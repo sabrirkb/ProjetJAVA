@@ -109,15 +109,6 @@ public class Jeu {
     public void setGUI(GUI g) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         gui = g;
 
-        // gui.afficheAutre("NULL", 2, 40, 40);
-        // gui.afficheAutre("NULL", 3, 40, 80);
-        // gui.afficheAutre("NULL", 4, 40, 120);
-        // gui.afficheAutre("NULL", 5, 40, 160);
-        // gui.afficheAutre("NULL", 6, 40, 180);
-        // gui.afficheAutre("NULL", 7, 80, 40);
-        // gui.afficheAutre("NULL", 8, 80, 80);
-        // gui.afficheAutre("NULL", 9, 80, 160);
-
         afficherLocalisation();
         gui.afficheImage(zoneCourante.nomImage());
         this.stopSonsAmbiants();
@@ -416,12 +407,12 @@ public class Jeu {
         zones[61] = new Cinematique("Percival Lebrave décédera des suites du combat avec Marco."
                 + " La garde royale viendront enterrer son corps dans la forêt de Mors Insula.\n"
                 + "\nQue ton âme repose en paix, jeune Percival. \nTu vas nous manquer.",
-                "/cinematiques/gameOver.png");
+                "/cinematiques/gameOver.png"); // IMAGE A MODIFIER
 
         zones[64] = new Cinematique(
                 "\nVous arrivez dans la cuisine. Sur le plan de travail, vous apercevez un objet qui ressemble à une clé.\n"
                         + "\nCurieux, vous décidez de prendre la clé et de la placer dans votre inventaire.",
-                "/cinematiques/gameOver.png");
+                "/cinematiques/gameOver.png"); // IMAGE A MODIFIER
 
         // zones[3].ajouteSortie(Sortie.OUEST, zones[9]); // Affecte le déclenchement de
         // la cinématique à zones[3]
@@ -668,7 +659,14 @@ public class Jeu {
                 if (nightAlertOn) {
                     nightAlertOn = false;
                 }
-                allerEn("NORD");
+                if (cinematiqueActive || pauseMenu || mapMenu || noteMenu || nightAlertOn) 
+                {
+                    gui.afficher("Commande disponible : JOUER");
+                    leSon.jouerAudioError();
+                    break;
+                }
+                else
+                    allerEn("NORD");
                 break;
             case "L":
             case "LOCALISATION":
@@ -679,30 +677,64 @@ public class Jeu {
                 if (nightAlertOn) {
                     nightAlertOn = false;
                 }
-                afficherLocalisation();
+                if (cinematiqueActive || pauseMenu || mapMenu || noteMenu || nightAlertOn) 
+                {
+                    gui.afficher("Commande disponible : JOUER");
+                    leSon.jouerAudioError();
+                    break;
+                }
+                else
+                    afficherLocalisation();
                 break;
             case "S":
             case "SUD":
                 if (nightAlertOn) {
                     nightAlertOn = false;
                 }
-                allerEn("SUD");
+                if (cinematiqueActive || pauseMenu || mapMenu || noteMenu || nightAlertOn) 
+                {
+                    gui.afficher("Commande disponible : JOUER");
+                    leSon.jouerAudioError();
+                    break;
+                }
+                else
+                    allerEn("SUD");
                 break;
             case "E":
             case "EST":
                 if (nightAlertOn) {
                     nightAlertOn = false;
                 }
-                allerEn("EST");
+                if (cinematiqueActive || pauseMenu || mapMenu || noteMenu || nightAlertOn) 
+                {
+                    gui.afficher("Commande disponible : JOUER");
+                    leSon.jouerAudioError();
+                    break;
+                }
+                else
+                    allerEn("EST");
                 break;
             case "O":
             case "OUEST":
                 if (nightAlertOn) {
                     nightAlertOn = false;
                 }
-                allerEn("OUEST");
+                if (cinematiqueActive || pauseMenu || mapMenu || noteMenu || nightAlertOn) 
+                {
+                    gui.afficher("Commande disponible : JOUER");
+                    leSon.jouerAudioError();
+                    break;
+                }
+                else
+                    allerEn("OUEST");
                 break;
             case "OUVRIR":
+            if (cinematiqueActive || pauseMenu || mapMenu || noteMenu || nightAlertOn) 
+                {
+                    gui.afficher("Commande disponible : JOUER");
+                    leSon.jouerAudioError();
+                    break;
+                }
                 if (zoneCourante == zones[16]) {
                     this.ouvrirCellule();
                 }
@@ -729,6 +761,8 @@ public class Jeu {
                 if (nightAlertOn) {
                     nightAlertOn = false;
                 }
+                temporaryPauseHeure = Temps.getHeure();
+                temporaryPauseMinutes = Temps.getMinutes();
                 checkInventaire();
                 break;
             case "YES":
@@ -839,7 +873,15 @@ public class Jeu {
 
             case "OK":
 
+                if (zoneCourante == zones[42]) {
+                    cinematiqueActive = false;
+                }
+
                 if (!sceneBagarre) {
+                    cinematiqueActive = false;
+                }
+
+                if (nightAlertOn) {
                     cinematiqueActive = false;
                 }
 
@@ -971,6 +1013,7 @@ public class Jeu {
                 break;
             case "REPRENDRE":
                 if (zoneCourante == zones[0]) {
+                    cinematiqueActive = false;
                     isReprendreActive = true;
                     gui.afficher(this.getPartiesSauvegardees());
                     leSon.jouerAudioConfirm();
@@ -1048,7 +1091,7 @@ public class Jeu {
                 break;
             case "JOUER":
             case "J":
-                if (pauseMenu || mapMenu) {
+                if (pauseMenu || mapMenu || noteMenu || nightAlertOn || cinematiqueActive) {
                     gui.afficheJoueur("SUD", temporaryPauseXJoueur, temporaryPauseYJoueur);
                     gui.afficheBarre();
                     Temps.setHeure(temporaryPauseHeure);
@@ -1059,8 +1102,11 @@ public class Jeu {
                     pauseMenu = false;
                     mapMenu = false;
                     noteMenu = false;
+                    cinematiqueActive = false;
+                    nightAlertOn = false;
                     leSon.jouerAudioMenuOFF();
-                } else {
+                }
+                else {
                     gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
                     gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
                     gui.afficher(zoneCourante.commandesDispo());
@@ -1604,8 +1650,9 @@ public class Jeu {
             gui.afficheImage(zoneCourante.nomImage());
             gui.afficher(zoneCourante.descriptionLongue());
         }
-        
-        if ((zoneCourante == zones[29] || zoneCourante == zones[30]) && indice2Codetenu && sceneBagarre && !(Inventaire.contains(Objets.CLE1))) {
+
+        if ((zoneCourante == zones[29] || zoneCourante == zones[30]) && indice2Codetenu && sceneBagarre
+                && !(Inventaire.contains(Objets.CLE1))) {
             zoneCourante = zones[64];
             indice2Codetenu = false;
             gui.clearText();
@@ -1670,15 +1717,15 @@ public class Jeu {
 
         if (random <= 30) {
             descriptionScene += "Vous envoyez un violent coup de tête à Marco.\n" + zones[54].description;
-            PV_Marco = PV_Marco - 15; // ATTAQUE TRÈS FORTE : -15 PV POUR MARCO
+            PV_Marco = PV_Marco - 12; // ATTAQUE TRÈS FORTE : -12 PV POUR MARCO
         }
         if (random > 30 && random <= 65) {
             descriptionScene += "Vous envoyez un rapide coup de poing dans la tête de Marco.\n" + zones[54].description;
-            PV_Marco = PV_Marco - 10; // ATTAQUE FORTE : -10 PV POUR MARCO
+            PV_Marco = PV_Marco - 9; // ATTAQUE FORTE : -9 PV POUR MARCO
         }
         if (random > 65 && random <= 85) {
             descriptionScene += "Vous donnez un vif coup de genoux dans le ventre de Marco.\n" + zones[56].description;
-            PV_Marco = PV_Marco - 5; // ATTAQUE MOYENNE : -5 PV POUR MARCO
+            PV_Marco = PV_Marco - 4; // ATTAQUE MOYENNE : -4 PV POUR MARCO
         }
         if (random > 85) {
             descriptionScene += "Vous donnez un coup de pied dans l'entre-jambe de Marco.\n" + zones[63].description;
@@ -1713,7 +1760,7 @@ public class Jeu {
 
         if (random <= 50) {
             zoneCourante = zones[51];
-            PV_Joueur = PV_Joueur + 5;
+            PV_Joueur = PV_Joueur + 13;
         }
         if (random > 50) {
             zoneCourante = zones[57];
@@ -1751,13 +1798,13 @@ public class Jeu {
 
         if (random <= 77) {
             descriptionScene += "\n" + zones[56].description;
-            PV_Marco = PV_Marco - 10;
-            // ATTAQUE FORTE : -10 PV POUR MARCO
+            PV_Marco = PV_Marco - 11;
+            // ATTAQUE FORTE : -11 PV POUR MARCO
         }
         if (random > 77) {
             descriptionScene += "\n" + zones[54].description;
-            PV_Marco = PV_Marco - 20;
-            // ATTAQUE TRES FORTE : -20 PV POUR MARCO
+            PV_Marco = PV_Marco - 19;
+            // ATTAQUE TRES FORTE : -19 PV POUR MARCO
         }
 
         gui.clearText();
@@ -1823,11 +1870,11 @@ public class Jeu {
 
         if (random <= 50) {
             zoneCourante = zones[55];
-            PV_Joueur = PV_Joueur - 10; // ATTAQUE FORTE : -10 PV POUR JOUEUR
+            PV_Joueur = PV_Joueur - 9; // ATTAQUE FORTE : -9 PV POUR JOUEUR
         }
         if (random > 50) {
             zoneCourante = zones[49];
-            PV_Joueur = PV_Joueur - 5; // ATTAQUE MOYENNE : -5 PV POUR JOUEUR
+            PV_Joueur = PV_Joueur - 4; // ATTAQUE MOYENNE : -4 PV POUR JOUEUR
         }
     }
 
@@ -1836,12 +1883,12 @@ public class Jeu {
 
         zoneCourante = zones[52];
         if (random <= 33) {
-            PV_Joueur = PV_Joueur - 10;
-            // ATTAQUE FORTE : -10 PV POUR JOUEUR
+            PV_Joueur = PV_Joueur - 11;
+            // ATTAQUE FORTE : -11 PV POUR JOUEUR
         }
         if (random > 33) {
-            PV_Joueur = PV_Joueur - 20;
-            // ATTAQUE TRES FORTE : -20 PV POUR JOUEUR
+            PV_Joueur = PV_Joueur - 17;
+            // ATTAQUE TRES FORTE : -17 PV POUR JOUEUR
         }
     }
 

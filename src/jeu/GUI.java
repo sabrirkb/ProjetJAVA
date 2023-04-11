@@ -384,14 +384,6 @@ public class GUI implements ActionListener {
         return image10.getY();
     }
 
-    public void getURLJoueur() // CHANGER LE VOID EN URL
-    {
-        // URL URLJoueur = new URL("null");
-        Icon joueurIcon = (ImageIcon) image10.getIcon();
-        // URLJoueur = joueurIcon.getUrl(); -> TROUVER L'URL DE L'IMAGE
-        // return URLJoueur;
-    }
-
     public int getPosX_autre(int i) {
         int X = 0;
         if (i == 0) {
@@ -448,43 +440,5 @@ public class GUI implements ActionListener {
             Y = image9.getY();
         }
         return Y;
-    }
-
-    public void getURL_autre(int i) {
-        // URL URLAutre = new URL("null");
-
-        if (i == 0) {
-            Icon autreIcon = (ImageIcon) image2.getIcon();
-            // URLAutre = autreIcon.getUrl(); -> TROUVER L'URL DE L'IMAGE
-        }
-        if (i == 1) {
-            Icon autreIcon = (ImageIcon) image3.getIcon();
-            // URLAutre = autreIcon.getUrl(); -> TROUVER L'URL DE L'IMAGE
-        }
-        if (i == 2) {
-            Icon autreIcon = (ImageIcon) image4.getIcon();
-            // URLAutre = autreIcon.getUrl(); -> TROUVER L'URL DE L'IMAGE
-        }
-        if (i == 3) {
-            Icon autreIcon = (ImageIcon) image5.getIcon();
-            // URLAutre = autreIcon.getUrl(); -> TROUVER L'URL DE L'IMAGE
-        }
-        if (i == 4) {
-            Icon autreIcon = (ImageIcon) image6.getIcon();
-            // URLAutre = autreIcon.getUrl(); -> TROUVER L'URL DE L'IMAGE
-        }
-        if (i == 5) {
-            Icon autreIcon = (ImageIcon) image7.getIcon();
-            // URLAutre = autreIcon.getUrl(); -> TROUVER L'URL DE L'IMAGE
-        }
-        if (i == 6) {
-            Icon autreIcon = (ImageIcon) image8.getIcon();
-            // URLAutre = autreIcon.getUrl(); -> TROUVER L'URL DE L'IMAGE
-        }
-        if (i == 7) {
-            Icon autreIcon = (ImageIcon) image9.getIcon();
-            // URLAutre = autreIcon.getUrl(); -> TROUVER L'URL DE L'IMAGE
-        }
-        // return URLAutre;
     }
 }
