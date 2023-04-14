@@ -763,6 +763,7 @@ public class Jeu {
                 }
                 temporaryPauseHeure = Temps.getHeure();
                 temporaryPauseMinutes = Temps.getMinutes();
+                temporaryPauseZone = zoneCourante;
                 checkInventaire();
                 break;
             case "YES":
