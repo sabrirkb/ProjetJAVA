@@ -719,7 +719,7 @@ public class Jeu {
                     allerEn("OUEST");
                 break;
             case "OUVRIR":
-            if (cinematiqueActive || pauseMenu || mapMenu || noteMenu || nightAlertOn) 
+                if (cinematiqueActive || pauseMenu || mapMenu || noteMenu || nightAlertOn) 
                 {
                     gui.afficher("Commande disponible : JOUER");
                     leSon.jouerAudioError();
@@ -728,10 +728,16 @@ public class Jeu {
                 if (zoneCourante == zones[16]) {
                     this.ouvrirCellule();
                 }
-                // if (zoneCourante == zones[x] && !inventaire.contains(cle1))a
-                // {
-                // this.ouvrirCoffre();
-                // }
+                if (zoneCourante == zones[26] && Inventaire.contains(Objets.CLE1))
+                {
+                    this.ouvrirCoffre();
+                }
+                else {
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    leSon.jouerAudioError();
+                }
                 break;
             case "Q":
             case "QUITTER":
@@ -751,10 +757,19 @@ public class Jeu {
                 if (nightAlertOn) {
                     nightAlertOn = false;
                 }
-                temporaryPauseHeure = Temps.getHeure();
-                temporaryPauseMinutes = Temps.getMinutes();
-                temporaryPauseZone = zoneCourante;
-                checkInventaire();
+                if (!cinematiqueActive || !pauseMenu || !mapMenu || !noteMenu || !nightAlertOn) 
+                {
+                    temporaryPauseHeure = Temps.getHeure();
+                    temporaryPauseMinutes = Temps.getMinutes();
+                    temporaryPauseZone = zoneCourante;
+                    checkInventaire();
+                }
+                else {
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    leSon.jouerAudioError();
+                }
                 break;
             case "YES":
                 if (nightAlertOn) {
@@ -1743,7 +1758,7 @@ public class Jeu {
             timer2.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if (cinematiqueDeDepart && zoneCourante != zones[0] && zoneCourante != zones[34] && zoneCourante != zones[35])
+                    if (!cinematiqueDeDepart && zoneCourante != zones[0] && zoneCourante != zones[34] && zoneCourante != zones[35])
                     {
                         // Affiche zone d'avertissement + texte + cache le joueur + (nb tentatives -1)
                         zoneCourante = zones[16];
@@ -1851,11 +1866,11 @@ public class Jeu {
 
         if (random <= 40) {
             zoneCourante = zones[51];
-            PV_Joueur = PV_Joueur + 7;
+            PV_Joueur = PV_Joueur + 7; // DEFENSE : JOUEUR RECUPERE 7 PV
         }
         if (random > 40) {
             zoneCourante = zones[57];
-            PV_Joueur = PV_Joueur - 2;
+            PV_Joueur = PV_Joueur - 2; // DEFENSE : JOUEUR SE DEFEND AU PROCHAIN COUP DE MARCO -> -2 PV
         }
 
         gui.clearText();
