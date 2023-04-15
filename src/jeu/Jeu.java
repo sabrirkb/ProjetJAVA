@@ -189,7 +189,7 @@ public class Jeu {
         zones[9] = new Cinematique("Vous êtes dans le réfectoire.\n\nUne bagarre vient d'éclater entre Bart "
                 + "et Marco… Après quelques minutes, les gardes viennent séparer les deux "
                 + "protagonistes et les conduisent dans leurs cellules respectives.",
-                "/interieur/refectoire/refectoireRepas.png");
+                "/interieur/refectoire/BagarreReneMarco.png");
 
         zones[10] = new Cinematique("\nLe repas suit son cours lorsqu'un détenu vous murmure :\n"
                 + "\n« J'ai vu un garde oublier l'une de ses clés sur le plan de travail de la cuisine."
@@ -420,8 +420,9 @@ public class Jeu {
         + " mais faites attention aux gardes!","/interieur/cellule/celluleNuit.png"); 
 
         zones[69] = new Cinematique("\nPercival Lebrave sort de la prison. "
-        + "Il aperçoit une barque amarrée sur le pont. Il court aussitôt vers celle-ci et monte "
-        + "à bord. Il est enfin temps de lever l'encre!\n\nÀ toi la liberté, jeune Percival!"
+        + "Il aperçoit une barque amarrée sur le pont. Un mystérieux personnage se tient à l'intérieur de la barque. "
+        + "En s'approchant, il reconnaît l'individu du couloir. Percival court aussitôt vers la barque et monte à bord. "
+        + "Il est enfin temps de lever l'encre!\n\nÀ toi la liberté, jeune Percival!"
         ,"/exterieur/ile/ileNuit.png"); 
 
         zones[70] = new Cinematique("","/cinematiques/fuite.png");
@@ -595,6 +596,13 @@ public class Jeu {
         gui.clearText();
         gui.afficher("> " + commandeLue + "\n\n");
         switch (commandeLue.toUpperCase()) {
+
+            case "COUTEAU" : case "CLE1" : case "CLE2" :
+                gui.afficher("Vous ne possédez pas ou ne pouvez utiliser " + commandeLue.toUpperCase() + " pour le moment.");
+                gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
+                gui.afficher(zoneCourante.commandesDispo());
+                leSon.jouerAudioError();
+            break;
 
             case "ATTAQUE":
                 if (sceneBagarre && zoneCourante == zones[50]) {
@@ -950,7 +958,12 @@ public class Jeu {
                         gui.afficher("\nCommandes disponibles : OK");
                         break;
                     }
-                    nextScene("INFORMER");
+                    else
+                    {
+                        nextScene("INFORMER");
+                        leSon.jouerAudioConfirm();
+                        leSon.jouerAudioDialogue();
+                    }
                     break;
                 } else {
                     gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
@@ -1690,7 +1703,7 @@ public class Jeu {
                     {
                         afficherSceneFinale();
                     }
-                }, 2000);
+                }, 3000);
         }
 
         if (zoneCourante == zones[69])
