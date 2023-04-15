@@ -2043,6 +2043,7 @@ public class Jeu {
                 public void run() {
                     try {
                         effectuerMarco();
+                        leSon.jouerAudioDialogue();
                     } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                         e.printStackTrace();
                     }
