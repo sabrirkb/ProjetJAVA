@@ -409,8 +409,8 @@ public class Jeu {
 
         zones[66] = new Cinematique(
                 "\nVous vous dirigez vers le coffre. La clé récupérée dans la cuisine semble l'ouvrir. "
-                + "À l'intérieur, vous y trouvez une autre clé… Intruigué, vous la placez rapidement dans votre inventaire "
-                + "avant que quelqu'un ne vous voit.",
+                + "À l'intérieur, vous y trouvez une autre clé… Intruigué, vous la placez rapidement dans votre inventaire.\n\n"
+                + "Tapez 'Inventaire' à tout moment pour consulter votre inventaire.",
                 "/cinematiques/gameOver.png"); // IMAGE A MODIFIER
 
         zones[67] = new Cinematique("\nVous prenez la clé de votre inventaire et essayez d'ouvrir votre cellule."
