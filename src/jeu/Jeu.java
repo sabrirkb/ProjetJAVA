@@ -220,26 +220,26 @@ public class Jeu {
         /////////////////////////////////////////////////////
 
         zones[16] = new Zone("votre cellule. Vous devez attendre que les gardes vous autorisent à sortir…",
-                "/interieur/cellule/celluleJour.png"); // Zone cellule -> ajouter porte fermée (jour)
+                "/interieur/cellule/celluleJour_fermee.png"); 
 
         zones[17] = new Zone(
                 "votre cellule. C'est l'heure de la promenade. Les gardes ouvrent votre cellule pour vous laisser vous rendre dans la cour.",
-                "/interieur/cellule/celluleJour.png"); // Zone cellule -> porte ouverte
+                "/interieur/cellule/celluleJour.png"); 
 
         zones[18] = new Zone(
                 "votre cellule. C'est l'heure du repas. Les gardes ouvrent votre cellule pour vous laisser vous rendre au réfectoire.",
-                "/interieur/cellule/celluleJour.png"); // Zone cellule -> porte ouverte
+                "/interieur/cellule/celluleJour.png"); 
 
         zones[19] = new Cinematique(
                 "Vous êtes dans votre cellule. C'est l'heure de la douche. Vous êtes escorté par les gardes jusque dans les douches.",
-                "/interieur/cellule/celluleJour.png"); // Zone cellule -> porte ouverte
+                "/interieur/cellule/celluleJour.png");
 
         zones[20] = new Zone("le couloir.", "/interieur/couloir/couloirJour.png");
 
         zones[21] = new Zone("le couloir.", "/interieur/couloir/couloirNuit.png");
 
         zones[22] = new Zone("votre cellule. Vous devez attendre que les gardes vous autorisent à sortir…",
-                "/interieur/cellule/celluleNuit.png"); // Zone cellule -> ajouter porte fermée (nuit)
+                "/interieur/cellule/celluleNuit_fermee.png"); 
 
         zones[23] = new Zone("les douches.",
                 "/interieur/douches/douchesJour.png");
@@ -281,7 +281,7 @@ public class Jeu {
                 "Marco : « Hé le nouveau… La forme? Moi, c'est Marco. J'espère qu'on va bien s'entendre toi et moi, "
                         + "sinon tu vas vraiment regretter ton séjour sur cette île, haha! »\n"
                         + "\nIntimidé, vous hésitez entre informer Marco sur le guet–apens ou ne rien faire…",
-                "/interieur/douches/heureDeLaDouche.png");
+                "/interieur/douches/DouchesMarco.png");
 
         zones[34] = new Cinematique("Percival Lebrave a désobéit de trop nombreuses fois à la garde royale."
                 + " Il a déshonoré le royaume d'Aeternum. Son mauvais comportement le mènera à sa propre perte.\n"
@@ -317,93 +317,92 @@ public class Jeu {
 
         zones[42] = new Cinematique("\nVous arrivez dans la salle des gardes. Sur la table, vous trouvez une carte "
                 + "de la prison. Vous la récupérez rapidement et la placez dans votre inventaire.\n\nTapez 'Carte' à tout moment pour ouvrir la carte.",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER -> IMAGE SALLE GARDES AVEC MAP SUR
-                                                                  // TABLE
+                "/interieur/salleDesGardes/salleGardesNuit_Map.png"); 
 
         zones[43] = new Cinematique("Marco : « Bah alors, t'as perdu la parole, petit vaurien ? "
                 + "Haha! C'est ça, baisse les yeux quand j'te cause! Tu sais quoi? Rendez-vous ce soir au réfectoire, "
                 + "qu'on puisse célébrer ton arrivée, si tu vois c'que j'veux dire… trouillard! »",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+                "/interieur/douches/DouchesMarco.png");
 
         zones[44] = new Cinematique("Marco vous donne une petite tape sur l'épaule avant de faire "
                 + "demi-tour et de sortir des douches…",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+                "/interieur/douches/DouchesMarco.png");
 
         zones[45] = new Cinematique("Vous dites à Marco qu'il est attendu au réfectoire par René pour "
                 + "une rixe sans précédent.\n\nMarco : « Attends… t'es sûr de toi là? J'te préviens, si jamais tu oses "
                 + "mentir au gran' Marco, c'est toi qu'on aura au menu ce soir! »",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+                "/interieur/douches/DouchesMarco.png"); 
 
         zones[46] = new Cinematique("Marco : « J'espère que t'as bien saisi l'info, petit vaurien. »"
                 + "\n\nVous acquiescez timidement, tandis que Marco fait demi-tour et sort des douches…",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+                "/interieur/douches/DouchesMarco.png"); 
 
         zones[47] = new Cinematique("Ce soir, exceptionnellement, les gardes vous forcent à dîner et vous escortent jusque dans le "
                 + "réfectoire de la prison…",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+                "/interieur/refectoire/refectoireRepas_Premiere_Journee.png"); 
 
         zones[48] = new Cinematique(
                 "Vous avancez vers l'une des tables, lorsque Marco, défiguré, surgit devant vous…\n\n"
                         + "Marco : « Alors, moucheron… tu m'as oublié? Viens par là, que j'te montre à toi aussi qui est le patron de cette taule! »"
                         + "\n\nUn combat éclate entre vous et Marco…",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+                "/interieur/refectoire/BagarreReneMarco.png"); 
 
         zones[49] = new Cinematique("Marco vous colle une giffle.",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+                "/interieur/refectoire/BagarreReneMarco.png"); 
 
         zones[50] = new Cinematique("Quelle tactique doit utiliser Percival ?",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+                "/interieur/refectoire/BagarreReneMarco.png"); 
 
         zones[62] = new Cinematique("",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+                "/interieur/refectoire/BagarreReneMarco.png"); 
 
         zones[63] = new Cinematique("Marco esquive votre coup.",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+                "/interieur/refectoire/BagarreReneMarco.png"); 
 
         zones[51] = new Cinematique("Vous esquivez le prochain coup et reprenez des forces…",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+                "/interieur/refectoire/BagarreReneMarco.png"); 
 
         zones[52] = new Cinematique("Marco dégaine un rasoir et le plante dans votre avant-bras.",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+                "/interieur/refectoire/BagarreReneMarco.png"); 
 
         zones[53] = new Cinematique("Vous sortez votre couteau et essayez de blesser Marco.",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+                "/interieur/refectoire/BagarreReneMarco.png"); 
 
         zones[54] = new Cinematique("Votre coup est très efficace.",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+                "/interieur/refectoire/BagarreReneMarco.png"); 
 
         zones[55] = new Cinematique("Marco vous assène un gros coup de poing dans le ventre.",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+                "/interieur/refectoire/BagarreReneMarco.png"); 
 
         zones[56] = new Cinematique("Votre coup blesse légèrement Marco.",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+                "/interieur/refectoire/BagarreReneMarco.png"); 
 
-        zones[57] = new Cinematique("Vous vous défendez. Marco enchaîne avec un coup et vous blesse un peu plus légèrement.",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+        zones[57] = new Cinematique("Vous essayez de vous défendre. Marco enchaîne avec un coup et vous blesse un peu plus légèrement.",
+                "/interieur/refectoire/BagarreReneMarco.png"); 
 
         zones[58] = new Cinematique("\nMarco tombe au sol, ensanglanté…\n\nLes gardes arrivent rapidement et "
                 + "conduisent Marco jusque dans leur salle afin de le soigner. Suite à ce combat, les gardes vous"
                 + " adressent un avertissement.",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+                "/interieur/refectoire/refectoireRepas_Marco_tombe.png"); 
 
         zones[59] = new Cinematique(
                 "\nVous tombez au sol, ensanglanté…\n\nLes gardes arrivent rapidement pour vous séparer. "
                         + "Vous luttez tant bien que mal pour rester éveillé, mais vous vous sentez de plus en plus faible…",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+                "/interieur/refectoire/refectoireRepas_Heros_tombe.png"); 
 
         zones[60] = new Cinematique(
                 "Malgré ses efforts, Percival ne parviendra pas à se remettre d'aplomb.",
-                "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
+                "/interieur/refectoire/refectoireRepas_heros_mort.png"); 
 
         zones[61] = new Cinematique("Percival Lebrave décédera des suites du combat avec Marco."
                 + " La garde royale viendront enterrer son corps dans la forêt de Mors Insula.\n"
                 + "\nQue ton âme repose en paix, jeune Percival. \nTu vas nous manquer.",
-                "/cinematiques/gameOver.png"); // IMAGE A MODIFIER
+                "/cinematiques/gameOver.png");
 
         zones[64] = new Cinematique(
                 "\nVous arrivez dans la cuisine. Sur le plan de travail, vous apercevez un objet qui ressemble à une clé.\n"
                         + "\nCurieux, vous décidez de prendre la clé et de la placer dans votre inventaire.",
-                "/cinematiques/gameOver.png"); // IMAGE A MODIFIER
+                "/interieur/cuisine/cuisineJour_Clef.png"); 
 
         zones[65] = new Cinematique("", "/cinematiques/note.png");
 
@@ -415,20 +414,20 @@ public class Jeu {
 
         zones[67] = new Cinematique("\nVous prenez la clé de votre inventaire et essayez d'ouvrir votre cellule."
         + " Cela semble fonctionner! \n\nVous pouvez tenter une évasion, mais faites attention aux gardes!",
-        "/interieur/cellule/celluleNuit.png"); // RAJOUTER PORTE FERMEE
+        "/interieur/cellule/celluleNuit.png"); 
 
         zones[68] = new Zone("votre cellule. La porte est ouverte.\n\nVous pouvez tenter une évasion,"
-        + " mais faites attention aux gardes!","/interieur/cellule/celluleNuit.png"); // IMAGE OK
+        + " mais faites attention aux gardes!","/interieur/cellule/celluleNuit.png"); 
 
         zones[69] = new Cinematique("\nPercival Lebrave sort de la prison. "
         + "Il aperçoit une barque amarrée sur le pont. Il court aussitôt vers celle-ci et monte "
         + "à bord. Il est enfin temps de lever l'encre!\n\nÀ toi la liberté, jeune Percival!"
         ,"/exterieur/ile/ileNuit.png"); 
 
-        zones[70] = new Cinematique("","/interieur/cellule/celluleNuit.png"); // IMAGE A MODIFIER -> BATEAU QUI PART SUR LA MER
+        zones[70] = new Cinematique("","/cinematiques/fuite.png");
 
         zones[71] = new Cinematique("\nVous arrivez dans les douches. En marchant, vous trouvez un couteau au sol… "
-        + "Curieux, vous décidez de prendre ce dernier et le placez rapidement dans votre inventaire.\n\n"
+        + "Surpris, vous décidez de prendre ce dernier et le placez rapidement dans votre inventaire.\n\n"
         + "Tapez 'Inventaire' à tout moment pour consulter votre inventaire.",
         "/interieur/douches/douchesJour.png");
 
