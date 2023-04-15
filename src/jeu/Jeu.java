@@ -351,7 +351,7 @@ public class Jeu {
         zones[49] = new Cinematique("Marco vous colle une giffle.",
                 "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
 
-        zones[50] = new Cinematique("Quelle tactique doit utiliser Percival ?\n",
+        zones[50] = new Cinematique("Quelle tactique doit utiliser Percival ?",
                 "/interieur/salleDesGardes/salleGardesJour.png"); // IMAGE A MODIFIER
 
         zones[62] = new Cinematique("",
@@ -407,6 +407,31 @@ public class Jeu {
 
         zones[65] = new Cinematique("", "/cinematiques/note.png");
 
+        zones[66] = new Cinematique(
+                "\nVous vous dirigez vers le coffre. La clé récupérée dans la cuisine semble l'ouvrir. "
+                + "À l'intérieur, vous y trouvez une autre clé… Intruigué, vous la placez rapidement dans votre inventaire "
+                + "avant que quelqu'un ne vous voit.",
+                "/cinematiques/gameOver.png"); // IMAGE A MODIFIER
+
+        zones[67] = new Cinematique("\nVous prenez la clé de votre inventaire et essayez d'ouvrir votre cellule."
+        + " Cela semble fonctionner! \n\nVous pouvez tenter une évasion, mais faites attention aux gardes!",
+        "/interieur/cellule/celluleNuit.png"); // RAJOUTER PORTE FERMEE
+
+        zones[68] = new Zone("votre cellule. La porte est ouverte.\n\nVous pouvez tenter une évasion,"
+        + " mais faites attention aux gardes!","/interieur/cellule/celluleNuit.png"); // IMAGE OK
+
+        zones[69] = new Cinematique("\nPercival Lebrave sort de la prison. "
+        + "Il aperçoit une barque amarrée sur le pont. Il court aussitôt vers celle-ci et monte "
+        + "à bord. Il est enfin temps de lever l'encre!\n\nÀ toi la liberté, jeune Percival!"
+        ,"/exterieur/ile/ileNuit.png"); 
+
+        zones[70] = new Cinematique("","/interieur/cellule/celluleNuit.png"); // IMAGE A MODIFIER -> BATEAU QUI PART SUR LA MER
+
+        zones[71] = new Cinematique("\nVous arrivez dans les douches. En marchant, vous trouvez un couteau au sol… "
+        + "Curieux, vous décidez de prendre ce dernier et le placez rapidement dans votre inventaire.\n\n"
+        + "Tapez 'Inventaire' à tout moment pour consulter votre inventaire.",
+        "/interieur/douches/douchesJour.png");
+
 
         // zones[3].ajouteSortie(Sortie.OUEST, zones[9]); // Affecte le déclenchement de
         // la cinématique à zones[3]
@@ -415,8 +440,6 @@ public class Jeu {
         // AJOUT DES SORTIES ET DES COMMANDES AUX ZONES/CINEMATIQUES DU JEU
 
         zones[1].ajouteSortie(Sortie.NORD, zones[3]);
-
-        zones[2].ajouteSortie(Sortie.NORD, zones[4]);
 
         zones[3].ajouteSortie(Sortie.NORD, zones[20]);
         zones[3].ajouteSortie(Sortie.OUEST, zones[6]);
@@ -521,13 +544,24 @@ public class Jeu {
         zones[50].ajouteAction(Action.DEFENSE, zones[50]);
         zones[50].ajouteAction(Action.ARME, zones[50]);
 
-        zones[58].ajouteAction(Action.OK, zones[8]);
+        zones[58].ajouteAction(Action.OK, zones[10]);
 
         zones[59].ajouteAction(Action.SUIVANT, zones[60]);
 
         zones[60].ajouteAction(Action.SUIVANT, zones[61]);
 
         zones[64].ajouteAction(Action.OK, zones[29]);
+
+        zones[66].ajouteAction(Action.OK, zones[26]);
+
+        zones[67].ajouteAction(Action.OK, zones[68]);
+
+        zones[68].ajouteAction(Action.DORMIR, zones[16]);
+        zones[68].ajouteSortie(Sortie.SUD, zones[20]);
+
+        zones[69].ajouteAction(Action.OK, zones[70]);
+
+        zones[71].ajouteAction(Action.OK, zones[23]);
 
         // AFFECTATION DE LA ZONE COURANTE -> DEBUT DU JEU -> ZONE COURANTE = MENU
         // PRINCIPAL (zones[0])
@@ -613,7 +647,9 @@ public class Jeu {
             case "CARTE":
             case "C":
                 if (nightAlertOn) {
-                    nightAlertOn = false;
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n");
+                    gui.afficher("\nCommandes disponibles : OK");
+                    break;
                 }
                 if (carteTrouvee) {
                     mapMenu = true;
@@ -640,18 +676,23 @@ public class Jeu {
             case "AIDE":
             case "HELP":
                 if (nightAlertOn) {
-                    nightAlertOn = false;
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n");
+                    gui.afficher("\nCommandes disponibles : OK");
+                    break;
                 }
                 afficherAide();
                 break;
             case "N":
             case "NORD":
                 if (nightAlertOn) {
-                    nightAlertOn = false;
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n");
+                    gui.afficher("\nCommandes disponibles : OK");
+                    break;
                 }
                 if (cinematiqueActive || pauseMenu || mapMenu || noteMenu || nightAlertOn) 
                 {
-                    gui.afficher("Commande disponible : JOUER");
+                    gui.afficher("Commande indisponible durant une cinématique.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
                     leSon.jouerAudioError();
                     break;
                 }
@@ -665,11 +706,14 @@ public class Jeu {
             case "LOC":
             case "LOCAL":
                 if (nightAlertOn) {
-                    nightAlertOn = false;
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n");
+                    gui.afficher("\nCommandes disponibles : OK");
+                    break;
                 }
                 if (pauseMenu || mapMenu || noteMenu || nightAlertOn) 
                 {
-                    gui.afficher("Commande disponible : JOUER");
+                    gui.afficher("Commande indisponible durant une cinématique.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
                     leSon.jouerAudioError();
                     break;
                 }
@@ -679,11 +723,14 @@ public class Jeu {
             case "S":
             case "SUD":
                 if (nightAlertOn) {
-                    nightAlertOn = false;
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n");
+                    gui.afficher("\nCommandes disponibles : OK");
+                    break;
                 }
                 if (cinematiqueActive || pauseMenu || mapMenu || noteMenu || nightAlertOn) 
                 {
-                    gui.afficher("Commande disponible : JOUER");
+                    gui.afficher("Commande indisponible durant une cinématique.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
                     leSon.jouerAudioError();
                     break;
                 }
@@ -693,11 +740,14 @@ public class Jeu {
             case "E":
             case "EST":
                 if (nightAlertOn) {
-                    nightAlertOn = false;
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n");
+                    gui.afficher("\nCommandes disponibles : OK");
+                    break;
                 }
                 if (cinematiqueActive || pauseMenu || mapMenu || noteMenu || nightAlertOn) 
                 {
-                    gui.afficher("Commande disponible : JOUER");
+                    gui.afficher("Commande indisponible durant une cinématique.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
                     leSon.jouerAudioError();
                     break;
                 }
@@ -707,43 +757,70 @@ public class Jeu {
             case "O":
             case "OUEST":
                 if (nightAlertOn) {
-                    nightAlertOn = false;
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n");
+                    gui.afficher("\nCommandes disponibles : OK");
+                    break;
                 }
                 if (cinematiqueActive || pauseMenu || mapMenu || noteMenu || nightAlertOn) 
                 {
-                    gui.afficher("Commande disponible : JOUER");
+                    gui.afficher("Commande indisponible durant une cinématique.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
                     leSon.jouerAudioError();
                     break;
                 }
                 else
                     allerEn("OUEST");
                 break;
-            case "OUVRIR":
-                if (cinematiqueActive || pauseMenu || mapMenu || noteMenu || nightAlertOn) 
+            case "FUIR": case "FUITE": case "EVASION":
+            if (cinematiqueActive || pauseMenu || mapMenu || noteMenu || nightAlertOn) 
                 {
-                    gui.afficher("Commande disponible : JOUER");
+                    gui.afficher("Commande indisponible durant une cinématique.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
                     leSon.jouerAudioError();
                     break;
                 }
-                if (zoneCourante == zones[16]) {
-                    this.ouvrirCellule();
-                }
-                if (zoneCourante == zones[26] && Inventaire.contains(Objets.CLE1))
-                {
-                    this.ouvrirCoffre();
+                if (zoneCourante == zones[4] && (Inventaire.contains(Objets.CLE2))) {
+                    this.fuir();
+                    break;
                 }
                 else {
                     gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
                     gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
                     gui.afficher(zoneCourante.commandesDispo());
                     leSon.jouerAudioError();
+                    break;
                 }
-                break;
+            case "OUVRIR":
+                if (cinematiqueActive || pauseMenu || mapMenu || noteMenu || nightAlertOn) 
+                {
+                    gui.afficher("Commande indisponible durant une cinématique.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    leSon.jouerAudioError();
+                    break;
+                }
+                if (zoneCourante == zones[22] && (Inventaire.contains(Objets.CLE2))) {
+                    this.ouvrirCellule();
+                    break;
+                }
+                if (zoneCourante == zones[26] && Inventaire.contains(Objets.CARTE) && Inventaire.contains(Objets.CLE1) && !(Inventaire.contains(Objets.CLE2)))
+                {
+                    this.ouvrirCoffre();
+                    break;
+                }
+                else {
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
+                    gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
+                    gui.afficher(zoneCourante.commandesDispo());
+                    leSon.jouerAudioError();
+                    break;
+                }
             case "Q":
             case "QUITTER":
             case "QUIT":
                 if (nightAlertOn) {
-                    nightAlertOn = false;
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n");
+                    gui.afficher("\nCommandes disponibles : OK");
+                    break;
                 }
                 quitMenu = true;
                 gui.afficher(
@@ -755,7 +832,9 @@ public class Jeu {
             case "INVENTAIRE":
             case "INV":
                 if (nightAlertOn) {
-                    nightAlertOn = false;
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n");
+                    gui.afficher("\nCommandes disponibles : OK");
+                    break;
                 }
                 if (!cinematiqueActive || !pauseMenu || !mapMenu || !noteMenu || !nightAlertOn) 
                 {
@@ -773,7 +852,9 @@ public class Jeu {
                 break;
             case "YES":
                 if (nightAlertOn) {
-                    nightAlertOn = false;
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n");
+                    gui.afficher("\nCommandes disponibles : OK");
+                    break;
                 }
                 if (quitMenu) {
                     if (zoneCourante != zones[0]) // Si on ne se trouve pas dans le menu principal
@@ -811,7 +892,9 @@ public class Jeu {
                 break;
             case "NO":
                 if (nightAlertOn) {
-                    nightAlertOn = false;
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n");
+                    gui.afficher("\nCommandes disponibles : OK");
+                    break;
                 }
                 if (quitMenu) {
                     leSon.jouerAudioConfirm();
@@ -824,15 +907,9 @@ public class Jeu {
                     leSon.jouerAudioError();
                 }
                 break;
-            case "COFFRE":
-                if (nightAlertOn) {
-                    nightAlertOn = false;
-                }
-                ouvrirCoffre();
-                break;
             case "SUIVANT":
             case "SUIV":
-                if (zoneCourante == zones[19] && !battreMarco && !sceneBagarre && Inventaire.contains(Objets.NOTE)) {
+                if ((zoneCourante == zones[19] || zoneCourante == zones[40]) && !battreMarco && !sceneBagarre && Inventaire.contains(Objets.NOTE)) {
                     Timer chrono = new Timer();
                     chrono.schedule(new TimerTask() {
                         @Override
@@ -852,7 +929,9 @@ public class Jeu {
                 }
                 if (zoneCourante.getClass() == Cinematique.class && zoneCourante.sorties.containsKey("SUIVANT")) {
                     if (nightAlertOn) {
-                        nightAlertOn = false;
+                        gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n");
+                        gui.afficher("\nCommandes disponibles : OK");
+                        break;
                     }
                     nextScene("SUIVANT");
                     break;
@@ -868,7 +947,9 @@ public class Jeu {
             case "INFO":
                 if (zoneCourante.getClass() == Cinematique.class && zoneCourante.sorties.containsKey("INFORMER")) {
                     if (nightAlertOn) {
-                        nightAlertOn = false;
+                        gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n");
+                        gui.afficher("\nCommandes disponibles : OK");
+                        break;
                     }
                     nextScene("INFORMER");
                     break;
@@ -883,7 +964,9 @@ public class Jeu {
             case "RIEN":
                 if (zoneCourante.getClass() == Cinematique.class && zoneCourante.sorties.containsKey("RIEN")) {
                     if (nightAlertOn) {
-                        nightAlertOn = false;
+                        gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n");
+                        gui.afficher("\nCommandes disponibles : OK");
+                    break;
                     }
                     nextScene("RIEN");
                     break;
@@ -896,6 +979,22 @@ public class Jeu {
                 }
 
             case "OK":
+
+            if (zoneCourante == zones[71]) {
+                cinematiqueActive = false;
+            }
+
+            if (zoneCourante == zones[69]) {
+                cinematiqueActive = false;
+            }
+
+            if (zoneCourante == zones[67]) {
+                cinematiqueActive = false;
+            }
+
+            if (zoneCourante == zones[66]) {
+                cinematiqueActive = false;
+            }
 
             if (zoneCourante == zones[39]) {
                 cinematiqueActive = false;
@@ -911,6 +1010,7 @@ public class Jeu {
 
                 if (nightAlertOn) {
                     cinematiqueActive = false;
+                    nightAlertOn = false;
                 }
 
                 if (zoneCourante == zones[10]) {
@@ -984,7 +1084,9 @@ public class Jeu {
 
             case "DORMIR":
                 if (nightAlertOn) {
-                    nightAlertOn = false;
+                    gui.afficher("Impossible de dormir pour le moment.\n");
+                    gui.afficher("\nCommandes disponibles : OK");
+                    break;
                 }
                 if ((zoneCourante == zones[16]) || (zoneCourante == zones[17])
                         || (zoneCourante == zones[18] || zoneCourante == zones[22])) {
@@ -1028,7 +1130,9 @@ public class Jeu {
             case "T":
             case "TIME":
                 if (nightAlertOn) {
-                    nightAlertOn = false;
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n");
+                    gui.afficher("\nCommandes disponibles : OK");
+                    break;
                 }
                 gui.afficher(Temps.getTime());
                 gui.afficher("Tapez '?' pour obtenir de l'aide à tout moment.\n");
@@ -1102,7 +1206,9 @@ public class Jeu {
             case "PAUSE":
             case "P":
                 if (nightAlertOn) {
-                    nightAlertOn = false;
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible.\n");
+                    gui.afficher("\nCommandes disponibles : OK");
+                    break;
                 }
                 if (!cinematiqueDeDepart) {
                     pauseMenu = true;
@@ -1126,7 +1232,13 @@ public class Jeu {
                 break;
             case "JOUER":
             case "J":
-                if (pauseMenu || mapMenu || noteMenu || nightAlertOn || cinematiqueActive && zoneCourante != zones[28]) {
+                if (nightAlertOn)
+                {
+                    gui.afficher("La commande " + commandeLue + " n'est pas disponible pour le moment.\n");
+                    gui.afficher("\nCommandes disponibles : OK");
+                    break;
+                }
+                if ((pauseMenu || mapMenu || noteMenu || cinematiqueActive) && zoneCourante != zones[28]) {
                     gui.afficheJoueur("SUD", temporaryPauseXJoueur, temporaryPauseYJoueur);
                     gui.afficheBarre();
                     Temps.setHeure(temporaryPauseHeure);
@@ -1256,43 +1368,67 @@ public class Jeu {
     }
 
     private void ouvrirCoffre() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        boolean clePossedee = false;
-        if (Inventaire != null) {
-            for (Objets objet : Inventaire) {
-                if (objet == Objets.CLE1) {
-                    clePossedee = true;
-                } else {
-                    clePossedee = false;
-                }
-            }
-        }
-        if (clePossedee == true /* && zoneCourante = zones[x] */) {
-            coffreOuvert = true;
-            // zoneActuelle = zones[x]; -> Cinématique d'ouverture du coffre / récupération
-            // clé cellule
-            // Ajouter CLE2 à l'inventaire en fin de cinématique (Inventaire.add(CLE2);)
+        if ((Inventaire.contains(Objets.CLE1)) && zoneCourante == zones[26] && Temps.getHeure() >= 8 && Temps.getHeure() < 11)
+        {
+                cinematiqueActive = true;
+                zoneCourante = zones[66];
+                gui.clearText();
+                gui.afficheImage(zoneCourante.nomImage());
+                gui.afficher(zoneCourante.descriptionLongue());
+                leSon.joueurAudioPorteOuverte();
+                leSon.jouerAudioAchievement();
+                Inventaire.add(Objets.CLE2);
         } else {
-            gui.afficher("Vous n'êtes pas dans la salle des gardes ou ne possédez pas la clé du coffre.");
+            gui.afficher("Vous ne possédez pas la clé du coffre.");
+            gui.afficher("\nCommandes disponibles : " + zoneCourante.commandesDispo());
             leSon.jouerAudioError();
         }
     }
 
     private void ouvrirCellule() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        boolean clePossedee = false;
-        if (Inventaire != null) {
-            for (Objets objet : Inventaire) {
-                if (objet == Objets.CLE2) {
-                    clePossedee = true;
-                } else {
-                    clePossedee = false;
-                }
-            }
-        }
-        if (clePossedee == true /* && zoneCourante = zones[16/17/18/22] */) {
-            celluleOuverte = true;
-            // zoneActuelle = zones[x]; -> Cellule ouverte (jour ou nuit)
+        if ((Inventaire.contains(Objets.CLE2)) && zoneCourante == zones[22]
+            && Temps.getHeure() >= 22 || (Temps.getHeure() >= 0 && Temps.getHeure() < 8))
+        {
+                cinematiqueActive = true;
+                zoneCourante = zones[67];
+                gui.clearText();
+                gui.afficheImage(zoneCourante.nomImage());
+                gui.afficher(zoneCourante.descriptionLongue());
+                leSon.joueurAudioPorteOuverte();
+                leSon.jouerAudioAchievement();
+                Inventaire.add(Objets.CLE2);
         } else {
-            gui.afficher("Vous n'êtes pas dans votre cellule ou ne possédez pas la clé pour vous échapper.");
+            gui.afficher("Vous ne possédez pas la clé de la prison.");
+            gui.afficher("\nCommandes disponibles : " + zoneCourante.commandesDispo());
+            leSon.jouerAudioError();
+        }
+    }
+
+    private void fuir() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        if ((Inventaire.contains(Objets.CLE2)) && zoneCourante == zones[4]
+            && Temps.getHeure() >= 22 || (Temps.getHeure() >= 0 && Temps.getHeure() < 8))
+        {
+                cinematiqueActive = true;
+                zoneCourante = zones[2];
+                gui.clearText();
+                gui.afficheImage(zoneCourante.nomImage());
+                gui.afficher("\nVous êtes sur " + zoneCourante.description);
+                leSon.joueurAudioPorteOuverte();
+                leSon.jouerAudioAchievement();
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() 
+                    {
+                        zoneCourante = zones[69];
+                        gui.clearText();
+                        gui.afficheImage(zoneCourante.nomImage());
+                        gui.afficher(zoneCourante.descriptionLongue());
+                    }
+                }, 2500);
+        } else {
+            gui.afficher("Vous ne possédez pas la clé de la prison.");
+            gui.afficher("\nCommandes disponibles : " + zoneCourante.commandesDispo());
             leSon.jouerAudioError();
         }
     }
@@ -1456,7 +1592,7 @@ public class Jeu {
                 gui.afficher("Les gardes exigent à tous les détenus de rejoindre leurs cellules respectives!\n");
                 gui.afficher("\nDes rondes de nuit seront effectuées jusqu'à 8 heures du matin. ");
                 gui.afficher("Tout détenu qui sera repéré de nuit en dehors de sa cellule sera sanctionné!\n");
-                gui.afficher("\n" + zoneCourante.commandesDispo() + "OK");
+                gui.afficher("\nCommandes disponibles : OK");
                 leSon.jouerAudioDialogue();
                 activerAlerteNuit = false;
             }
@@ -1526,6 +1662,67 @@ public class Jeu {
     // et de la zone courante ainsi qu'en fonction des valeurs des booléens d'événement
 
     private void checkEvent() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+
+
+        if (zoneCourante == zones[23] && !(Inventaire.contains(Objets.COUTEAU) && !cinematiqueActive))
+        {
+            cinematiqueActive = true;
+            zoneCourante = zones[71];
+            gui.clearText();
+            gui.afficheImage(zoneCourante.nomImage());
+            gui.afficher(zoneCourante.descriptionLongue());
+            Inventaire.add(Objets.COUTEAU);
+            armeRecuperee = true;
+            leSon.jouerAudioAchievement();
+        }
+
+        if (zoneCourante == zones[70] && !(cinematiqueActive))
+        {
+            cinematiqueActive = true;
+            gui.clearText();
+            gui.afficheImage(zoneCourante.nomImage());
+            gui.afficheJoueur("SUD", 250, 250);
+            gui.afficher(zoneCourante.description);
+
+            Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() 
+                    {
+                        afficherSceneFinale();
+                    }
+                }, 2000);
+        }
+
+        if (zoneCourante == zones[69])
+        {
+            cinematiqueActive = false;
+            gui.clearText();
+            gui.afficheImage(zoneCourante.nomImage());
+            gui.afficheJoueur("SUD", 250, 250);
+            gui.afficher(zoneCourante.descriptionLongue());
+        }
+
+        if (zoneCourante == zones[4] && (Inventaire.contains(Objets.CLE2)) && !(nightAlertOn) && !(cinematiqueActive))
+        {
+            gui.clearText();
+            gui.afficher("\n\n");
+            gui.afficher(zoneCourante.descriptionLongue() + "FUIR");
+        }
+
+        if (zoneCourante == zones[22] && (Inventaire.contains(Objets.CLE2)) && !(nightAlertOn) && !(cinematiqueActive))
+        {
+            gui.clearText();
+            gui.afficher("\n\n");
+            gui.afficher(zoneCourante.descriptionLongue() + "OUVRIR");
+        }
+
+        if (zoneCourante == zones[26] && Inventaire.contains(Objets.CLE1) && !coffreOuvert && !(Inventaire.contains(Objets.CLE2)))
+        {
+            gui.clearText();
+            gui.afficher("\n\n");
+            gui.afficher(zoneCourante.descriptionLongue() + "OUVRIR");
+        }
 
         if (zoneCourante == zones[25]) {
             leSon.jouerAmbiantDouches();
@@ -1604,6 +1801,7 @@ public class Jeu {
 
         if (Temps.getHeure() == 18 && Temps.getMinutes() == 0 && !(zoneCourante == zones[19])) // Heure de la douche
         {
+            cinematiqueActive = true;
             stopSonsAmbiants();
             zoneCourante = zones[40];
             gui.clearText();
@@ -1654,7 +1852,7 @@ public class Jeu {
                 sceneBagarre = true;
                 zoneCourante = zones[48];
                 gui.clearText();
-                gui.afficher("\n\n");
+                gui.afficher("\n");
                 gui.afficher(zoneCourante.descriptionLongue());
             }
             if (!battreMarco) {
@@ -1678,12 +1876,8 @@ public class Jeu {
 
         if (zoneCourante == zones[8] && sceneBagarre && !indice2Codetenu) {
             indice2Codetenu = true;
-            zoneCourante = zones[10];
-            gui.clearText();
-            gui.afficheImage(zoneCourante.nomImage());
-            gui.afficher(zoneCourante.descriptionLongue());
         }
-
+ 
         if ((zoneCourante == zones[29] || zoneCourante == zones[30]) && indice2Codetenu && sceneBagarre
                 && !(Inventaire.contains(Objets.CLE1))) {
             zoneCourante = zones[64];
@@ -2023,6 +2217,31 @@ public class Jeu {
                 try {
                     stopSonsAmbiants();
                     leSon.jouerAudioMort();
+                    leSon.jouerAmbiantEnd();
+                } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 500);
+    }
+
+    private void afficherSceneFinale() {
+        Timer chrono = new Timer();
+        chrono.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                cinematiqueActive = true;
+                gui.cacherBarre();
+                tentatives = 3;
+                zoneCourante = zones[35];
+                gui.afficheJoueur("NULL", 50, 50);
+                gui.afficheImage(zoneCourante.nomImage());
+                gui.afficher("\nFélicitations! Vous êtes arrivé jusqu'au bout du jeu. Nous espérons qu'il vous aura plu."
+                + " Vous pouvez tenter différents scénarii en crééant une nouvelle partie.");
+                gui.afficher("\n\nCommandes disponibles : OK");
+                try {
+                    stopSonsAmbiants();
+                    leSon.jouerAudioAchievement();
                     leSon.jouerAmbiantEnd();
                 } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                     e.printStackTrace();

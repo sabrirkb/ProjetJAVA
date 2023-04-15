@@ -18,7 +18,7 @@ public class Horloge {
                 this.minutes = 0;
                 this.heure += 1;
             }
-            if (this.heure >= 23)
+            if (this.heure > 23)
             {
                 this.minutes = 0;
                 this.heure = 0;
