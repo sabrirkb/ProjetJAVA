@@ -26,6 +26,8 @@ public class Audio implements LineListener {
     AudioInputStream porteOuverte;
     AudioInputStream achievement;
     AudioInputStream menuSuccess;
+    AudioInputStream intro;
+    AudioInputStream gardes;
 
     // Streams des sons ambiants (boucles)
     AudioInputStream themePrincipal;
@@ -36,6 +38,9 @@ public class Audio implements LineListener {
     AudioInputStream interieurVide;
     AudioInputStream douchesVides;
     AudioInputStream suspense;
+    AudioInputStream mer;
+    AudioInputStream exterieurCalme;
+    AudioInputStream exterieurBruit;
 
     // Clips sons brefs
     Clip clipNext = initClip();
@@ -52,6 +57,8 @@ public class Audio implements LineListener {
     Clip clipPorteOuverte = initClip();
     Clip clipAchievement = initClip();
     Clip clipMenuSuccess = initClip();
+    Clip clipIntro = initClip();
+    Clip clipGardes = initClip();
 
     // Clips sons ambiants
     Clip clipAudioThemePrincipal = initClip();
@@ -62,6 +69,9 @@ public class Audio implements LineListener {
     Clip clipAudioInterieurVide = initClip();
     Clip clipAudioDouchesVides = initClip();
     Clip clipAudioSuspense = initClip();
+    Clip clipAudioMer = initClip();
+    Clip clipAudioExterieurCalme = initClip();
+    Clip clipAudioExterieurBruit = initClip();
 
     public Audio() {
         try {
@@ -121,6 +131,14 @@ public class Audio implements LineListener {
                 .getAudioInputStream(
                         getClass().getClassLoader().getResourceAsStream("jeu/audio/soundFX/success.wav"));
 
+        intro = AudioSystem
+                .getAudioInputStream(
+                        getClass().getClassLoader().getResourceAsStream("jeu/audio/soundFX/intro.wav"));
+
+        gardes = AudioSystem
+                .getAudioInputStream(
+                        getClass().getClassLoader().getResourceAsStream("jeu/audio/soundFX/guards.wav"));
+
         // Récupération des sons ambiants
         themePrincipal = AudioSystem
                 .getAudioInputStream(getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/main.wav"));
@@ -147,6 +165,18 @@ public class Audio implements LineListener {
         suspense = AudioSystem
                 .getAudioInputStream(
                         getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/suspense.wav"));
+
+        mer = AudioSystem
+                .getAudioInputStream(
+                        getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/sea.wav"));
+
+        exterieurCalme = AudioSystem
+                .getAudioInputStream(
+                        getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/outside.wav"));
+
+        exterieurBruit = AudioSystem
+                .getAudioInputStream(
+                        getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/outsideCrowded.wav"));
 
     }
 
@@ -235,6 +265,14 @@ public class Audio implements LineListener {
         this.jouer(clipMenuSuccess, menuSuccess);
     }
 
+    public void jouerAudioIntro() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        this.jouer(clipIntro, intro);
+    }
+
+    public void jouerAudioGardes() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        this.jouer(clipGardes, gardes);
+    }
+
     // Appels sons ambiants
 
     public void jouerAmbiantThemePrincipal()
@@ -277,6 +315,21 @@ public class Audio implements LineListener {
         this.ambiance(clipAudioSuspense, suspense);
     }
 
+    public void jouerAmbiantMer()
+            throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        this.ambiance(clipAudioMer, mer);
+    }
+
+    public void jouerAmbiantExterieurCalme()
+            throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        this.ambiance(clipAudioExterieurCalme, exterieurCalme);
+    }
+
+    public void jouerAmbiantExterieurBruit()
+            throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        this.ambiance(clipAudioExterieurBruit, exterieurBruit);
+    }
+
     // Méthode d'arrêt sons ambiants
     private void stopAmbiance(Clip unClip) {
         unClip.stop();
@@ -313,6 +366,18 @@ public class Audio implements LineListener {
 
     public void stopAmbianceSuspense() {
         this.stopAmbiance(clipAudioSuspense);
+    }
+
+    public void stopAmbianceMer() {
+        this.stopAmbiance(clipAudioMer);
+    }
+
+    public void stopAmbianceExterieurCalme() {
+        this.stopAmbiance(clipAudioExterieurCalme);
+    }
+
+    public void stopAmbianceExterieurBruit() {
+        this.stopAmbiance(clipAudioExterieurBruit);
     }
 
     @Override

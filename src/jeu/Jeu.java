@@ -113,6 +113,7 @@ public class Jeu {
         zoneCourante = zones[72];
         gui.afficheImage(zoneCourante.nomImage());
         gui.afficher(zoneCourante.description);
+        leSon.jouerAudioIntro();
         
         Timer chrono = new Timer();
                         chrono.schedule(new TimerTask() {
@@ -941,7 +942,8 @@ public class Jeu {
             case "SUIVANT":
             case "SUIV":
 
-                if (zoneCourante == zones[11])
+                if (zoneCourante == zones[11] || zoneCourante == zones[12] || zoneCourante == zones[13]
+                    || zoneCourante == zones[14])
                 {
                     stopSonsAmbiants();
                 }
@@ -1749,6 +1751,8 @@ public class Jeu {
         {
             zoneCourante = zones[5];
             gui.afficheImage(zoneCourante.nomImage());
+            leSon.stopAmbianceExterieurCalme();
+            leSon.jouerAmbiantExterieurBruit();
         }
 
         if ( zoneCourante == zones[5] && ( (Temps.getHeure() == 11) || (Temps.getHeure() == 16) 
@@ -1756,6 +1760,8 @@ public class Jeu {
         {
             zoneCourante = zones[3];
             gui.afficheImage(zoneCourante.nomImage());
+            leSon.stopAmbianceExterieurBruit();
+            leSon.jouerAmbiantExterieurCalme();
         }
 
         if (zoneCourante == zones[31])
@@ -1935,6 +1941,7 @@ public class Jeu {
             Inventaire.add(Objets.NOTE);
             indiceCodetenu = true;
             cinematiqueActive = true;
+            leSon.jouerAudioDialogue();
             leSon.jouerAmbiantInterieurVide();
             gui.clearText();
             gui.afficher("\n\n");
@@ -2060,6 +2067,11 @@ public class Jeu {
                     gui.afficher(zoneCourante.description);
                     gui.afficher("\nAttention: il vous reste " + tentatives 
                     + " avertissement(s) avant de vous faire exécuter!");
+                    try {
+                        leSon.jouerAudioGardes();
+                    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                        e.printStackTrace();
+                    }
                     
                     Timer timer3 = new Timer();
                     timer3.schedule(new TimerTask() {
@@ -2327,6 +2339,9 @@ public class Jeu {
         leSon.stopAmbianceInterieurVide();
         leSon.stopAmbianceDouchesVides();
         leSon.stopAmbianceSuspense();
+        leSon.stopAmbianceMer();
+        leSon.stopAmbianceExterieurCalme();
+        leSon.stopAmbianceExterieurBruit();
     }
 
     private void afficherSceneMort() {
@@ -2510,18 +2525,22 @@ public class Jeu {
                 cinematiqueDeDepart = false;
             }
             if (zoneCourante == zones[12]) {
+                leSon.jouerAmbiantMer();
             }
             if (zoneCourante == zones[13]) {
                 gui.afficheJoueur("NORD", 258, 300);
                 updatePositionJoueur("NORD"); // Initialisation du joueur
                 gui.refreshLayers(); // Rafraîchit la layeredPane (Classe GUI)
+                leSon.jouerAmbiantExterieurCalme();
             }
             if (zoneCourante == zones[14]) {
                 gui.afficheJoueur("NORD", 250, 330); // Changement position joueur
+                leSon.jouerAmbiantExterieurBruit();
             }
             if (zoneCourante == zones[15]) {
 
                 gui.afficheJoueur("SUD", 260, 170); // Changement position joueur
+                leSon.jouerAmbiantInterieurVide();
 
             }
             if (zoneCourante == zones[16]) {
