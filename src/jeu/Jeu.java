@@ -27,7 +27,7 @@ public class Jeu {
     private boolean indiceCodetenu = false; // permettra de savoir qu'il faut être gentil avec Marco
     private boolean battreMarco = false; // choix du joueur d'être gentil ou méchant avec Marco
     private boolean sceneBagarre = false; // si la scène de bagarre du réfectoire s'est déclenchée
-    private boolean douchesMarco = false;
+    private boolean douchesMarco = false; // si la scène dans les douches avec Marco s'est déclenchée
     private int PV_Marco = 100; // Points de vie de départ de Marco en cas de bagarre avec le Joueur
     private int PV_Joueur = 100; // Points de vie de départ du joueur en cas de bagarre avec Marco
     private boolean bagarreFinie = false; // si la scène de bagarre est terminée ou non
@@ -110,10 +110,26 @@ public class Jeu {
     public void setGUI(GUI g) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         gui = g;
 
-        afficherLocalisation();
+        zoneCourante = zones[72];
         gui.afficheImage(zoneCourante.nomImage());
-        this.stopSonsAmbiants();
-        leSon.jouerAmbiantThemePrincipal();
+        gui.afficher(zoneCourante.description);
+        
+        Timer chrono = new Timer();
+                        chrono.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                zoneCourante = zones[0];
+                                gui.clearText();
+                                afficherLocalisation();
+                                gui.afficheImage(zoneCourante.nomImage());
+                                stopSonsAmbiants();
+                                try {
+                                    leSon.jouerAmbiantThemePrincipal();
+                                } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, 4500);
     }
 
     private void creerCarte() {
@@ -433,6 +449,8 @@ public class Jeu {
         + "Tapez 'Inventaire' à tout moment pour consulter votre inventaire.",
         "/interieur/douches/douchesArme.png");
 
+        zones[72] = new Cinematique("\n Chargement en cours…", "/cinematiques/intro.png");
+
 
         // zones[3].ajouteSortie(Sortie.OUEST, zones[9]); // Affecte le déclenchement de
         // la cinématique à zones[3]
@@ -567,6 +585,7 @@ public class Jeu {
         zones[69].ajouteAction(Action.OK, zones[70]);
 
         zones[71].ajouteAction(Action.OK, zones[23]);
+
 
         // AFFECTATION DE LA ZONE COURANTE -> DEBUT DU JEU -> ZONE COURANTE = MENU
         // PRINCIPAL (zones[0])
@@ -922,6 +941,11 @@ public class Jeu {
             case "SUIVANT":
             case "SUIV":
 
+                if (zoneCourante == zones[11])
+                {
+                    stopSonsAmbiants();
+                }
+
                 if (zoneCourante == zones[9])
                 {
                     cinematiqueActive = false;
@@ -1185,6 +1209,7 @@ public class Jeu {
                     zoneCourante = zones[11];
                     gui.afficheImage(zoneCourante.nomImage());
                     gui.afficher(zoneCourante.descriptionLongue());
+                    leSon.jouerAmbiantSuspense();
                 } else {
                     gui.afficher("La commande " + commandeLue + " n'est pas disponible.");
                     gui.afficher("\n\nTapez 'Localiser' pour obtenir les détails de la zone courante.\n\n");
@@ -1701,6 +1726,11 @@ public class Jeu {
     // et de la zone courante ainsi qu'en fonction des valeurs des booléens d'événement
 
     private void checkEvent() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+
+        if (zoneCourante == zones[71] || zoneCourante == zones[23])
+        {
+            leSon.jouerAmbiantDouchesVides();
+        } 
 
         if ( zoneCourante == zones[6] && ( (Temps.getHeure() == 20) || (Temps.getHeure() == 12) || (Temps.getHeure() == 8)) )
         {
@@ -2295,6 +2325,8 @@ public class Jeu {
         leSon.stopAmbianceTheEnd();
         leSon.stopAmbianceThemePrincipal();
         leSon.stopAmbianceInterieurVide();
+        leSon.stopAmbianceDouchesVides();
+        leSon.stopAmbianceSuspense();
     }
 
     private void afficherSceneMort() {
@@ -2362,7 +2394,6 @@ public class Jeu {
             gui.afficher(zoneCourante.commandesDispo());
             leSon.jouerAudioError();
         } else {
-
             stopSonsAmbiants();
             ancienneZone = zoneCourante;
             zoneCourante = nouvelle;
@@ -2530,6 +2561,8 @@ public class Jeu {
         celluleOuverte = false;
         armeRecuperee = false;
         indiceCodetenu = false;
+        indice2Codetenu = false;
+        douchesMarco = false;
         battreMarco = false;
         sceneBagarre = false;
         PV_Marco = 100;
@@ -2577,7 +2610,7 @@ public class Jeu {
         Save sauvegarde = new Save(Inventaire, cinematiqueDeDepart, temporaryPauseHeure, temporaryPauseMinutes,
                 coffreOuvert, celluleOuverte, armeRecuperee, indiceCodetenu, battreMarco,
                 sceneBagarre, nightTime, activerAlerteNuit, nightAlertOn, carteTrouvee, tentatives,
-                indexZoneCourante, posXJoueur, posYJoueur, URLJoueur, posX_autres, posY_autres, URL_autres);
+                indexZoneCourante, posXJoueur, posYJoueur, URLJoueur, indice2Codetenu, douchesMarco);
         // Mettre a jour cette fonction -> la position des items/pnj ne sera pas
         // sauvegardée
         // puisque ces derniers sont directement dessinés sur les zones
@@ -2640,6 +2673,8 @@ public class Jeu {
             celluleOuverte = sauvegarde.celluleOuverte;
             armeRecuperee = sauvegarde.armeRecuperee;
             indiceCodetenu = sauvegarde.indiceCodetenu;
+            indice2Codetenu = sauvegarde.indice2Codetenu;
+            douchesMarco = sauvegarde.douchesMarco;
             battreMarco = sauvegarde.battreMarco;
             sceneBagarre = sauvegarde.sceneBagarre;
             nightTime = sauvegarde.nightTime;

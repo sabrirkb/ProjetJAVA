@@ -32,9 +32,8 @@ public class Save implements Serializable {
     int posXJoueur;
     int posYJoueur;
     URL directionJoueur;
-    ArrayList<Integer> posX_autres = new ArrayList<Integer>();
-    ArrayList<Integer> posY_autres = new ArrayList<Integer>();
-    ArrayList<URL> URL_autres = new ArrayList<URL>();
+    boolean indice2Codetenu = false;
+    boolean douchesMarco = false;
 
     public Save() {
     }
@@ -44,8 +43,8 @@ public class Save implements Serializable {
             boolean bastonMarco,
             boolean uneSceneBagarre, boolean unNightTime, boolean setNightAlert, boolean alerteNuitActivee,
             boolean uneCarteTrouvee, int desTentatives,
-            int unIndexZoneCourante, int unePosXJoueur, int unePosYJoueur, URL uneDirectionJoueur,
-            ArrayList<Integer> desPosX_autres, ArrayList<Integer> desPosY_autres, ArrayList<URL> desURL_autres) {
+            int unIndexZoneCourante, int unePosXJoueur, int unePosYJoueur, URL uneDirectionJoueur, boolean unIndice2Codetenu,
+            boolean isDouchesMarco) {
         this.Inventaire = unInventaire;
         this.cinematiqueDeDepart = uneCinematiqueDeDepart;
         this.heure = uneHeure;
@@ -65,9 +64,8 @@ public class Save implements Serializable {
         this.posXJoueur = unePosXJoueur;
         this.posYJoueur = unePosYJoueur;
         this.directionJoueur = uneDirectionJoueur;
-        this.posX_autres = desPosX_autres;
-        this.posY_autres = desPosY_autres;
-        this.URL_autres = desURL_autres;
+        this.douchesMarco = isDouchesMarco;
+        this.indice2Codetenu = unIndice2Codetenu;
     }
 
     public void enregistrer() throws IOException {

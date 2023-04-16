@@ -34,6 +34,8 @@ public class Audio implements LineListener {
     AudioInputStream theEnd;
     AudioInputStream douches;
     AudioInputStream interieurVide;
+    AudioInputStream douchesVides;
+    AudioInputStream suspense;
 
     // Clips sons brefs
     Clip clipNext = initClip();
@@ -58,6 +60,8 @@ public class Audio implements LineListener {
     Clip clipAudioTheEnd = initClip();
     Clip clipAudioDouches = initClip();
     Clip clipAudioInterieurVide = initClip();
+    Clip clipAudioDouchesVides = initClip();
+    Clip clipAudioSuspense = initClip();
 
     public Audio() {
         try {
@@ -107,13 +111,13 @@ public class Audio implements LineListener {
         porteClaque = AudioSystem
                 .getAudioInputStream(
                         getClass().getClassLoader().getResourceAsStream("jeu/audio/soundFX/doorSlam.wav"));
-                        porteOuverte = AudioSystem
+        porteOuverte = AudioSystem
                 .getAudioInputStream(
                         getClass().getClassLoader().getResourceAsStream("jeu/audio/soundFX/doorOpen.wav"));
-                        achievement = AudioSystem
+        achievement = AudioSystem
                 .getAudioInputStream(
                         getClass().getClassLoader().getResourceAsStream("jeu/audio/soundFX/achievement.wav"));
-                        menuSuccess = AudioSystem
+        menuSuccess = AudioSystem
                 .getAudioInputStream(
                         getClass().getClassLoader().getResourceAsStream("jeu/audio/soundFX/success.wav"));
 
@@ -135,6 +139,14 @@ public class Audio implements LineListener {
         interieurVide = AudioSystem
                 .getAudioInputStream(
                         getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/cell.wav"));
+
+        douchesVides = AudioSystem
+                .getAudioInputStream(
+                        getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/showerEmpty.wav"));
+
+        suspense = AudioSystem
+                .getAudioInputStream(
+                        getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/suspense.wav"));
 
     }
 
@@ -250,8 +262,19 @@ public class Audio implements LineListener {
         this.ambiance(clipAudioDouches, douches);
     }
 
-    public void jouerAmbiantInterieurVide() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    public void jouerAmbiantInterieurVide()
+            throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         this.ambiance(clipAudioInterieurVide, interieurVide);
+    }
+
+    public void jouerAmbiantDouchesVides()
+            throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        this.ambiance(clipAudioDouchesVides, douchesVides);
+    }
+
+    public void jouerAmbiantSuspense()
+            throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        this.ambiance(clipAudioSuspense, suspense);
     }
 
     // Méthode d'arrêt sons ambiants
@@ -282,6 +305,14 @@ public class Audio implements LineListener {
 
     public void stopAmbianceInterieurVide() {
         this.stopAmbiance(clipAudioInterieurVide);
+    }
+
+    public void stopAmbianceDouchesVides() {
+        this.stopAmbiance(clipAudioDouchesVides);
+    }
+
+    public void stopAmbianceSuspense() {
+        this.stopAmbiance(clipAudioSuspense);
     }
 
     @Override
