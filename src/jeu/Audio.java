@@ -36,11 +36,13 @@ public class Audio implements LineListener {
     AudioInputStream theEnd;
     AudioInputStream douches;
     AudioInputStream interieurVide;
+    AudioInputStream interieurBruit;
     AudioInputStream douchesVides;
     AudioInputStream suspense;
     AudioInputStream mer;
     AudioInputStream exterieurCalme;
     AudioInputStream exterieurBruit;
+    AudioInputStream etrange;
 
     // Clips sons brefs
     Clip clipNext = initClip();
@@ -67,11 +69,13 @@ public class Audio implements LineListener {
     Clip clipAudioTheEnd = initClip();
     Clip clipAudioDouches = initClip();
     Clip clipAudioInterieurVide = initClip();
+    Clip clipAudioInterieurBruit = initClip();
     Clip clipAudioDouchesVides = initClip();
     Clip clipAudioSuspense = initClip();
     Clip clipAudioMer = initClip();
     Clip clipAudioExterieurCalme = initClip();
     Clip clipAudioExterieurBruit = initClip();
+    Clip clipAudioEtrange = initClip();
 
     public Audio() {
         try {
@@ -158,6 +162,10 @@ public class Audio implements LineListener {
                 .getAudioInputStream(
                         getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/cell.wav"));
 
+        interieurBruit = AudioSystem
+                .getAudioInputStream(
+                        getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/crowd.wav"));
+
         douchesVides = AudioSystem
                 .getAudioInputStream(
                         getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/showerEmpty.wav"));
@@ -178,6 +186,9 @@ public class Audio implements LineListener {
                 .getAudioInputStream(
                         getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/outsideCrowded.wav"));
 
+        etrange = AudioSystem
+                .getAudioInputStream(
+                        getClass().getClassLoader().getResourceAsStream("jeu/audio/ambiant/creep.wav"));
     }
 
     // Méthode de lecture des sons brefs
@@ -305,6 +316,11 @@ public class Audio implements LineListener {
         this.ambiance(clipAudioInterieurVide, interieurVide);
     }
 
+    public void jouerAmbiantInterieurBruit()
+            throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        this.ambiance(clipAudioInterieurBruit, interieurBruit);
+    }
+
     public void jouerAmbiantDouchesVides()
             throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         this.ambiance(clipAudioDouchesVides, douchesVides);
@@ -328,6 +344,11 @@ public class Audio implements LineListener {
     public void jouerAmbiantExterieurBruit()
             throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         this.ambiance(clipAudioExterieurBruit, exterieurBruit);
+    }
+
+    public void jouerAmbiantEtrange()
+            throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        this.ambiance(clipAudioEtrange, etrange);
     }
 
     // Méthode d'arrêt sons ambiants
@@ -360,6 +381,10 @@ public class Audio implements LineListener {
         this.stopAmbiance(clipAudioInterieurVide);
     }
 
+    public void stopAmbianceInterieurBruit() {
+        this.stopAmbiance(clipAudioInterieurBruit);
+    }
+
     public void stopAmbianceDouchesVides() {
         this.stopAmbiance(clipAudioDouchesVides);
     }
@@ -378,6 +403,10 @@ public class Audio implements LineListener {
 
     public void stopAmbianceExterieurBruit() {
         this.stopAmbiance(clipAudioExterieurBruit);
+    }
+
+    public void stopAmbianceEtrange() {
+        this.stopAmbiance(clipAudioEtrange);
     }
 
     @Override

@@ -942,8 +942,16 @@ public class Jeu {
             case "SUIVANT":
             case "SUIV":
 
+            if (zoneCourante == zones[19])
+            {
+                leSon.stopAmbianceInterieurVide();
+                leSon.stopAmbianceDouchesVides();
+                leSon.stopAmbianceNuitInterieur();
+                leSon.jouerAmbiantDouches();
+            }    
+
                 if (zoneCourante == zones[11] || zoneCourante == zones[12] || zoneCourante == zones[13]
-                    || zoneCourante == zones[14])
+                    || zoneCourante == zones[14] || zoneCourante == zones[15])
                 {
                     stopSonsAmbiants();
                 }
@@ -970,6 +978,10 @@ public class Jeu {
                             gui.afficher(zoneCourante.descriptionLongue());
                             try {
                                 leSon.jouerAudioDialogue();
+                                leSon.stopAmbianceInterieurVide();
+                                leSon.stopAmbianceDouchesVides();
+                                leSon.stopAmbianceNuitInterieur();
+                                leSon.jouerAmbiantDouches();
                             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                                 e.printStackTrace();
                             }
@@ -1039,6 +1051,7 @@ public class Jeu {
                 gui.afficheJoueur("NONE", 150, 150);
                 updatePositionJoueur("NONE");
                 gui.cacher(10);
+                leSon.stopAmbianceNuitExterieur();
             }
 
             if (zoneCourante == zones[10])
@@ -1596,48 +1609,59 @@ public class Jeu {
             // la zone courante passe à zone [3] (exterieur ile jour)
             if (zoneCourante == zones[2]) {
                 zoneCourante = zones[1];
+                leSon.stopAmbianceNuitExterieur();
+                leSon.jouerAmbiantExterieurCalme();
             }
             // Si le joueur se trouve dans la zone [4] (cour nuit) et qu'il est plus de 8h,
             // la zone courante passe à zone [3] (cour jour)
             if (zoneCourante == zones[4]) {
                 zoneCourante = zones[3];
+                leSon.stopAmbianceNuitExterieur();
+                leSon.jouerAmbiantExterieurCalme();
             }
 
             // Si le joueur se trouve dans la zone [7] (refectoire nuit) et qu'il est plus
             // de 8h, la zone courante passe à zone [6] (refectoire jour)
             if (zoneCourante == zones[7]) {
                 zoneCourante = zones[6];
+                leSon.stopAmbianceNuitInterieur();
+                leSon.jouerAmbiantEtrange();
             }
             // Si le joueur se trouve dans la zone [22] (cellule nuit) et qu'il
             // est plus de
             // 8h, la zone courante passe à zone [16] (cellule jour)
             if (zoneCourante == zones[22]) {
                 zoneCourante = zones[16];
+                leSon.stopAmbianceNuitInterieur();
                 leSon.jouerAmbiantInterieurVide();
             }
             // Si le joueur se trouve dans la zone [21] (couloir nuit) et qu'il est plus de
             // 8h, la zone courante passe à zone [20] (couloir jour)
             if (zoneCourante == zones[21]) {
                 zoneCourante = zones[20];
+                leSon.stopAmbianceNuitInterieur();
                 leSon.jouerAmbiantInterieurVide();
             }
             // Si le joueur se trouve dans la zone [24] (douches nuit) et qu'il est plus de
             // 22h, la zone courante passe à zone [23] (douches jour)
             if (zoneCourante == zones[24]) {
                 zoneCourante = zones[23];
-                leSon.jouerAmbiantInterieurVide();
+                leSon.stopAmbianceNuitInterieur();
+                leSon.jouerAmbiantDouchesVides();
             }
             // Si le joueur se trouve dans la zone [27] (salleDesGardes nuit) et qu'il est
             // plus de
             // 22h, la zone courante passe à zone [26] (salleDesGardes jour)
             if (zoneCourante == zones[27]) {
                 zoneCourante = zones[26];
-                leSon.jouerAmbiantInterieurVide();
+                leSon.stopAmbianceNuitInterieur();
+                leSon.jouerAmbiantEtrange();
             }
             // Si le joueur se trouve dans la zone [30] (cuisine nuit) et qu'il est plus de
             // 22h, la zone courante passe à zone [29] (cuisine jour)
             if (zoneCourante == zones[30]) {
                 zoneCourante = zones[29];
+                leSon.jouerAmbiantEtrange();
             }
 
             gui.afficheImage(zoneCourante.nomImage());
@@ -1646,8 +1670,18 @@ public class Jeu {
             // [ 22h <= heureCourante <= 24 ] OU [ 0 <= heureCourante < 8]
             // L'heure courante est >= 22h et < 8h (il fait nuit)
 
-            // Arrêt des sons ambiant de jour
-            // …
+            // Arrêt des ambiants de jour
+            leSon.stopAmbianceDouches();
+            leSon.stopAmbianceDouchesVides();
+            leSon.stopAmbianceEtrange();
+            leSon.stopAmbianceExterieurBruit();
+            leSon.stopAmbianceExterieurCalme();
+            leSon.stopAmbianceInterieurBruit();
+            leSon.stopAmbianceInterieurVide();
+            leSon.stopAmbianceMer();
+            leSon.stopAmbianceSuspense();
+            leSon.stopAmbianceTheEnd();
+            leSon.stopAmbianceThemePrincipal();
 
             nightTime = true;
             if (!cinematiqueDeDepart && activerAlerteNuit) {
@@ -1666,16 +1700,19 @@ public class Jeu {
             // 22h, la zone courante passe à zone [2] (ext ile nuit)
             if (zoneCourante == zones[1]) {
                 zoneCourante = zones[2];
+                leSon.jouerAmbiantNuitExterieur();
             }
             // Si le joueur se trouve dans la zone [3] (cour jour) et qu'il est plus de 22h,
             // la zone courante passe à zone [4] (cour nuit)
             if (zoneCourante == zones[3]) {
                 zoneCourante = zones[4];
+                leSon.jouerAmbiantNuitExterieur();
             }
             // Si le joueur se trouve dans la zone [6] (refectoire jour) et qu'il est plus
             // de 22h, la zone courante passe à zone [7] (refectoire nuit)
             if (zoneCourante == zones[6]) {
                 zoneCourante = zones[7];
+                leSon.jouerAmbiantNuitInterieur();
             }
             // Si le joueur se trouve dans la zone [16,17,18,19,22] (cellule jour) et qu'il
             // est plus de
@@ -1683,34 +1720,42 @@ public class Jeu {
             if (zoneCourante == zones[16] || zoneCourante == zones[17]
                     || zoneCourante == zones[18] || (zoneCourante == zones[19] && !cinematiqueActive)) {
                 zoneCourante = zones[22];
+                leSon.stopAmbianceInterieurVide();
+                leSon.jouerAmbiantNuitInterieur();
             }
             // Si le joueur se trouve dans la zone [20] (couloir jour) et qu'il est plus de
             // 22h, la zone courante passe à zone [21] (couloir nuit)
             if (zoneCourante == zones[20]) {
                 zoneCourante = zones[21];
+                leSon.stopAmbianceInterieurVide();
+                leSon.jouerAmbiantNuitInterieur();
             }
             // Si le joueur se trouve dans la zone [23] (douches jour) et qu'il est plus de
             // 22h, la zone courante passe à zone [24] (douches nuit)
             if (zoneCourante == zones[23]) {
                 zoneCourante = zones[24];
+                leSon.jouerAmbiantNuitInterieur();
             }
             // Si le joueur se trouve dans la zone [26] (salleDesGardes jour) et qu'il est
             // plus de
             // 22h, la zone courante passe à zone [27] (salleDesGardes nuit)
             if (zoneCourante == zones[26]) {
                 zoneCourante = zones[27];
+                leSon.jouerAmbiantNuitInterieur();
             }
             // Si le joueur se trouve dans la zone [29] (cuisine jour) et qu'il est plus de
             // 22h, la zone courante passe à zone [30] (cuisine nuit)
             if (zoneCourante == zones[29]) {
                 zoneCourante = zones[30];
+                leSon.jouerAmbiantNuitInterieur();
             }
 
             gui.afficheImage(zoneCourante.nomImage());
 
             // Gestion des son ambiants de nuit
             if (zoneCourante == zones[2] || zoneCourante == zones[4]) {
-                // Le son -> stop ambiance exterieur jour (à créer)
+                leSon.stopAmbianceExterieurBruit();
+                leSon.stopAmbianceExterieurCalme();
                 leSon.jouerAmbiantNuitExterieur();
             }
             if (zoneCourante == zones[7] || zoneCourante == zones[22] || zoneCourante == zones[21]
@@ -1729,8 +1774,45 @@ public class Jeu {
 
     private void checkEvent() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 
+        if (zoneCourante == zones[8] || zoneCourante == zones[47])
+        {
+            leSon.stopAmbianceEtrange();
+            leSon.stopAmbianceNuitInterieur();
+            leSon.jouerAmbiantInterieurBruit();
+        }
+
+        if (zoneCourante == zones[26])
+        {
+            leSon.stopAmbianceNuitInterieur();
+            leSon.jouerAmbiantEtrange();
+        }
+
+        if (zoneCourante == zones[29] || zoneCourante == zones[6])
+        {
+            leSon.stopAmbianceNuitInterieur();
+            leSon.stopAmbianceInterieurBruit();
+            leSon.jouerAmbiantEtrange();
+        } 
+
+        if (zoneCourante == zones[3])
+        {
+            leSon.stopAmbianceNuitExterieur();
+            leSon.stopAmbianceExterieurBruit();
+            leSon.jouerAmbiantExterieurCalme();
+        }
+
+        if (zoneCourante == zones[5])
+        {
+            leSon.stopAmbianceNuitExterieur();
+            leSon.stopAmbianceExterieurCalme();
+            leSon.jouerAmbiantExterieurBruit();
+        }
+
         if (zoneCourante == zones[71] || zoneCourante == zones[23])
         {
+            leSon.stopAmbianceNuitInterieur();
+            leSon.stopAmbianceInterieurVide();
+            leSon.stopAmbianceDouches();
             leSon.jouerAmbiantDouchesVides();
         } 
 
@@ -1738,6 +1820,9 @@ public class Jeu {
         {
             zoneCourante = zones[8];
             gui.afficheImage(zoneCourante.nomImage());
+            leSon.stopAmbianceNuitInterieur();
+            leSon.stopAmbianceInterieurVide();
+            leSon.jouerAmbiantInterieurBruit();
         }
 
         if ( zoneCourante == zones[8] && ( (Temps.getHeure() == 21) || (Temps.getHeure() == 13) || (Temps.getHeure() == 9)) )
@@ -1751,6 +1836,7 @@ public class Jeu {
         {
             zoneCourante = zones[5];
             gui.afficheImage(zoneCourante.nomImage());
+            leSon.stopAmbianceNuitExterieur();
             leSon.stopAmbianceExterieurCalme();
             leSon.jouerAmbiantExterieurBruit();
         }
@@ -1760,6 +1846,7 @@ public class Jeu {
         {
             zoneCourante = zones[3];
             gui.afficheImage(zoneCourante.nomImage());
+            leSon.stopAmbianceNuitExterieur();
             leSon.stopAmbianceExterieurBruit();
             leSon.jouerAmbiantExterieurCalme();
         }
@@ -1809,6 +1896,8 @@ public class Jeu {
             gui.afficheImage(zoneCourante.nomImage());
             gui.afficheJoueur("SUD", 250, 250);
             gui.afficher(zoneCourante.description);
+            stopSonsAmbiants();
+            leSon.jouerAmbiantMer();
 
             Timer timer = new Timer();
                 timer.schedule(new TimerTask() {
@@ -2053,6 +2142,7 @@ public class Jeu {
         {   // ALORS :
             
             zoneCourante = zones[28]; // On passe la zone sur cinématique d'avertissement (évite que l'event boucle)
+            stopSonsAmbiants();
 
             // On patiente environ 0.1 seconde (delay: 100ms);
             Timer timer = new Timer();
@@ -2342,6 +2432,8 @@ public class Jeu {
         leSon.stopAmbianceMer();
         leSon.stopAmbianceExterieurCalme();
         leSon.stopAmbianceExterieurBruit();
+        leSon.stopAmbianceEtrange();
+        leSon.stopAmbianceInterieurBruit();
     }
 
     private void afficherSceneMort() {
@@ -2391,7 +2483,7 @@ public class Jeu {
                     e.printStackTrace();
                 }
             }
-        }, 500);
+        }, 2500);
     }
 
     private void afficherAide() {
@@ -2706,7 +2798,7 @@ public class Jeu {
             gui.afficher(zoneCourante.descriptionLongue());
             gui.afficheBarre();
             gui.enleveJoueur();
-            gui.afficheJoueur(sauvegarde.directionJoueur, sauvegarde.posXJoueur, sauvegarde.posYJoueur);
+            gui.afficheJoueur("SUD", sauvegarde.posXJoueur, sauvegarde.posYJoueur);
             leSon.stopAmbianceThemePrincipal();
         } catch (Exception e) {
             gui.clearText();
